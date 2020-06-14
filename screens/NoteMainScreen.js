@@ -25,12 +25,54 @@ import { Store } from "../Store";
 const deviceWidth = Dimensions.get("window").width;
 const contentWidth = deviceWidth - theme.content_margin;
 
-export function NoteMainScreen() {
+export function NoteMainScreen({ navigation }) {
   const { state } = useContext(Store);
   return (
     <Container style={{ width: deviceWidth, alignItems: "center" }}>
       <Content style={{ width: contentWidth }}>
-        <Text>{state.config.notetag}</Text>
+        <Button
+          block
+          style={{
+            marginTop: 20,
+            height: theme.btn_full_height,
+            backgroundColor: theme.btn_bg_color,
+          }}
+        >
+          <Text>{translate("browse_all_notes")}</Text>
+        </Button>
+        <Button
+          block
+          style={{
+            marginTop: 20,
+            height: theme.btn_full_height,
+            backgroundColor: theme.btn_bg_color,
+          }}
+          onPress={() => {
+            navigation.navigate("NewNote");
+          }}
+        >
+          <Text>{translate("add_new_note")}</Text>
+        </Button>
+        <Button
+          block
+          style={{
+            marginTop: 20,
+            height: theme.btn_full_height,
+            backgroundColor: theme.btn_bg_color,
+          }}
+        >
+          <Text>{translate("search_note")}</Text>
+        </Button>
+        <Button
+          block
+          style={{
+            marginTop: 20,
+            height: theme.btn_full_height,
+            backgroundColor: theme.btn_bg_color,
+          }}
+        >
+          <Text>{translate("export_note")}</Text>
+        </Button>
       </Content>
     </Container>
   );

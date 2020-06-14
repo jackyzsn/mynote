@@ -63,7 +63,6 @@ export function HomeScreen({ navigation }) {
           </Item>
           <Button
             block
-            success
             style={{
               marginTop: 50,
               height: theme.btn_full_height,
