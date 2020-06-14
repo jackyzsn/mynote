@@ -22,6 +22,7 @@ import {
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
 import { Store } from "../Store";
+import { encrypt } from "../utils/crypto";
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -56,7 +57,7 @@ export function NewNoteScreen({ navigation }) {
           <Button
             vertical
             onPress={() => {
-              showAlert(notecontent);
+              showAlert(encrypt(notecontent, state.config.encryptionkey));
             }}
           >
             <Text style={{ color: theme.btn_txt_color }}> Save</Text>
