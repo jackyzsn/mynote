@@ -1,0 +1,4 @@
+#Sat Jun 13 19:24:47 EDT 2020
+base.0=/home/jacky/projects/MyNote/android/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
