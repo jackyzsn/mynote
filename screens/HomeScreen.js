@@ -21,6 +21,8 @@ import {
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
 import { Store } from "../Store";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const deviceWidth = Dimensions.get("window").width;
 const contentWidth = deviceWidth - theme.content_margin;
@@ -28,7 +30,7 @@ const showAlert = (text) => {
   Alert.alert(text);
 };
 
-export function HomeScreen() {
+export function HomeScreen({ navigation }) {
   const { state, dispatch } = useContext(Store);
   const [notetag, setNotetag] = useState(state.config.notetag);
   const [encrypkey, setEncrypkey] = useState(state.config.encryptionkey);
@@ -72,7 +74,7 @@ export function HomeScreen() {
                 type: "CHANGE_CONFIG",
                 payload: { notetag, encryptionkey: encrypkey },
               });
-              showAlert(notetag);
+              navigation.navigate("NoteMain");
             }}
           >
             <Text>{translate("next")}</Text>
