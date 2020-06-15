@@ -13,5 +13,6 @@
   "note_save_failed": "Failled to add the new note..",
   "ok": "OK",
   "save": "Save",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "browse_note": "Browser All Notes"
 }

@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { HomeScreen } from "./screens/HomeScreen";
 import { NoteMainScreen } from "./screens/NoteMainScreen";
 import { NewNoteScreen } from "./screens/NewNoteScreen";
+import { BrowseNoteScreen } from "./screens/BrowseNoteScreen";
 import translate from "./utils/language.utils";
 
 const Stack = createStackNavigator();
@@ -26,6 +27,11 @@ function Main() {
           name="NewNote"
           component={NewNoteScreen}
           options={{ title: translate("new_note") }}
+        />
+        <Stack.Screen
+          name="BrowseNote"
+          component={BrowseNoteScreen}
+          options={{ title: translate("browse_note") }}
         />
       </Stack.Navigator>
     </NavigationContainer>

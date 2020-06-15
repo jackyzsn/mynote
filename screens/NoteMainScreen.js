@@ -20,6 +20,9 @@ export function NoteMainScreen({ navigation }) {
             height: theme.btn_full_height,
             backgroundColor: theme.btn_bg_color,
           }}
+          onPress={() => {
+            navigation.navigate("BrowseNote");
+          }}
         >
           <Text>{translate("browse_all_notes")}</Text>
         </Button>

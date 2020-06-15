@@ -14,6 +14,7 @@ MERGED from [:react-native-reanimated] /home/jacky/projects/MyNote/node_modules/
 MERGED from [:react-native-safe-area-context] /home/jacky/projects/MyNote/node_modules/react-native-safe-area-context/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-screens] /home/jacky/projects/MyNote/node_modules/react-native-screens/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-sqlite-storage] /home/jacky/projects/MyNote/node_modules/react-native-sqlite-storage/platforms/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
+MERGED from [:react-native-vector-icons] /home/jacky/projects/MyNote/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [com.facebook.react:react-native:0.62.2] /home/jacky/.gradle/caches/transforms-2/files-2.1/08135ebcfb1fac0324bd3924e6b902ca/jetified-react-native-0.62.2/AndroidManifest.xml:2:1-13:12
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /home/jacky/.gradle/caches/transforms-2/files-2.1/39b4f59a835527a351392d1b387458e1/swiperefreshlayout-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [org.webkit:android-jsc:r245459] /home/jacky/.gradle/caches/transforms-2/files-2.1/c95368a818e2dc0e1580995fc7865708/jetified-android-jsc-r245459/AndroidManifest.xml:2:1-11:12
@@ -172,6 +173,8 @@ MERGED from [:react-native-screens] /home/jacky/projects/MyNote/node_modules/rea
 MERGED from [:react-native-screens] /home/jacky/projects/MyNote/node_modules/react-native-screens/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-sqlite-storage] /home/jacky/projects/MyNote/node_modules/react-native-sqlite-storage/platforms/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-sqlite-storage] /home/jacky/projects/MyNote/node_modules/react-native-sqlite-storage/platforms/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-vector-icons] /home/jacky/projects/MyNote/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-vector-icons] /home/jacky/projects/MyNote/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [com.facebook.react:react-native:0.62.2] /home/jacky/.gradle/caches/transforms-2/files-2.1/08135ebcfb1fac0324bd3924e6b902ca/jetified-react-native-0.62.2/AndroidManifest.xml:7:5-9:41
 MERGED from [com.facebook.react:react-native:0.62.2] /home/jacky/.gradle/caches/transforms-2/files-2.1/08135ebcfb1fac0324bd3924e6b902ca/jetified-react-native-0.62.2/AndroidManifest.xml:7:5-9:41
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /home/jacky/.gradle/caches/transforms-2/files-2.1/39b4f59a835527a351392d1b387458e1/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
