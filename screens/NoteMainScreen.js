@@ -1,23 +1,6 @@
-import React, { useState, useContext } from "react";
-import { Alert, Dimensions } from "react-native";
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Footer,
-  FooterTab,
-  Button,
-  Left,
-  Right,
-  Body,
-  Icon,
-  Label,
-  Input,
-  Item,
-  Form,
-  Text,
-} from "native-base";
+import React, { useContext } from "react";
+import { Dimensions } from "react-native";
+import { Container, Content, Button, Text } from "native-base";
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
 import { Store } from "../Store";

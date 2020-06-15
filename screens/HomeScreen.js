@@ -1,17 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Alert, Dimensions } from "react-native";
 import {
   Container,
-  Header,
-  Title,
   Content,
-  Footer,
-  FooterTab,
   Button,
-  Left,
-  Right,
-  Body,
-  Icon,
   Label,
   Input,
   Item,
@@ -21,19 +13,22 @@ import {
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
 import { Store } from "../Store";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createTable } from "../utils/dbhelper";
+// import { NavigationContainer } from "@react-navigation/native";
+// import { createStackNavigator } from "@react-navigation/stack";
 
 const deviceWidth = Dimensions.get("window").width;
 const contentWidth = deviceWidth - theme.content_margin;
-const showAlert = (text) => {
-  Alert.alert(text);
-};
 
 export function HomeScreen({ navigation }) {
   const { state, dispatch } = useContext(Store);
   const [notetag, setNotetag] = useState(state.config.notetag);
   const [encrypkey, setEncrypkey] = useState(state.config.encryptionkey);
+
+  // Only want to execute once
+  useEffect(() => {
+    createTable();
+  }, []);
 
   return (
     <Container style={{ width: deviceWidth, alignItems: "center" }}>

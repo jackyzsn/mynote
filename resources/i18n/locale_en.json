@@ -8,5 +8,10 @@
   "add_new_note": "Add a new note",
   "search_note": "Search in existing notes",
   "new_note": "Create New Note",
-  "export_note": "Export notes to a file"
+  "export_note": "Export notes to a file",
+  "note_save_success": "New note inserted successfully..",
+  "note_save_failed": "Failled to add the new note..",
+  "ok": "OK",
+  "save": "Save",
+  "cancel": "Cancel"
 }

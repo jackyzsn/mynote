@@ -2,5 +2,8 @@
   "content_margin": 20,
   "btn_bg_color": "#6FCF97",
   "btn_txt_color": "white",
-  "btn_full_height": 80
+  "btn_full_height": 80,
+  "toast_success_bg_color": "#6FCF97",
+  "toast_fail_bg_color": "#EB5757",
+  "toast_width_margin": 10
 }

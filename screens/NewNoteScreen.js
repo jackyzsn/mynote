@@ -1,35 +1,55 @@
 import React, { useState, useContext } from "react";
-import { Alert, Dimensions } from "react-native";
+import { Dimensions } from "react-native";
 import {
   Container,
-  Header,
-  Badge,
   Content,
   Footer,
   FooterTab,
   Button,
-  Left,
-  Right,
-  Body,
-  Icon,
-  Label,
-  Item,
   Textarea,
   Text,
-  Col,
-  Grid,
+  Root,
+  Toast,
 } from "native-base";
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
 import { Store } from "../Store";
-import { encrypt } from "../utils/crypto";
+import { encrypt, decrypt } from "../utils/crypto";
+import { insertNote } from "../utils/dbhelper";
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 const contentWidth = deviceWidth - theme.content_margin;
 
-const showAlert = (text) => {
-  Alert.alert(text);
+const showToast = (success, navigation) => {
+  if (success === "success") {
+    Toast.show({
+      text: translate("note_save_success"),
+      buttonText: translate("ok"),
+      position: "top",
+      duration: 3000,
+      onClose: () => {
+        navigation.navigate("NoteMain");
+      },
+      style: {
+        marginLeft: theme.toast_width_margin,
+        marginRight: theme.toast_width_margin,
+        backgroundColor: theme.toast_success_bg_color,
+      },
+    });
+  } else {
+    Toast.show({
+      text: translate("note_save_failed"),
+      buttonText: translate("ok"),
+      position: "top",
+      duration: 3000,
+      style: {
+        marginLeft: theme.toast_width_margin,
+        marginRight: theme.toast_width_margin,
+      },
+      backgroundColor: theme.toast_fail_bg_color,
+    });
+  }
 };
 
 export function NewNoteScreen({ navigation }) {
@@ -37,41 +57,53 @@ export function NewNoteScreen({ navigation }) {
   const [notecontent, setNotecontent] = useState("");
 
   return (
-    <Container>
-      <Content>
-        <Textarea
-          style={{ height: "100%", width: "100%" }}
-          placeholder="Textarea"
-          value={notecontent}
-          onChangeText={(text) => {
-            setNotecontent(text);
-          }}
-        />
-      </Content>
-      <Footer>
-        <FooterTab
-          style={{
-            backgroundColor: theme.btn_bg_color,
-          }}
-        >
-          <Button
-            vertical
-            onPress={() => {
-              showAlert(encrypt(notecontent, state.config.encryptionkey));
+    <Root>
+      <Container>
+        <Content>
+          <Textarea
+            style={{
+              height: "100%",
+              width: "100%",
+              marginLeft: 5,
+              marginRight: 5,
+            }}
+            placeholder="Textarea"
+            value={notecontent}
+            onChangeText={(text) => {
+              setNotecontent(text);
+            }}
+          />
+        </Content>
+        <Footer>
+          <FooterTab
+            style={{
+              backgroundColor: theme.btn_bg_color,
             }}
           >
-            <Text style={{ color: theme.btn_txt_color }}> Save</Text>
-          </Button>
-          <Button
-            vertical
-            onPress={() => {
-              navigation.navigate("NoteMain");
-            }}
-          >
-            <Text style={{ color: theme.btn_txt_color }}>Cancel</Text>
-          </Button>
-        </FooterTab>
-      </Footer>
-    </Container>
+            <Button
+              vertical
+              onPress={() => {
+                let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
+                insertNote(state.config.notetag, tmpTxt, showToast, navigation);
+              }}
+            >
+              <Text style={{ color: theme.btn_txt_color }}>
+                {translate("save")}
+              </Text>
+            </Button>
+            <Button
+              vertical
+              onPress={() => {
+                navigation.navigate("NoteMain");
+              }}
+            >
+              <Text style={{ color: theme.btn_txt_color }}>
+                {translate("cancel")}
+              </Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+      </Container>
+    </Root>
   );
 }
