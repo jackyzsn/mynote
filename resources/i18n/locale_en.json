@@ -19,5 +19,6 @@
   "confirm": "Confirm",
   "q_delete_note": "You want to delete selected notes?",
   "note_delete_success": "Notes deleted successfully",
-  "note_delete_failed": "Failed to delete selected notes"
+  "note_delete_failed": "Failed to delete selected notes",
+  "note_detail": "Note Detail"
 }

@@ -10,6 +10,9 @@ import {
   Text,
   Root,
   Toast,
+  Item,
+  Input,
+  Label,
 } from "native-base";
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
@@ -60,6 +63,15 @@ export function NewNoteScreen({ navigation }) {
     <Root>
       <Container>
         <Content>
+          <Item
+            floatingLabel
+            style={{
+              marginLeft: 15,
+            }}
+          >
+            <Label>Note Title</Label>
+            <Input />
+          </Item>
           <Textarea
             style={{
               height: "100%",

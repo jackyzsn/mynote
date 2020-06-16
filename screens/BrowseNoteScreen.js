@@ -106,7 +106,14 @@ export function BrowseNoteScreen({ navigation }) {
   };
 
   const noteListItems = notelist.map((r, inx) => (
-    <ListItem icon key={inx} style={{ marginTop: 5 }}>
+    <ListItem
+      icon
+      key={inx}
+      style={{ marginTop: 5 }}
+      onPress={() => {
+        navigation.navigate("NoteDetail", { id: r.id });
+      }}
+    >
       <Left>
         <CheckBox
           key={inx}

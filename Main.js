@@ -5,6 +5,7 @@ import { HomeScreen } from "./screens/HomeScreen";
 import { NoteMainScreen } from "./screens/NoteMainScreen";
 import { NewNoteScreen } from "./screens/NewNoteScreen";
 import { BrowseNoteScreen } from "./screens/BrowseNoteScreen";
+import { NoteDetailScreen } from "./screens/NoteDetailScreen";
 import translate from "./utils/language.utils";
 
 const Stack = createStackNavigator();
@@ -32,6 +33,11 @@ function Main() {
           name="BrowseNote"
           component={BrowseNoteScreen}
           options={{ title: translate("browse_note") }}
+        />
+        <Stack.Screen
+          name="NoteDetail"
+          component={NoteDetailScreen}
+          options={{ title: translate("note_detail") }}
         />
       </Stack.Navigator>
     </NavigationContainer>

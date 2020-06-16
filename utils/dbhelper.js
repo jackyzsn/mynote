@@ -1,4 +1,5 @@
 import { openDatabase } from "react-native-sqlite-storage";
+import { encrypt, decrypt } from "./crypto";
 import moment from "moment";
 
 var db = openDatabase({ name: "MyNote.db" });
@@ -79,19 +80,18 @@ export function retrieveAllNotes(notetag, callback) {
   });
 }
 
-export function retrieveNoteDetail(id, callback) {
+export function retrieveNoteDetail(id, key, callback) {
   db.transaction(function(tx) {
     tx.executeSql(
-      "SELECT id, note_text from tbl_notes where id = ?",
+      "SELECT note_text from tbl_notes where id = ?",
       [id],
       (tx, results) => {
-        var rec = {};
         if (results.rows.length > 0) {
           // has result
-          rec.id = results.rows.item(0).id;
-          rec.note_text = results.rows.item(0).note_text;
+          callback("success", results.rows.item(0).note_text);
+        } else {
+          callback("failed", "");
         }
-        callback(rec);
       }
     );
   });
