@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { Dimensions } from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import { Dimensions, Alert } from "react-native";
 import {
   Container,
   Content,
@@ -13,13 +13,14 @@ import {
   Body,
   Icon,
   Right,
-  Switch,
+  CheckBox,
+  Toast,
 } from "native-base";
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
 import { Store } from "../Store";
 import { encrypt, decrypt } from "../utils/crypto";
-import { insertNote } from "../utils/dbhelper";
+import { deleteNotes, retrieveAllNotes } from "../utils/dbhelper";
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -27,53 +28,120 @@ const contentWidth = deviceWidth - theme.content_margin;
 
 export function BrowseNoteScreen({ navigation }) {
   const { state } = useContext(Store);
-  const [notecontent, setNotecontent] = useState("");
+  const [notelist, setNotelist] = useState([]);
+  const [checkboxes, setCheckboxes] = useState([]);
+
+  useEffect(() => {
+    retrieveAllNotes(state.config.notetag, setNotelist);
+  }, []);
+
+  const confirmDelete = (list) => {
+    Alert.alert(
+      translate("confirm"),
+      translate("q_delete_note"),
+      [
+        {
+          text: translate("cancel"),
+          style: "cancel",
+        },
+        { text: translate("ok"), onPress: () => deleteList(list) },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const deleteCallback = (success, list) => {
+    if (success === "success") {
+      // remove checkboxes/notelist
+      let wkNotelist = notelist;
+
+      list.map(function(item) {
+        wkNotelist.splice(wkNotelist.findIndex((x) => x.id === item), 1);
+      });
+
+      setCheckboxes([]);
+      setNotelist(wkNotelist);
+
+      Toast.show({
+        text: translate("note_delete_success"),
+        buttonText: translate("ok"),
+        position: "top",
+        duration: 3000,
+        style: {
+          marginLeft: theme.toast_width_margin,
+          marginRight: theme.toast_width_margin,
+          backgroundColor: theme.toast_success_bg_color,
+        },
+      });
+    } else {
+      Toast.show({
+        text: translate("note_delete_failed"),
+        buttonText: translate("ok"),
+        position: "top",
+        duration: 3000,
+        style: {
+          marginLeft: theme.toast_width_margin,
+          marginRight: theme.toast_width_margin,
+        },
+        backgroundColor: theme.toast_fail_bg_color,
+      });
+    }
+  };
+
+  const deleteList = (list) => {
+    // delete from DB
+    deleteNotes(list, deleteCallback);
+  };
+
+  const toggleCheckbox = (id) => {
+    var wkChkboxes = [...checkboxes];
+
+    if (wkChkboxes && wkChkboxes.includes(id)) {
+      wkChkboxes.splice(wkChkboxes.indexOf(id), 1);
+    } else {
+      wkChkboxes.push(id);
+    }
+
+    setCheckboxes(wkChkboxes);
+  };
+
+  const noteListItems = notelist.map((r, inx) => (
+    <ListItem icon key={inx} style={{ marginTop: 5 }}>
+      <Left>
+        <CheckBox
+          key={inx}
+          color={theme.btn_bg_color}
+          checked={checkboxes.includes(r.id) ? true : false}
+          onPress={() => toggleCheckbox(r.id)}
+        />
+      </Left>
+      <Body>
+        <Text
+          style={{
+            color: theme.major_text_color,
+          }}
+        >
+          {r.note_tag + r.seq}
+        </Text>
+        <Text
+          style={{
+            color: theme.minor_text_color,
+            fontWeight: "100",
+          }}
+        >
+          {r.updt}
+        </Text>
+      </Body>
+      <Right>
+        <Icon active name="arrow-forward" />
+      </Right>
+    </ListItem>
+  ));
+
   return (
     <Root>
       <Container>
-        <Content>
-          <ListItem icon>
-            <Left>
-              <Button style={{ backgroundColor: "#FF9501" }}>
-                <Icon active name="airplane" />
-              </Button>
-            </Left>
-            <Body>
-              <Text>Airplane Mode</Text>
-            </Body>
-            <Right>
-              <Switch value={false} />
-            </Right>
-          </ListItem>
-          <ListItem icon>
-            <Left>
-              <Button style={{ backgroundColor: "#007AFF" }}>
-                <Icon active name="wifi" />
-              </Button>
-            </Left>
-            <Body>
-              <Text>Wi-Fi</Text>
-            </Body>
-            <Right>
-              <Text>GeekyAnts</Text>
-              <Icon active name="arrow-forward" />
-            </Right>
-          </ListItem>
-          <ListItem icon>
-            <Left>
-              <Button style={{ backgroundColor: "#007AFF" }}>
-                <Icon active name="bluetooth" />
-              </Button>
-            </Left>
-            <Body>
-              <Text>Bluetooth</Text>
-            </Body>
-            <Right>
-              <Text>On</Text>
-              <Icon active name="arrow-forward" />
-            </Right>
-          </ListItem>
-        </Content>
+        <Content>{noteListItems}</Content>
         <Footer>
           <FooterTab
             style={{
@@ -83,12 +151,12 @@ export function BrowseNoteScreen({ navigation }) {
             <Button
               vertical
               onPress={() => {
-                let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
-                insertNote(state.config.notetag, tmpTxt, showToast, navigation);
+                confirmDelete(checkboxes);
               }}
+              disabled={checkboxes.length === 0}
             >
               <Text style={{ color: theme.btn_txt_color }}>
-                {translate("save")}
+                {translate("delete")}
               </Text>
             </Button>
             <Button

@@ -21,40 +21,40 @@ const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 const contentWidth = deviceWidth - theme.content_margin;
 
-const showToast = (success, navigation) => {
-  if (success === "success") {
-    Toast.show({
-      text: translate("note_save_success"),
-      buttonText: translate("ok"),
-      position: "top",
-      duration: 3000,
-      onClose: () => {
-        navigation.navigate("NoteMain");
-      },
-      style: {
-        marginLeft: theme.toast_width_margin,
-        marginRight: theme.toast_width_margin,
-        backgroundColor: theme.toast_success_bg_color,
-      },
-    });
-  } else {
-    Toast.show({
-      text: translate("note_save_failed"),
-      buttonText: translate("ok"),
-      position: "top",
-      duration: 3000,
-      style: {
-        marginLeft: theme.toast_width_margin,
-        marginRight: theme.toast_width_margin,
-      },
-      backgroundColor: theme.toast_fail_bg_color,
-    });
-  }
-};
-
 export function NewNoteScreen({ navigation }) {
   const { state } = useContext(Store);
   const [notecontent, setNotecontent] = useState("");
+
+  const showToast = (success) => {
+    if (success === "success") {
+      Toast.show({
+        text: translate("note_save_success"),
+        buttonText: translate("ok"),
+        position: "top",
+        duration: 3000,
+        onClose: () => {
+          navigation.navigate("NoteMain");
+        },
+        style: {
+          marginLeft: theme.toast_width_margin,
+          marginRight: theme.toast_width_margin,
+          backgroundColor: theme.toast_success_bg_color,
+        },
+      });
+    } else {
+      Toast.show({
+        text: translate("note_save_failed"),
+        buttonText: translate("ok"),
+        position: "top",
+        duration: 3000,
+        style: {
+          marginLeft: theme.toast_width_margin,
+          marginRight: theme.toast_width_margin,
+        },
+        backgroundColor: theme.toast_fail_bg_color,
+      });
+    }
+  };
 
   return (
     <Root>
@@ -84,7 +84,7 @@ export function NewNoteScreen({ navigation }) {
               vertical
               onPress={() => {
                 let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
-                insertNote(state.config.notetag, tmpTxt, showToast, navigation);
+                insertNote(state.config.notetag, tmpTxt, showToast);
               }}
             >
               <Text style={{ color: theme.btn_txt_color }}>

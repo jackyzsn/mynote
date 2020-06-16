@@ -5,5 +5,7 @@
   "btn_full_height": 80,
   "toast_success_bg_color": "#6FCF97",
   "toast_fail_bg_color": "#EB5757",
-  "toast_width_margin": 10
+  "toast_width_margin": 10,
+  "major_text_color": "#4F4F4F",
+  "minor_text_color": "#828282"
 }

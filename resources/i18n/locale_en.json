@@ -14,5 +14,10 @@
   "ok": "OK",
   "save": "Save",
   "cancel": "Cancel",
-  "browse_note": "Browser All Notes"
+  "browse_note": "Browser All Notes",
+  "delete": "Delete",
+  "confirm": "Confirm",
+  "q_delete_note": "You want to delete selected notes?",
+  "note_delete_success": "Notes deleted successfully",
+  "note_delete_failed": "Failed to delete selected notes"
 }

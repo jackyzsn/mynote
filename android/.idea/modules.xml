@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1262827654/react-native-safe-area-context.iml" filepath="$PROJECT_DIR$/.idea/modules/-1262827654/react-native-safe-area-context.iml" group="MyNote/react-native-safe-area-context" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-114796526/react-native-screens.iml" filepath="$PROJECT_DIR$/.idea/modules/-114796526/react-native-screens.iml" group="MyNote/react-native-screens" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1286498784/react-native-sqlite-storage.iml" filepath="$PROJECT_DIR$/.idea/modules/1286498784/react-native-sqlite-storage.iml" group="MyNote/react-native-sqlite-storage" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/159875621/react-native-vector-icons.iml" filepath="$PROJECT_DIR$/.idea/modules/159875621/react-native-vector-icons.iml" group="MyNote/react-native-vector-icons" />
     </modules>
   </component>
 </project>
