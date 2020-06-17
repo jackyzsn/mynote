@@ -37,7 +37,7 @@ function Main() {
         <Stack.Screen
           name="NoteDetail"
           component={NoteDetailScreen}
-          options={{ title: translate("note_detail") }}
+          options={({ route }) => ({ title: route.params.notetag })}
         />
       </Stack.Navigator>
     </NavigationContainer>

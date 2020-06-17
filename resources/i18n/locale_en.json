@@ -1,6 +1,5 @@
 {
   "primary": "Primary button",
-  "note_tag": "Note Tag",
   "encryption_key": "Encryption Key",
   "next": "Next",
   "note_main": "Secure Note",
@@ -20,5 +19,8 @@
   "q_delete_note": "You want to delete selected notes?",
   "note_delete_success": "Notes deleted successfully",
   "note_delete_failed": "Failed to delete selected notes",
-  "note_detail": "Note Detail"
+  "note_detail": "Note Detail",
+  "note_tag": "Note Title",
+  "note_group": "Note Group",
+  "note_tag_exist": "Note title exists .."
 }

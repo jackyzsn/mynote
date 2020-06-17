@@ -2,7 +2,7 @@ import React, { createContext, useReducer } from "react";
 
 export const Store = createContext();
 
-const initialState = { config: { notetag: "", encryptionkey: "" } };
+const initialState = { config: { notegroup: "", encryptionkey: "" } };
 
 function reducer(state, action) {
   switch (action.type) {

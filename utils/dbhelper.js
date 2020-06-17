@@ -13,7 +13,7 @@ export function createTable() {
         if (results.rows.length == 0) {
           tx.executeSql("DROP TABLE IF EXISTS tbl_notes", []);
           tx.executeSql(
-            "CREATE TABLE IF NOT EXISTS tbl_notes(id INTEGER PRIMARY KEY AUTOINCREMENT, note_tag VARCHAR(255), seq INT, updt VARCHAR(64), note_text VARCHAR(10240000))",
+            "CREATE TABLE IF NOT EXISTS tbl_notes(id INTEGER PRIMARY KEY AUTOINCREMENT, note_group VARCHAR(255), note_tag VARCHAR(255), updt VARCHAR(64), note_text VARCHAR(10240000))",
             []
           );
         }
@@ -22,54 +22,55 @@ export function createTable() {
   });
 }
 
-export function insertNote(notetag, noteText, callback) {
+export function insertNote(notegroup, notetag, noteText, callback) {
   if (noteText) {
+    console.log("Note group:" + notegroup);
+    console.log("Note group:" + notetag);
     db.transaction(function(tx) {
       tx.executeSql(
-        "SELECT max(seq) as seq from tbl_notes where note_tag = ?",
-        [notetag],
+        "SELECT id from tbl_notes where note_group = ? and note_tag = ?",
+        [notegroup, notetag],
         (tx, results) => {
-          var nextSeq;
-          if (results.rows.length === 1) {
-            nextSeq = results.rows.item(0).seq + 1;
+          console.log(JSON.stringify(results));
+          if (results.rows.length > 0) {
+            // note_tag exists..
+            callback("10");
           } else {
-            nextSeq = 1;
-          }
+            var now = new moment();
+            var nowString = now.format("YYYY-MM-DDTHH:mm:ss.SSS");
 
-          var now = new moment();
-          var nowString = now.format("YYYY-MM-DDTHH:mm:ss.SSS");
-
-          tx.executeSql(
-            "INSERT into tbl_notes (note_tag, seq, updt, note_text) values (?,?,?,?)",
-            [notetag, nextSeq, nowString, noteText],
-            (tx, results) => {
-              if (results.rowsAffected > 0) {
-                callback("success");
-              } else {
-                callback("failed");
+            tx.executeSql(
+              "INSERT into tbl_notes (note_group, note_tag, updt, note_text) values (?,?,?,?)",
+              [notegroup, notetag, nowString, noteText],
+              (tx, results) => {
+                if (results.rowsAffected > 0) {
+                  callback("00");
+                } else {
+                  callback("99");
+                }
               }
-            }
-          );
+            );
+          }
         }
       );
     });
   }
 }
 
-export function retrieveAllNotes(notetag, callback) {
+export function retrieveAllNotes(notegroup, callback) {
   db.transaction(function(tx) {
     tx.executeSql(
-      "SELECT id, note_tag, seq, updt  from tbl_notes where note_tag = ? order by id desc",
-      [notetag],
+      "SELECT id, note_group, note_tag, updt  from tbl_notes where note_group = ? order by id desc",
+      [notegroup],
       (tx, results) => {
         var noteList = [];
+        console.log("Search result:" + JSON.stringify(results));
         if (results.rows.length > 0) {
           // has result
           for (i = 0; i < results.rows.length; i++) {
             var rec = {};
             rec.id = results.rows.item(i).id;
             rec.note_tag = results.rows.item(i).note_tag;
-            rec.seq = results.rows.item(i).seq;
             rec.updt = results.rows.item(i).updt;
             noteList.push(rec);
           }

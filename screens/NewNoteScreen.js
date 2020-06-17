@@ -27,9 +27,10 @@ const contentWidth = deviceWidth - theme.content_margin;
 export function NewNoteScreen({ navigation }) {
   const { state } = useContext(Store);
   const [notecontent, setNotecontent] = useState("");
+  const [notetag, setNotetag] = useState("");
 
   const showToast = (success) => {
-    if (success === "success") {
+    if (success === "00") {
       Toast.show({
         text: translate("note_save_success"),
         buttonText: translate("ok"),
@@ -43,6 +44,18 @@ export function NewNoteScreen({ navigation }) {
           marginRight: theme.toast_width_margin,
           backgroundColor: theme.toast_success_bg_color,
         },
+      });
+    } else if (success === "10") {
+      Toast.show({
+        text: translate("note_tag_exist"),
+        buttonText: translate("ok"),
+        position: "top",
+        duration: 3000,
+        style: {
+          marginLeft: theme.toast_width_margin,
+          marginRight: theme.toast_width_margin,
+        },
+        backgroundColor: theme.toast_fail_bg_color,
       });
     } else {
       Toast.show({
@@ -67,10 +80,16 @@ export function NewNoteScreen({ navigation }) {
             floatingLabel
             style={{
               marginLeft: 15,
+              marginTop: 5,
             }}
           >
-            <Label>Note Title</Label>
-            <Input />
+            <Label>{translate("note_tag")}</Label>
+            <Input
+              value={notetag}
+              onChangeText={(text) => {
+                setNotetag(text);
+              }}
+            />
           </Item>
           <Textarea
             style={{
@@ -96,8 +115,9 @@ export function NewNoteScreen({ navigation }) {
               vertical
               onPress={() => {
                 let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
-                insertNote(state.config.notetag, tmpTxt, showToast);
+                insertNote(state.config.notegroup, notetag, tmpTxt, showToast);
               }}
+              disabled={notetag.trim() === ""}
             >
               <Text style={{ color: theme.btn_txt_color }}>
                 {translate("save")}

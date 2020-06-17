@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Alert, Dimensions } from "react-native";
+import { Dimensions } from "react-native";
 import {
   Container,
   Content,
@@ -14,15 +14,13 @@ import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
 import { Store } from "../Store";
 import { createTable } from "../utils/dbhelper";
-// import { NavigationContainer } from "@react-navigation/native";
-// import { createStackNavigator } from "@react-navigation/stack";
 
 const deviceWidth = Dimensions.get("window").width;
 const contentWidth = deviceWidth - theme.content_margin;
 
 export function HomeScreen({ navigation }) {
   const { state, dispatch } = useContext(Store);
-  const [notetag, setNotetag] = useState(state.config.notetag);
+  const [notegroup, setNotegroup] = useState(state.config.notegroup);
   const [encrypkey, setEncrypkey] = useState(state.config.encryptionkey);
 
   // Only want to execute once
@@ -39,11 +37,11 @@ export function HomeScreen({ navigation }) {
           }}
         >
           <Item floatingLabel>
-            <Label>{translate("note_tag")}</Label>
+            <Label>{translate("note_group")}</Label>
             <Input
-              value={notetag}
+              value={notegroup}
               onChangeText={(text) => {
-                setNotetag(text);
+                setNotegroup(text);
               }}
             />
           </Item>
@@ -66,7 +64,7 @@ export function HomeScreen({ navigation }) {
             onPress={() => {
               dispatch({
                 type: "CHANGE_CONFIG",
-                payload: { notetag, encryptionkey: encrypkey },
+                payload: { notegroup, encryptionkey: encrypkey },
               });
               navigation.navigate("NoteMain");
             }}

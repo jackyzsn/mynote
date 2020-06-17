@@ -80,6 +80,7 @@ export function NoteDetailScreen({ route, navigation }) {
               width: "100%",
               marginLeft: 5,
               marginRight: 5,
+              marginTop: 5,
             }}
             placeholder="Textarea"
             value={notecontent}
@@ -97,17 +98,6 @@ export function NoteDetailScreen({ route, navigation }) {
             <Button vertical onPress={() => {}} disabled={!updatable}>
               <Text style={{ color: theme.btn_txt_color }}>
                 {translate("update")}
-              </Text>
-            </Button>
-            <Button
-              vertical
-              onPress={() => {
-                navigation.navigate("NoteMain");
-              }}
-              disabled={!updatable}
-            >
-              <Text style={{ color: theme.btn_txt_color }}>
-                {translate("save_as_new")}
               </Text>
             </Button>
             <Button

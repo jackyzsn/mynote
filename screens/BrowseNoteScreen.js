@@ -32,7 +32,7 @@ export function BrowseNoteScreen({ navigation }) {
   const [checkboxes, setCheckboxes] = useState([]);
 
   useEffect(() => {
-    retrieveAllNotes(state.config.notetag, setNotelist);
+    retrieveAllNotes(state.config.notegroup, setNotelist);
   }, []);
 
   const confirmDelete = (list) => {
@@ -111,7 +111,7 @@ export function BrowseNoteScreen({ navigation }) {
       key={inx}
       style={{ marginTop: 5 }}
       onPress={() => {
-        navigation.navigate("NoteDetail", { id: r.id });
+        navigation.navigate("NoteDetail", { id: r.id, notetag: r.note_tag });
       }}
     >
       <Left>
@@ -128,7 +128,7 @@ export function BrowseNoteScreen({ navigation }) {
             color: theme.major_text_color,
           }}
         >
-          {r.note_tag + r.seq}
+          {r.note_tag}
         </Text>
         <Text
           style={{
