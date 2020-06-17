@@ -9,7 +9,7 @@
   "new_note": "Create New Note",
   "export_note": "Export notes to a file",
   "note_save_success": "New note inserted successfully..",
-  "note_save_failed": "Failled to add the new note..",
+  "note_save_failed": "Failed to add the new note..",
   "ok": "OK",
   "save": "Save",
   "cancel": "Cancel",
@@ -22,5 +22,7 @@
   "note_detail": "Note Detail",
   "note_tag": "Note Title",
   "note_group": "Note Group",
-  "note_tag_exist": "Note title exists .."
+  "note_tag_exist": "Note title exists ..",
+  "note_update_success": "Note updated successfully..",
+  "note_update_failed": "Failed to upate the note.."
 }

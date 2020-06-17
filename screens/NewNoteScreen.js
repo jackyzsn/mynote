@@ -29,8 +29,8 @@ export function NewNoteScreen({ navigation }) {
   const [notecontent, setNotecontent] = useState("");
   const [notetag, setNotetag] = useState("");
 
-  const showToast = (success) => {
-    if (success === "00") {
+  const showToast = (rtnCode) => {
+    if (rtnCode === "00") {
       Toast.show({
         text: translate("note_save_success"),
         buttonText: translate("ok"),
@@ -45,7 +45,7 @@ export function NewNoteScreen({ navigation }) {
           backgroundColor: theme.toast_success_bg_color,
         },
       });
-    } else if (success === "10") {
+    } else if (rtnCode === "10") {
       Toast.show({
         text: translate("note_tag_exist"),
         buttonText: translate("ok"),

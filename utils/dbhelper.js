@@ -64,7 +64,7 @@ export function retrieveAllNotes(notegroup, callback) {
       [notegroup],
       (tx, results) => {
         var noteList = [];
-        console.log("Search result:" + JSON.stringify(results));
+
         if (results.rows.length > 0) {
           // has result
           for (i = 0; i < results.rows.length; i++) {
@@ -81,7 +81,7 @@ export function retrieveAllNotes(notegroup, callback) {
   });
 }
 
-export function retrieveNoteDetail(id, key, callback) {
+export function retrieveNoteDetail(id, callback) {
   db.transaction(function(tx) {
     tx.executeSql(
       "SELECT note_text from tbl_notes where id = ?",
@@ -89,9 +89,9 @@ export function retrieveNoteDetail(id, key, callback) {
       (tx, results) => {
         if (results.rows.length > 0) {
           // has result
-          callback("success", results.rows.item(0).note_text);
+          callback("00", results.rows.item(0).note_text);
         } else {
-          callback("failed", "");
+          callback("99", "");
         }
       }
     );
@@ -113,9 +113,26 @@ export function deleteNotes(list, callback) {
     tx.executeSql(delString, [...list], (tx, results) => {
       if (results.rowsAffected > 0) {
         // success
-        callback("success", list);
+        callback("00", list);
       } else {
-        callback("failed", list);
+        callback("99", list);
+      }
+    });
+  });
+}
+
+export function updateNote(id, noteText, callback) {
+  var updString = "UPDATE tbl_notes set note_text = ?, updt = ? where id = ?";
+  var now = new moment();
+  var nowString = now.format("YYYY-MM-DDTHH:mm:ss.SSS");
+
+  db.transaction(function(tx) {
+    tx.executeSql(updString, [noteText, nowString, id], (tx, results) => {
+      if (results.rowsAffected > 0) {
+        // success
+        callback("00");
+      } else {
+        callback("99");
       }
     });
   });

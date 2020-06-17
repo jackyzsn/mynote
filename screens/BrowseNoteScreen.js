@@ -19,7 +19,6 @@ import {
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
 import { Store } from "../Store";
-import { encrypt, decrypt } from "../utils/crypto";
 import { deleteNotes, retrieveAllNotes } from "../utils/dbhelper";
 
 const deviceWidth = Dimensions.get("window").width;
@@ -31,9 +30,14 @@ export function BrowseNoteScreen({ navigation }) {
   const [notelist, setNotelist] = useState([]);
   const [checkboxes, setCheckboxes] = useState([]);
 
-  useEffect(() => {
-    retrieveAllNotes(state.config.notegroup, setNotelist);
-  }, []);
+  // Refresh browse all page everytime when focus, to refesh the timestamp on the page
+  React.useEffect(
+    () =>
+      navigation.addListener("focus", () =>
+        retrieveAllNotes(state.config.notegroup, setNotelist)
+      ),
+    []
+  );
 
   const confirmDelete = (list) => {
     Alert.alert(
@@ -50,8 +54,8 @@ export function BrowseNoteScreen({ navigation }) {
     );
   };
 
-  const deleteCallback = (success, list) => {
-    if (success === "success") {
+  const deleteCallback = (rtnCode, list) => {
+    if (rtnCode === "00") {
       // remove checkboxes/notelist
       let wkNotelist = notelist;
 
