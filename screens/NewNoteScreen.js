@@ -8,7 +8,6 @@ import {
   Button,
   Textarea,
   Text,
-  Root,
   Toast,
   Item,
   Input,
@@ -73,69 +72,67 @@ export function NewNoteScreen({ navigation }) {
   };
 
   return (
-    <Root>
-      <Container>
-        <Content>
-          <Item
-            floatingLabel
-            style={{
-              marginLeft: 15,
-              marginTop: 5,
-            }}
-          >
-            <Label>{translate("note_tag")}</Label>
-            <Input
-              value={notetag}
-              onChangeText={(text) => {
-                setNotetag(text);
-              }}
-            />
-          </Item>
-          <Textarea
-            style={{
-              height: "100%",
-              width: "100%",
-              marginLeft: 5,
-              marginRight: 5,
-            }}
-            placeholder="Textarea"
-            value={notecontent}
+    <Container>
+      <Content>
+        <Item
+          floatingLabel
+          style={{
+            marginLeft: 15,
+            marginTop: 5,
+          }}
+        >
+          <Label>{translate("note_tag")}</Label>
+          <Input
+            value={notetag}
             onChangeText={(text) => {
-              setNotecontent(text);
+              setNotetag(text);
             }}
           />
-        </Content>
-        <Footer>
-          <FooterTab
-            style={{
-              backgroundColor: theme.btn_bg_color,
+        </Item>
+        <Textarea
+          style={{
+            height: "100%",
+            width: "100%",
+            marginLeft: 5,
+            marginRight: 5,
+          }}
+          placeholder="Textarea"
+          value={notecontent}
+          onChangeText={(text) => {
+            setNotecontent(text);
+          }}
+        />
+      </Content>
+      <Footer>
+        <FooterTab
+          style={{
+            backgroundColor: theme.btn_bg_color,
+          }}
+        >
+          <Button
+            vertical
+            onPress={() => {
+              let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
+              insertNote(state.config.notegroup, notetag, tmpTxt, showToast);
+            }}
+            disabled={notetag.trim() === ""}
+          >
+            <Text style={{ color: theme.btn_txt_color }}>
+              {translate("save")}
+            </Text>
+          </Button>
+          <Button
+            vertical
+            onPress={() => {
+              navigation.navigate("NoteMain");
             }}
           >
-            <Button
-              vertical
-              onPress={() => {
-                let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
-                insertNote(state.config.notegroup, notetag, tmpTxt, showToast);
-              }}
-              disabled={notetag.trim() === ""}
-            >
-              <Text style={{ color: theme.btn_txt_color }}>
-                {translate("save")}
-              </Text>
-            </Button>
-            <Button
-              vertical
-              onPress={() => {
-                navigation.navigate("NoteMain");
-              }}
-            >
-              <Text style={{ color: theme.btn_txt_color }}>
-                {translate("cancel")}
-              </Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      </Container>
-    </Root>
+            <Text style={{ color: theme.btn_txt_color }}>
+              {translate("cancel")}
+            </Text>
+          </Button>
+        </FooterTab>
+      </Footer>
+    </Container>
   );
 }

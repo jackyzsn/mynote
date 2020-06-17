@@ -75,13 +75,16 @@ export function retrieveAllNotes(notegroup, callback) {
             noteList.push(rec);
           }
         }
+        console.log("..browse all notes before setState..");
         callback(noteList);
+        console.log("..browse all notes after setState..");
       }
     );
   });
 }
 
 export function retrieveNoteDetail(id, callback) {
+  console.log("..Retrieve note detail ..");
   db.transaction(function(tx) {
     tx.executeSql(
       "SELECT note_text from tbl_notes where id = ?",

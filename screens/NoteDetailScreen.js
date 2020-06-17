@@ -8,7 +8,6 @@ import {
   Button,
   Textarea,
   Text,
-  Root,
   Toast,
 } from "native-base";
 import theme from "../resources/theme.json";
@@ -102,55 +101,53 @@ export function NoteDetailScreen({ route, navigation }) {
   }, []);
 
   return (
-    <Root>
-      <Container>
-        <Content>
-          <Textarea
-            style={{
-              height: "100%",
-              width: "100%",
-              marginLeft: 5,
-              marginRight: 5,
-              marginTop: 5,
+    <Container>
+      <Content>
+        <Textarea
+          style={{
+            height: "100%",
+            width: "100%",
+            marginLeft: 5,
+            marginRight: 5,
+            marginTop: 5,
+          }}
+          placeholder="Textarea"
+          value={notecontent}
+          onChangeText={(text) => {
+            setNotecontent(text);
+          }}
+        />
+      </Content>
+      <Footer>
+        <FooterTab
+          style={{
+            backgroundColor: theme.btn_bg_color,
+          }}
+        >
+          <Button
+            vertical
+            onPress={() => {
+              let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
+              updateNote(id, tmpTxt, updateCallback);
             }}
-            placeholder="Textarea"
-            value={notecontent}
-            onChangeText={(text) => {
-              setNotecontent(text);
-            }}
-          />
-        </Content>
-        <Footer>
-          <FooterTab
-            style={{
-              backgroundColor: theme.btn_bg_color,
+            disabled={!updatable || notecontent.trim() === ""}
+          >
+            <Text style={{ color: theme.btn_txt_color }}>
+              {translate("update")}
+            </Text>
+          </Button>
+          <Button
+            vertical
+            onPress={() => {
+              navigation.navigate("BrowseNote");
             }}
           >
-            <Button
-              vertical
-              onPress={() => {
-                let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
-                updateNote(id, tmpTxt, updateCallback);
-              }}
-              disabled={!updatable || notecontent.trim() === ""}
-            >
-              <Text style={{ color: theme.btn_txt_color }}>
-                {translate("update")}
-              </Text>
-            </Button>
-            <Button
-              vertical
-              onPress={() => {
-                navigation.navigate("BrowseNote");
-              }}
-            >
-              <Text style={{ color: theme.btn_txt_color }}>
-                {translate("cancel")}
-              </Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      </Container>
-    </Root>
+            <Text style={{ color: theme.btn_txt_color }}>
+              {translate("cancel")}
+            </Text>
+          </Button>
+        </FooterTab>
+      </Footer>
+    </Container>
   );
 }

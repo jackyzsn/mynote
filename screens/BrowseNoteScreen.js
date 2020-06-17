@@ -8,7 +8,6 @@ import {
   Button,
   ListItem,
   Text,
-  Root,
   Left,
   Body,
   Icon,
@@ -150,39 +149,37 @@ export function BrowseNoteScreen({ navigation }) {
   ));
 
   return (
-    <Root>
-      <Container>
-        <Content>{noteListItems}</Content>
-        <Footer>
-          <FooterTab
-            style={{
-              backgroundColor: theme.btn_bg_color,
+    <Container>
+      <Content>{noteListItems}</Content>
+      <Footer>
+        <FooterTab
+          style={{
+            backgroundColor: theme.btn_bg_color,
+          }}
+        >
+          <Button
+            vertical
+            onPress={() => {
+              confirmDelete(checkboxes);
+            }}
+            disabled={checkboxes.length === 0}
+          >
+            <Text style={{ color: theme.btn_txt_color }}>
+              {translate("delete")}
+            </Text>
+          </Button>
+          <Button
+            vertical
+            onPress={() => {
+              navigation.navigate("NoteMain");
             }}
           >
-            <Button
-              vertical
-              onPress={() => {
-                confirmDelete(checkboxes);
-              }}
-              disabled={checkboxes.length === 0}
-            >
-              <Text style={{ color: theme.btn_txt_color }}>
-                {translate("delete")}
-              </Text>
-            </Button>
-            <Button
-              vertical
-              onPress={() => {
-                navigation.navigate("NoteMain");
-              }}
-            >
-              <Text style={{ color: theme.btn_txt_color }}>
-                {translate("cancel")}
-              </Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      </Container>
-    </Root>
+            <Text style={{ color: theme.btn_txt_color }}>
+              {translate("cancel")}
+            </Text>
+          </Button>
+        </FooterTab>
+      </Footer>
+    </Container>
   );
 }
