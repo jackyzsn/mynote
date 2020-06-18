@@ -42,8 +42,19 @@ export function NoteDetailScreen({ route, navigation }) {
 
   let textAreaRef = null;
 
-  handleSelectionChange = ({ nativeEvent: { selection } }) =>
+  handleSelectionChange = ({ nativeEvent: { selection } }) => {
     setSelection(selection);
+    console.log("handling selection change.." + JSON.stringify(selection));
+  };
+
+  handleButtonPress = () => {
+    const selectionBeforeChange = selection;
+    setSelection({ inputValue: "Paijo tenan" }, () => {
+      setTimeout(() => {
+        setSelection(selectionBeforeChange);
+      }, 50);
+    });
+  };
 
   const updateCallback = (rtnCode) => {
     if (rtnCode === "00") {
@@ -155,12 +166,20 @@ export function NoteDetailScreen({ route, navigation }) {
                 var inx = notecontent
                   .toLowerCase()
                   .indexOf(searchText.trim().toLowerCase(), searchStartFrom);
+                console.log("text Start:" + inx);
                 if (inx > -1) {
                   setSearchStartFrom(inx + searchText.length);
-                  setSelection({ start: inx, end: inx + searchText.length });
                   textAreaRef._root.focus();
+                  setSelection({ start: inx, end: inx + searchText.length });
+                  // textAreaRef._root.setNativeProps({
+                  //   selection: {
+                  //     start: inx,
+                  //     end: inx + searchText.length,
+                  //   },
+                  // });
                 } else {
                   setSearchStartFrom(0);
+                  // textAreaRef._root.setNativeProps({ start: 0, end: 0 });
                   setSelection({ start: 0, end: 0 });
                   Toast.show({
                     text: translate("end_of_search"),
@@ -199,10 +218,14 @@ export function NoteDetailScreen({ route, navigation }) {
           ref={(ref) => {
             textAreaRef = ref;
           }}
+          autoFocus={true}
           onSelectionChange={handleSelectionChange}
           selectionColor={theme.highlight_bg_color}
           selection={selection}
           underlineColorAndroid={theme.highlight_bg_color}
+          // onFocus={(e) => {
+          //   e.target.selectionStart = selection;
+          // }}
         />
       </Content>
       <Footer>
