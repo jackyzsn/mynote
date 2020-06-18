@@ -1,5 +1,6 @@
 {
   "content_margin": 20,
+  "highlight_bg_color": "#6FCF97",
   "btn_bg_color": "#6FCF97",
   "btn_txt_color": "white",
   "btn_full_height": 80,

@@ -24,8 +24,6 @@ export function createTable() {
 
 export function insertNote(notegroup, notetag, noteText, callback) {
   if (noteText) {
-    console.log("Note group:" + notegroup);
-    console.log("Note group:" + notetag);
     db.transaction(function(tx) {
       tx.executeSql(
         "SELECT id from tbl_notes where note_group = ? and note_tag = ?",
@@ -75,16 +73,13 @@ export function retrieveAllNotes(notegroup, callback) {
             noteList.push(rec);
           }
         }
-        console.log("..browse all notes before setState..");
         callback(noteList);
-        console.log("..browse all notes after setState..");
       }
     );
   });
 }
 
 export function retrieveNoteDetail(id, callback) {
-  console.log("..Retrieve note detail ..");
   db.transaction(function(tx) {
     tx.executeSql(
       "SELECT note_text from tbl_notes where id = ?",

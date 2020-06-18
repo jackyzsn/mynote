@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, TouchableOpacity } from "react-native";
 import {
   Container,
   Content,
@@ -9,7 +9,16 @@ import {
   Textarea,
   Text,
   Toast,
+  Header,
+  Left,
+  Right,
+  Body,
+  Icon,
+  Title,
+  Item,
+  Input,
 } from "native-base";
+import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
 import { Store } from "../Store";
@@ -24,7 +33,18 @@ export function NoteDetailScreen({ route, navigation }) {
   const { state } = useContext(Store);
   const [notecontent, setNotecontent] = useState("");
   const [updatable, setUpdatable] = useState(true);
-  const { id } = route.params;
+  const [searchText, setSearchText] = useState("");
+  const [selection, setSelection] = useState({
+    start: 0,
+    end: 0,
+  });
+  const [searchStartFrom, setSearchStartFrom] = useState(0);
+  const { id, notetag } = route.params;
+
+  let textAreaRef = null;
+
+  handleSelectionChange = ({ nativeEvent: { selection } }) =>
+    setSelection(selection);
 
   const updateCallback = (rtnCode) => {
     if (rtnCode === "00") {
@@ -102,6 +122,67 @@ export function NoteDetailScreen({ route, navigation }) {
 
   return (
     <Container>
+      <Header style={{ backgroundColor: "transparent" }}>
+        <Left>
+          <Button
+            transparent
+            onPress={() => {
+              navigation.navigate("BrowseNote");
+            }}
+          >
+            <Icon style={{ color: "black" }} name="arrow-back" />
+          </Button>
+        </Left>
+        <Body>
+          <Title style={{ color: "black" }}>{notetag}</Title>
+        </Body>
+        <Right>
+          <Item
+            style={{
+              marginLeft: 10,
+              marginRight: 20,
+              marginTop: 5,
+            }}
+          >
+            <Input
+              value={searchText}
+              onChangeText={(text) => {
+                setSearchText(text);
+              }}
+              placeholder={translate("search_text")}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                var inx = notecontent
+                  .toLowerCase()
+                  .indexOf(searchText.trim().toLowerCase(), searchStartFrom);
+                if (inx > -1) {
+                  setSearchStartFrom(inx + searchText.length);
+                  setSelection({ start: inx, end: inx + searchText.length });
+                  textAreaRef._root.focus();
+                } else {
+                  setSearchStartFrom(0);
+                  setSelection({ start: 0, end: 0 });
+                  Toast.show({
+                    text: translate("end_of_search"),
+                    buttonText: translate("ok"),
+                    position: "top",
+                    duration: 3000,
+                    style: {
+                      marginLeft: theme.toast_width_margin,
+                      marginRight: theme.toast_width_margin,
+                      backgroundColor: theme.toast_success_bg_color,
+                    },
+                  });
+                }
+              }}
+              disabled={!searchText || searchText.trim().length === 0}
+            >
+              <Icon active name="search" />
+            </TouchableOpacity>
+          </Item>
+        </Right>
+      </Header>
       <Content>
         <Textarea
           style={{
@@ -116,6 +197,13 @@ export function NoteDetailScreen({ route, navigation }) {
           onChangeText={(text) => {
             setNotecontent(text);
           }}
+          ref={(ref) => {
+            textAreaRef = ref;
+          }}
+          onSelectionChange={handleSelectionChange}
+          selectionColor={theme.highlight_bg_color}
+          selection={selection}
+          underlineColorAndroid={theme.highlight_bg_color}
         />
       </Content>
       <Footer>

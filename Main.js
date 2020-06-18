@@ -39,7 +39,8 @@ function Main() {
           <Stack.Screen
             name="NoteDetail"
             component={NoteDetailScreen}
-            options={({ route }) => ({ title: route.params.notetag })}
+            options={{ headerShown: false }}
+            // options={({ route }) => ({ title: route.params.notetag })}
           />
         </Stack.Navigator>
       </NavigationContainer>
