@@ -18,7 +18,6 @@ import {
   Item,
   Input,
 } from "native-base";
-import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
 import { Store } from "../Store";
@@ -192,7 +191,7 @@ export function NoteDetailScreen({ route, navigation }) {
             marginRight: 5,
             marginTop: 5,
           }}
-          placeholder="Textarea"
+          placeholder={translate("note_area")}
           value={notecontent}
           onChangeText={(text) => {
             setNotecontent(text);

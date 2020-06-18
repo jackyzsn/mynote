@@ -25,5 +25,8 @@
   "note_tag_exist": "Note title exists ..",
   "note_update_success": "Note updated successfully..",
   "note_update_failed": "Failed to upate the note..",
-  "note_not_decrypted": "Not able to decrypt, use the right encryption key"
+  "note_not_decrypted": "Not able to decrypt, use the right encryption key",
+  "search_text": "Search..",
+  "end_of_search": "End of search..",
+  "note_area": "Enter your notes here .."
 }

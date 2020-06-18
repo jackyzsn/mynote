@@ -96,7 +96,7 @@ export function NewNoteScreen({ navigation }) {
             marginLeft: 5,
             marginRight: 5,
           }}
-          placeholder="Textarea"
+          placeholder={translate("note_area")}
           value={notecontent}
           onChangeText={(text) => {
             setNotecontent(text);
