@@ -170,7 +170,6 @@ export function NoteDetailScreen({ route, navigation }) {
                 } else {
                   setSearchStartFrom(0);
                   textAreaRef._root.setNativeProps({ start: 0, end: 0 });
-                  setSelection({ start: 0, end: 0 });
                   Toast.show({
                     text: translate("end_of_search"),
                     buttonText: translate("ok"),
