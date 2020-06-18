@@ -29,7 +29,6 @@ export function insertNote(notegroup, notetag, noteText, callback) {
         "SELECT id from tbl_notes where note_group = ? and note_tag = ?",
         [notegroup, notetag],
         (tx, results) => {
-          console.log(JSON.stringify(results));
           if (results.rows.length > 0) {
             // note_tag exists..
             callback("10");

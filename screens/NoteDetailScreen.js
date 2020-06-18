@@ -33,19 +33,10 @@ export function NoteDetailScreen({ route, navigation }) {
   const [notecontent, setNotecontent] = useState("");
   const [updatable, setUpdatable] = useState(true);
   const [searchText, setSearchText] = useState("");
-  // const [selection, setSelection] = useState({
-  //   start: 0,
-  //   end: 0,
-  // });
   const [searchStartFrom, setSearchStartFrom] = useState(0);
   const { id, notetag } = route.params;
 
   let textAreaRef = null;
-
-  // handleSelectionChange = ({ nativeEvent: { selection } }) => {
-  //   setSelection(selection);
-  //   console.log("handling selection change.." + JSON.stringify(selection));
-  // };
 
   const updateCallback = (rtnCode) => {
     if (rtnCode === "00") {
