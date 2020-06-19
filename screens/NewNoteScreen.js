@@ -95,7 +95,6 @@ export function NewNoteScreen({ navigation }) {
             width: "100%",
             marginLeft: 5,
             marginRight: 5,
-            paddingVertical: 0,
           }}
           placeholder={translate("note_area")}
           value={notecontent}
