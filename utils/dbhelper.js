@@ -134,3 +134,35 @@ export function updateNote(id, noteText, callback) {
     });
   });
 }
+
+export function searchTextAllNotes(
+  notegroup,
+  searchText,
+  key,
+  decrypt,
+  callback
+) {
+  db.transaction(function(tx) {
+    tx.executeSql(
+      "SELECT id, note_group, note_tag, updt, note_text  from tbl_notes where note_group = ? order by id desc",
+      [notegroup],
+      (tx, results) => {
+        var noteList = [];
+        if (results.rows.length > 0) {
+          // has result
+          for (i = 0; i < results.rows.length; i++) {
+            var decryptedText = decrypt(results.rows.item(i).note_text, key);
+            if (decryptedText.indexOf(searchText) > -1) {
+              var rec = {};
+              rec.id = results.rows.item(i).id;
+              rec.note_tag = results.rows.item(i).note_tag;
+              rec.updt = results.rows.item(i).updt;
+              noteList.push(rec);
+            }
+          }
+        }
+        callback(noteList);
+      }
+    );
+  });
+}

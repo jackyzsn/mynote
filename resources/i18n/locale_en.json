@@ -28,5 +28,6 @@
   "note_not_decrypted": "Not able to decrypt, use the right encryption key",
   "search_text": "Search..",
   "end_of_search": "End of search..",
-  "note_area": "Enter your notes here .."
+  "note_area": "Enter your notes here ..",
+  "search_in_notes": "Search Notes"
 }

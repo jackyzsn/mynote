@@ -114,7 +114,11 @@ export function BrowseNoteScreen({ navigation }) {
       key={inx}
       style={{ marginTop: 5 }}
       onPress={() => {
-        navigation.navigate("NoteDetail", { id: r.id, notetag: r.note_tag });
+        navigation.navigate("NoteDetail", {
+          id: r.id,
+          notetag: r.note_tag,
+          backto: "BrowseNote",
+        });
       }}
     >
       <Left>

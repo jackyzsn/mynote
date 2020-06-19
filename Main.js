@@ -6,6 +6,7 @@ import { NoteMainScreen } from "./screens/NoteMainScreen";
 import { NewNoteScreen } from "./screens/NewNoteScreen";
 import { BrowseNoteScreen } from "./screens/BrowseNoteScreen";
 import { NoteDetailScreen } from "./screens/NoteDetailScreen";
+import { SearchExistingNotesScreen } from "./screens/SearchExistingNotesScreen";
 import translate from "./utils/language.utils";
 import { Root } from "native-base";
 
@@ -40,7 +41,11 @@ function Main() {
             name="NoteDetail"
             component={NoteDetailScreen}
             options={{ headerShown: false }}
-            // options={({ route }) => ({ title: route.params.notetag })}
+          />
+          <Stack.Screen
+            name="SearchExistingNotes"
+            component={SearchExistingNotesScreen}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>

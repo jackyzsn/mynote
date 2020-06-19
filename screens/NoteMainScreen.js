@@ -44,6 +44,9 @@ export function NoteMainScreen({ navigation }) {
             height: theme.btn_full_height,
             backgroundColor: theme.btn_bg_color,
           }}
+          onPress={() => {
+            navigation.navigate("SearchExistingNotes");
+          }}
         >
           <Text>{translate("search_note")}</Text>
         </Button>

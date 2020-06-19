@@ -34,7 +34,7 @@ export function NoteDetailScreen({ route, navigation }) {
   const [updatable, setUpdatable] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [searchStartFrom, setSearchStartFrom] = useState(0);
-  const { id, notetag } = route.params;
+  const { id, notetag, backto } = route.params;
 
   let textAreaRef = null;
 
@@ -119,7 +119,7 @@ export function NoteDetailScreen({ route, navigation }) {
           <Button
             transparent
             onPress={() => {
-              navigation.navigate("BrowseNote");
+              navigation.navigate(backto);
             }}
           >
             <Icon style={{ color: "black" }} name="arrow-back" />
@@ -227,7 +227,7 @@ export function NoteDetailScreen({ route, navigation }) {
           <Button
             vertical
             onPress={() => {
-              navigation.navigate("BrowseNote");
+              navigation.navigate(backto);
             }}
           >
             <Text style={{ color: theme.btn_txt_color }}>
