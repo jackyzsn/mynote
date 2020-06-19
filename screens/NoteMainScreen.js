@@ -50,16 +50,6 @@ export function NoteMainScreen({ navigation }) {
         >
           <Text>{translate("search_note")}</Text>
         </Button>
-        <Button
-          block
-          style={{
-            marginTop: 20,
-            height: theme.btn_full_height,
-            backgroundColor: theme.btn_bg_color,
-          }}
-        >
-          <Text>{translate("export_note")}</Text>
-        </Button>
       </Content>
     </Container>
   );

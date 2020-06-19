@@ -9,6 +9,7 @@ MERGED from [com.facebook.flipper:flipper:0.33.1] /home/jacky/.gradle/caches/tra
 MERGED from [com.facebook.flipper:flipper-network-plugin:0.33.1] /home/jacky/.gradle/caches/transforms-2/files-2.1/655d426037471ca51ed942fb618505f6/jetified-flipper-network-plugin-0.33.1/AndroidManifest.xml:8:1-15:12
 MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.33.1] /home/jacky/.gradle/caches/transforms-2/files-2.1/bbbdbe5482fa5c3c53472335ff01e68b/jetified-flipper-fresco-plugin-0.33.1/AndroidManifest.xml:8:1-15:12
 MERGED from [:react-native-community_masked-view] /home/jacky/projects/MyNote/node_modules/@react-native-community/masked-view/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-9:12
+MERGED from [:react-native-fs] /home/jacky/projects/MyNote/node_modules/react-native-fs/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-13:12
 MERGED from [:react-native-gesture-handler] /home/jacky/projects/MyNote/node_modules/react-native-gesture-handler/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-reanimated] /home/jacky/projects/MyNote/node_modules/react-native-reanimated/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-safe-area-context] /home/jacky/projects/MyNote/node_modules/react-native-safe-area-context/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-9:12
@@ -163,6 +164,8 @@ MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.33.1] /home/jacky/.gra
 MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.33.1] /home/jacky/.gradle/caches/transforms-2/files-2.1/bbbdbe5482fa5c3c53472335ff01e68b/jetified-flipper-fresco-plugin-0.33.1/AndroidManifest.xml:11:5-13:41
 MERGED from [:react-native-community_masked-view] /home/jacky/projects/MyNote/node_modules/@react-native-community/masked-view/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-community_masked-view] /home/jacky/projects/MyNote/node_modules/@react-native-community/masked-view/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-fs] /home/jacky/projects/MyNote/node_modules/react-native-fs/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-fs] /home/jacky/projects/MyNote/node_modules/react-native-fs/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-gesture-handler] /home/jacky/projects/MyNote/node_modules/react-native-gesture-handler/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-gesture-handler] /home/jacky/projects/MyNote/node_modules/react-native-gesture-handler/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-reanimated] /home/jacky/projects/MyNote/node_modules/react-native-reanimated/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
@@ -275,3 +278,7 @@ uses-permission#android.permission.ACCESS_WIFI_STATE
 ADDED from [com.facebook.flipper:flipper:0.33.1] /home/jacky/.gradle/caches/transforms-2/files-2.1/ba85e5c610365242e2fd3b7d92141bb3/jetified-flipper-0.33.1/AndroidManifest.xml:16:5-76
 	android:name
 		ADDED from [com.facebook.flipper:flipper:0.33.1] /home/jacky/.gradle/caches/transforms-2/files-2.1/ba85e5c610365242e2fd3b7d92141bb3/jetified-flipper-0.33.1/AndroidManifest.xml:16:22-73
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from [:react-native-fs] /home/jacky/projects/MyNote/node_modules/react-native-fs/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-81
+	android:name
+		ADDED from [:react-native-fs] /home/jacky/projects/MyNote/node_modules/react-native-fs/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:11:22-78

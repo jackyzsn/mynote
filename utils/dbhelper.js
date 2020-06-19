@@ -1,5 +1,5 @@
 import { openDatabase } from "react-native-sqlite-storage";
-import { encrypt, decrypt } from "./crypto";
+import * as RNFS from "react-native-fs";
 import moment from "moment";
 
 var db = openDatabase({ name: "MyNote.db" });
@@ -164,5 +164,65 @@ export function searchTextAllNotes(
         callback(noteList);
       }
     );
+  });
+}
+
+export function exportToFile(list, key, decrypt, callback) {
+  var sqlString;
+  if (list.length > 1) {
+    var inString = "?,".repeat(list.length - 1);
+    inString = inString + "?";
+    sqlString =
+      "SELECT id, note_group, note_tag, updt, note_text from tbl_notes where id in (" +
+      inString +
+      ") ";
+  } else {
+    sqlString =
+      "SELECT id, note_group, note_tag, updt, note_text from tbl_notes where id = ?";
+  }
+
+  db.transaction(function(tx) {
+    tx.executeSql(sqlString, [...list], (tx, results) => {
+      var notes = {};
+
+      if (results.rows.length > 0) {
+        notes.noteGroup = results.rows.item(0).note_group;
+
+        var noteList = [];
+        // has result
+        for (i = 0; i < results.rows.length; i++) {
+          var note = {};
+          note.id = results.rows.item(i).id;
+          note.noteTag = results.rows.item(i).note_tag;
+          note.updateTime = results.rows.item(i).updt;
+          var decryptedText = decrypt(results.rows.item(i).note_text, key);
+          if (decryptedText === "") {
+            note.noteText = results.rows.item(i).note_text;
+          } else {
+            note.noteText = decryptedText;
+          }
+          noteList.push(note);
+        }
+        notes.noteList = noteList;
+
+        var now = new moment();
+        var nowString = now.format("YYYY-MM-DDTHHmmss");
+        var path =
+          RNFS.DocumentDirectoryPath + "/MyNotes_" + nowString + ".json";
+
+        var noteString = JSON.stringify(notes, null, 2);
+
+        // write the file
+        RNFS.writeFile(path, noteString, "utf8")
+          .then((success) => {
+            callback("00", path);
+          })
+          .catch((err) => {
+            callback("99", "");
+          });
+      } else {
+        callback("10", "");
+      }
+    });
   });
 }

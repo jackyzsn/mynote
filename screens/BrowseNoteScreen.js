@@ -18,7 +18,8 @@ import {
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
 import { Store } from "../Store";
-import { deleteNotes, retrieveAllNotes } from "../utils/dbhelper";
+import { deleteNotes, retrieveAllNotes, exportToFile } from "../utils/dbhelper";
+import { decrypt } from "../utils/crypto";
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -51,6 +52,71 @@ export function BrowseNoteScreen({ navigation }) {
       ],
       { cancelable: false }
     );
+  };
+
+  const confirmExport = (list) => {
+    Alert.alert(
+      translate("confirm"),
+      translate("q_export_note"),
+      [
+        {
+          text: translate("cancel"),
+          style: "cancel",
+        },
+        {
+          text: translate("ok"),
+          onPress: () =>
+            exportToFile(
+              list,
+              state.config.encryptionkey,
+              decrypt,
+              exportCallback
+            ),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const exportCallback = (rtnCode, fileName) => {
+    if (rtnCode === "00") {
+      Toast.show({
+        text: translate("export_success") + fileName,
+        buttonText: translate("ok"),
+        position: "top",
+        duration: 3000,
+        style: {
+          marginLeft: theme.toast_width_margin,
+          marginRight: theme.toast_width_margin,
+          backgroundColor: theme.toast_success_bg_color,
+        },
+      });
+      setCheckboxes([]);
+    } else if (rtnCode === "10") {
+      Toast.show({
+        text: translate("nothing_export"),
+        buttonText: translate("ok"),
+        position: "top",
+        duration: 3000,
+        style: {
+          marginLeft: theme.toast_width_margin,
+          marginRight: theme.toast_width_margin,
+        },
+        backgroundColor: theme.toast_fail_bg_color,
+      });
+    } else {
+      Toast.show({
+        text: translate("export_failed"),
+        buttonText: translate("ok"),
+        position: "top",
+        duration: 3000,
+        style: {
+          marginLeft: theme.toast_width_margin,
+          marginRight: theme.toast_width_margin,
+        },
+        backgroundColor: theme.toast_fail_bg_color,
+      });
+    }
   };
 
   const deleteCallback = (rtnCode, list) => {
@@ -170,6 +236,17 @@ export function BrowseNoteScreen({ navigation }) {
           >
             <Text style={{ color: theme.btn_txt_color }}>
               {translate("delete")}
+            </Text>
+          </Button>
+          <Button
+            vertical
+            onPress={() => {
+              confirmExport(checkboxes);
+            }}
+            disabled={checkboxes.length === 0}
+          >
+            <Text style={{ color: theme.btn_txt_color }}>
+              {translate("export")}
             </Text>
           </Button>
           <Button

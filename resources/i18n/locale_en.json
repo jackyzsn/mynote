@@ -29,5 +29,10 @@
   "search_text": "Search..",
   "end_of_search": "End of search..",
   "note_area": "Enter your notes here ..",
-  "search_in_notes": "Search Notes"
+  "search_in_notes": "Search Notes",
+  "export": "Export",
+  "export_success": "Successful export notes to ",
+  "nothing_export": "Nothing to export ..",
+  "export_failed": "Failed to export notes ..",
+  "q_export_note": "Export selected notes to a file?"
 }
