@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Dimensions, View } from "react-native";
+import { Dimensions } from "react-native";
 import {
   Container,
   Content,
