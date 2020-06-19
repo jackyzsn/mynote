@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, View } from "react-native";
 import {
   Container,
   Content,
@@ -95,12 +95,15 @@ export function NewNoteScreen({ navigation }) {
             width: "100%",
             marginLeft: 5,
             marginRight: 5,
+            paddingVertical: 0,
           }}
           placeholder={translate("note_area")}
           value={notecontent}
           onChangeText={(text) => {
             setNotecontent(text);
           }}
+          autoCorrect={false}
+          maxLength={10240000}
         />
       </Content>
       <Footer>

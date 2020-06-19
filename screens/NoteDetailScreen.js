@@ -151,13 +151,13 @@ export function NoteDetailScreen({ route, navigation }) {
 
                 if (inx > -1) {
                   setSearchStartFrom(inx + searchText.length);
-                  textAreaRef._root.focus();
                   textAreaRef._root.setNativeProps({
                     selection: {
                       start: inx,
                       end: inx + searchText.length,
                     },
                   });
+                  textAreaRef._root.focus();
                 } else {
                   setSearchStartFrom(0);
                   textAreaRef._root.setNativeProps({ start: 0, end: 0 });
@@ -201,9 +201,10 @@ export function NoteDetailScreen({ route, navigation }) {
           ref={(ref) => {
             textAreaRef = ref;
           }}
-          autoFocus={true}
+          autoCorrect={false}
           selectionColor={theme.highlight_bg_color}
           underlineColorAndroid={theme.highlight_bg_color}
+          maxLength={10240000}
         />
       </Content>
       <Footer>

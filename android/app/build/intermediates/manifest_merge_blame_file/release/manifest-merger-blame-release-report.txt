@@ -6,57 +6,59 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="16"
-8-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml
+8-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml
 9        android:targetSdkVersion="28" />
-9-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml
+9-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml
 10
 11    <uses-permission android:name="android.permission.INTERNET" />
-11-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:4:5-67
-11-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:4:22-64
-12
-13    <application
-13-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:6:5-25:19
-14        android:name="com.mynote.MainApplication"
-14-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:7:7-38
-15        android:allowBackup="false"
-15-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:11:7-34
-16        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-16-->[androidx.core:core:1.1.0] /home/jacky/.gradle/caches/transforms-2/files-2.1/03736cf4bc3669a69d502627b70a527e/core-1.1.0/AndroidManifest.xml:24:18-86
-17        android:icon="@mipmap/ic_launcher"
-17-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:9:7-41
-18        android:label="@string/app_name"
-18-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:8:7-39
-19        android:roundIcon="@mipmap/ic_launcher_round"
-19-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:10:7-52
-20        android:testOnly="true"
+11-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:4:5-67
+11-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:4:22-64
+12    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+12-->[:react-native-fs] /Users/s2986706/reactSpace/MyNote/node_modules/react-native-fs/android/build/intermediates/library_manifest/release/AndroidManifest.xml:11:5-81
+12-->[:react-native-fs] /Users/s2986706/reactSpace/MyNote/node_modules/react-native-fs/android/build/intermediates/library_manifest/release/AndroidManifest.xml:11:22-78
+13
+14    <application
+14-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:6:5-25:19
+15        android:name="com.mynote.MainApplication"
+15-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:7:7-38
+16        android:allowBackup="false"
+16-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:11:7-34
+17        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+17-->[androidx.core:core:1.1.0] /Users/s2986706/.gradle/caches/transforms-2/files-2.1/03736cf4bc3669a69d502627b70a527e/core-1.1.0/AndroidManifest.xml:24:18-86
+18        android:icon="@mipmap/ic_launcher"
+18-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:9:7-41
+19        android:label="@string/app_name"
+19-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:8:7-39
+20        android:roundIcon="@mipmap/ic_launcher_round"
+20-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:10:7-52
 21        android:theme="@style/AppTheme" >
-21-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:12:7-38
+21-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:12:7-38
 22        <activity
-22-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:13:7-23:18
+22-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:13:7-23:18
 23            android:name="com.mynote.MainActivity"
-23-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:14:9-37
+23-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:14:9-37
 24            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-24-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:16:9-86
+24-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:16:9-86
 25            android:label="@string/app_name"
-25-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:15:9-41
+25-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:15:9-41
 26            android:launchMode="singleTask"
-26-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:17:9-40
+26-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:17:9-40
 27            android:windowSoftInputMode="adjustResize" >
-27-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:18:9-51
+27-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:18:9-51
 28            <intent-filter>
-28-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:19:9-22:25
+28-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:19:9-22:25
 29                <action android:name="android.intent.action.MAIN" />
-29-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:20:13-65
-29-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:20:21-62
+29-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:20:13-65
+29-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:20:21-62
 30
 31                <category android:name="android.intent.category.LAUNCHER" />
-31-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:21:13-73
-31-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:21:23-70
+31-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:21:13-73
+31-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:21:23-70
 32            </intent-filter>
 33        </activity>
 34        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-34-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:24:7-84
-34-->/home/jacky/projects/MyNote/android/app/src/main/AndroidManifest.xml:24:17-81
+34-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:24:7-84
+34-->/Users/s2986706/reactSpace/MyNote/android/app/src/main/AndroidManifest.xml:24:17-81
 35    </application>
 36
 37</manifest>
