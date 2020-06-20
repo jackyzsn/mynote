@@ -1,6 +1,7 @@
 import { openDatabase } from "react-native-sqlite-storage";
-import * as RNFS from "react-native-fs";
+import RNFetchBlob from "react-native-fetch-blob";
 import moment from "moment";
+import { Platform } from "react-native";
 
 var db = openDatabase({ name: "MyNote.db" });
 
@@ -207,19 +208,26 @@ export function exportToFile(list, key, decrypt, callback) {
 
         var now = new moment();
         var nowString = now.format("YYYY-MM-DDTHHmmss");
+        const dirs = RNFetchBlob.fs.dirs;
+
         var path =
-          RNFS.DocumentDirectoryPath + "/MyNotes_" + nowString + ".json";
+          Platform.OS === "android" ? dirs.DownloadDir : dirs.DocumentDir;
+        var fullPath = path + "/MyNotes_" + nowString + ".json";
 
         var noteString = JSON.stringify(notes, null, 2);
 
         // write the file
-        RNFS.writeFile(path, noteString, "utf8")
-          .then((success) => {
-            callback("00", path);
+        RNFetchBlob.fs
+          .createFile(
+            fullPath,
+            noteString,
+            // encoding, should be one of `base64`, `utf8`, `ascii`
+            "utf8"
+          )
+          .then((result) => {
+            callback("00", fullPath);
           })
-          .catch((err) => {
-            callback("99", "");
-          });
+          .catch((err) => callback("20", ""));
       } else {
         callback("10", "");
       }

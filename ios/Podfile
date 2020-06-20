@@ -78,6 +78,7 @@ target 'MyNote' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  pod 'react-native-fetch-blob', :path => '../node_modules/react-native-fetch-blob'
   
   target 'MyNoteTests' do
     inherit! :complete

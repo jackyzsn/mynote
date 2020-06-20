@@ -243,7 +243,7 @@ export function BrowseNoteScreen({ navigation }) {
             onPress={() => {
               confirmExport(checkboxes);
             }}
-            disabled={checkboxes.length === 0}
+            disabled={checkboxes.length === 0 || !state.config.hasPermission}
           >
             <Text style={{ color: theme.btn_txt_color }}>
               {translate("export")}

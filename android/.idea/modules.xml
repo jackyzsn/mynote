@@ -3,11 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/MyNote.iml" filepath="$PROJECT_DIR$/.idea/modules/MyNote.iml" group="MyNote" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/2039997986/MyNote-react-native-fs.iml" filepath="$PROJECT_DIR$/.idea/modules/2039997986/MyNote-react-native-fs.iml" group="MyNote/react-native-fs" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="MyNote/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1394059334/react-native-community_masked-view.iml" filepath="$PROJECT_DIR$/.idea/modules/1394059334/react-native-community_masked-view.iml" group="MyNote/react-native-community_masked-view" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-483143643/react-native-fetch-blob.iml" filepath="$PROJECT_DIR$/.idea/modules/-483143643/react-native-fetch-blob.iml" group="MyNote/react-native-fetch-blob" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/234231085/react-native-fs.iml" filepath="$PROJECT_DIR$/.idea/modules/234231085/react-native-fs.iml" group="MyNote/react-native-fs" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-2089140399/react-native-gesture-handler.iml" filepath="$PROJECT_DIR$/.idea/modules/-2089140399/react-native-gesture-handler.iml" group="MyNote/react-native-gesture-handler" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-2102680433/react-native-permissions.iml" filepath="$PROJECT_DIR$/.idea/modules/-2102680433/react-native-permissions.iml" group="MyNote/react-native-permissions" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-127774677/react-native-reanimated.iml" filepath="$PROJECT_DIR$/.idea/modules/-127774677/react-native-reanimated.iml" group="MyNote/react-native-reanimated" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1262827654/react-native-safe-area-context.iml" filepath="$PROJECT_DIR$/.idea/modules/-1262827654/react-native-safe-area-context.iml" group="MyNote/react-native-safe-area-context" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-114796526/react-native-screens.iml" filepath="$PROJECT_DIR$/.idea/modules/-114796526/react-native-screens.iml" group="MyNote/react-native-screens" />
