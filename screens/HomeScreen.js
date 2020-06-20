@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, TouchableOpacity } from "react-native";
 import {
   Container,
   Content,
@@ -9,6 +9,7 @@ import {
   Item,
   Form,
   Text,
+  Icon,
 } from "native-base";
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
@@ -22,6 +23,7 @@ export function HomeScreen({ navigation }) {
   const { state, dispatch } = useContext(Store);
   const [notegroup, setNotegroup] = useState(state.config.notegroup);
   const [encrypkey, setEncrypkey] = useState(state.config.encryptionkey);
+  const [secureKey, setSecureKey] = useState(true);
 
   // Only want to execute once
   useEffect(() => {
@@ -51,6 +53,16 @@ export function HomeScreen({ navigation }) {
               value={encrypkey}
               onChangeText={(text) => {
                 setEncrypkey(text);
+              }}
+              secureTextEntry={secureKey}
+            />
+
+            <Icon
+              active
+              name={secureKey ? "eye" : "eye-off"}
+              onPress={() => {
+                let newState = !secureKey;
+                setSecureKey(newState);
               }}
             />
           </Item>

@@ -1,4 +1,4 @@
-#Fri Jun 19 17:40:47 EDT 2020
-base.0=/Users/s2986706/reactSpace/MyNote/android/app/build/intermediates/dex/debug/mergeDexDebug/classes.dex
+#Sat Jun 20 12:58:08 EDT 2020
+base.0=/home/jacky/projects/MyNote/android/app/build/intermediates/dex/debug/mergeDexDebug/classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

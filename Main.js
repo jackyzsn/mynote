@@ -1,16 +1,23 @@
 import React from "react";
+import { Platform } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { HomeScreen } from "./screens/HomeScreen";
 import { NoteMainScreen } from "./screens/NoteMainScreen";
 import { NewNoteScreen } from "./screens/NewNoteScreen";
+import { NewNoteAndroid8Screen } from "./screens/NewNoteAndroid8Screen";
 import { BrowseNoteScreen } from "./screens/BrowseNoteScreen";
 import { NoteDetailScreen } from "./screens/NoteDetailScreen";
+import { NoteDetailAndroid8Screen } from "./screens/NoteDetailAndroid8Screen";
 import { SearchExistingNotesScreen } from "./screens/SearchExistingNotesScreen";
 import translate from "./utils/language.utils";
 import { Root } from "native-base";
 
 const Stack = createStackNavigator();
+
+const isAndroid8 = Platform.OS === "android" && Platform.Version <= 26;
+
+console.log("Is android 8 and less: " + isAndroid8);
 
 function Main() {
   return (
@@ -27,21 +34,39 @@ function Main() {
             component={NoteMainScreen}
             options={{ title: translate("note_main") }}
           />
-          <Stack.Screen
-            name="NewNote"
-            component={NewNoteScreen}
-            options={{ title: translate("new_note") }}
-          />
+          {isAndroid8 ? (
+            <React.Fragment>
+              <Stack.Screen
+                name="NewNote"
+                component={NewNoteAndroid8Screen}
+                options={{ title: translate("new_note") }}
+              />
+              <Stack.Screen
+                name="NoteDetail"
+                component={NoteDetailAndroid8Screen}
+                options={{ headerShown: false }}
+              />
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Stack.Screen
+                name="NewNote"
+                component={NewNoteScreen}
+                options={{ title: translate("new_note") }}
+              />
+              <Stack.Screen
+                name="NoteDetail"
+                component={NoteDetailScreen}
+                options={{ headerShown: false }}
+              />
+            </React.Fragment>
+          )}
           <Stack.Screen
             name="BrowseNote"
             component={BrowseNoteScreen}
             options={{ title: translate("browse_note") }}
           />
-          <Stack.Screen
-            name="NoteDetail"
-            component={NoteDetailScreen}
-            options={{ headerShown: false }}
-          />
+
           <Stack.Screen
             name="SearchExistingNotes"
             component={SearchExistingNotesScreen}

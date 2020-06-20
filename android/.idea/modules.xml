@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/MyNote.iml" filepath="$PROJECT_DIR$/.idea/modules/MyNote.iml" group="MyNote" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/2039997986/MyNote-react-native-fs.iml" filepath="$PROJECT_DIR$/.idea/modules/2039997986/MyNote-react-native-fs.iml" group="MyNote/react-native-fs" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="MyNote/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1394059334/react-native-community_masked-view.iml" filepath="$PROJECT_DIR$/.idea/modules/1394059334/react-native-community_masked-view.iml" group="MyNote/react-native-community_masked-view" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/234231085/react-native-fs.iml" filepath="$PROJECT_DIR$/.idea/modules/234231085/react-native-fs.iml" group="MyNote/react-native-fs" />
