@@ -7,6 +7,7 @@ import { NoteMainScreen } from "./screens/NoteMainScreen";
 import { NewNoteScreen } from "./screens/NewNoteScreen";
 import { NewNoteAndroid8Screen } from "./screens/NewNoteAndroid8Screen";
 import { BrowseNoteScreen } from "./screens/BrowseNoteScreen";
+import { ImportNoteScreen } from "./screens/ImportNoteScreen";
 import { NoteDetailScreen } from "./screens/NoteDetailScreen";
 import { NoteDetailAndroid8Screen } from "./screens/NoteDetailAndroid8Screen";
 import { SearchExistingNotesScreen } from "./screens/SearchExistingNotesScreen";
@@ -66,11 +67,15 @@ function Main() {
             component={BrowseNoteScreen}
             options={{ title: translate("browse_note") }}
           />
-
           <Stack.Screen
             name="SearchExistingNotes"
             component={SearchExistingNotesScreen}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ImportNote"
+            component={ImportNoteScreen}
+            options={{ title: translate("import_note") }}
           />
         </Stack.Navigator>
       </NavigationContainer>
