@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 // @react-native-community/masked-view
 import org.reactnative.maskedview.RNCMaskedViewPackage;
+// react-native-document-picker
+import io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage;
 // react-native-fetch-blob
 import com.RNFetchBlob.RNFetchBlobPackage;
 // react-native-gesture-handler
@@ -75,6 +77,7 @@ public class PackageList {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
       new RNCMaskedViewPackage(),
+      new DocumentPickerPackage(),
       new RNFetchBlobPackage(),
       new RNGestureHandlerPackage(),
       new RNPermissionsPackage(),
