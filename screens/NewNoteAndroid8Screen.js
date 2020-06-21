@@ -12,6 +12,7 @@ import {
   Item,
   Input,
   Label,
+  Icon,
 } from "native-base";
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
@@ -87,6 +88,23 @@ export function NewNoteAndroid8Screen({ navigation }) {
             value={notetag}
             onChangeText={(text) => {
               setNotetag(text);
+            }}
+          />
+          <Icon
+            active
+            type="Fontisto"
+            name="import"
+            onPress={() => {
+              // RNFileSelector.Show({
+              //   title: "Select File",
+              //   onDone: (path) => {
+              //     setFileName(path);
+              //     console.log("file selected: " + path);
+              //   },
+              //   onCancel: () => {
+              //     console.log("cancelled");
+              //   },
+              // });
             }}
           />
         </Item>
