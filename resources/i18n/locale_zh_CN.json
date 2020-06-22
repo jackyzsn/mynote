@@ -34,5 +34,12 @@
   "export_success": "成功导出备忘录到 ",
   "nothing_export": "没有任何东西可以导出 ..",
   "export_failed": "导出备忘录失败 ..",
-  "q_export_note": "将所选备忘录导出至文件?"
+  "q_export_note": "将所选备忘录导出至文件?",
+  "import_note_file": "文件导入备忘录",
+  "import_note": "导入备忘录",
+  "import_success": "成功导入备忘录, 来自 ",
+  "import_failed": "导入备忘录失败 ..",
+  "import_file": "选择导入文件",
+  "file_invalid": "导入文件格式非法",
+  "import": "导入"
 }

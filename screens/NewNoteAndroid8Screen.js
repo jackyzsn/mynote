@@ -17,8 +17,10 @@ import {
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
 import { Store } from "../Store";
-import { encrypt, decrypt } from "../utils/crypto";
+import { encrypt } from "../utils/crypto";
 import { insertNote } from "../utils/dbhelper";
+import DocumentPicker from "react-native-document-picker";
+import RNFetchBlob from "react-native-fetch-blob";
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -92,19 +94,33 @@ export function NewNoteAndroid8Screen({ navigation }) {
           />
           <Icon
             active
-            type="Fontisto"
-            name="import"
+            type="FontAwesome"
+            name="download"
             onPress={() => {
-              // RNFileSelector.Show({
-              //   title: "Select File",
-              //   onDone: (path) => {
-              //     setFileName(path);
-              //     console.log("file selected: " + path);
-              //   },
-              //   onCancel: () => {
-              //     console.log("cancelled");
-              //   },
-              // });
+              DocumentPicker.pick({
+                type: [DocumentPicker.types.allFiles],
+              })
+                .then((res) => {
+                  var filePath;
+                  if (Platform.OS === "ios") {
+                    filePath = res.uri.replace("file://", "");
+                  } else {
+                    filePath = res.uri
+                      .split("raw%3A")[1]
+                      .replace(/\%2F/gm, "/");
+                  }
+
+                  RNFetchBlob.fs.readFile(filePath, "utf-8").then((file) => {
+                    setNotecontent(file);
+                  });
+                })
+                .catch((err) => {
+                  if (DocumentPicker.isCancel(err)) {
+                    console.log("User Cancelled..");
+                  } else {
+                    throw err;
+                  }
+                });
             }}
           />
         </Item>
