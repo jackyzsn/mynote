@@ -234,3 +234,59 @@ export function exportToFile(list, key, decrypt, callback) {
     });
   });
 }
+
+export function fileIsValid(fileContent) {
+  try {
+    var notes = JSON.parse(fileContent);
+
+    var noteList = notes.noteList;
+
+    if (noteList && noteList.length > 0) {
+      for (i = 0; i < noteList.length; i++) {
+        var noteTag = noteList[i].noteTag;
+        var noteText = noteList[i].noteText;
+        if (
+          !noteTag ||
+          !noteText ||
+          noteTag.trim() === "" ||
+          noteText.trim() === ""
+        ) {
+          return false;
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
+
+export function importFromFile(notegroup, noteList, key, encrypt, callback) {
+  try {
+    var now = new moment();
+    var nowString = now.format("YYYY-MM-DDTHH:mm:ss.SSS");
+
+    for (i = 0; i < noteList.length; i++) {
+      var noteTag = noteList[i].noteTag;
+      var noteText = encrypt(noteList[i].noteText, key);
+
+      db.transaction(function(tx) {
+        tx.executeSql(
+          "INSERT into tbl_notes (note_group, note_tag, updt, note_text) values (?,?,?,?)",
+          [notegroup, noteTag, nowString, noteText],
+          (tx, results) => {
+            if (results.rowsAffected === 0) {
+              throw "Failed to insert";
+            }
+          }
+        );
+      });
+    }
+    callback("00");
+  } catch (ex) {
+    callback("99");
+  }
+}

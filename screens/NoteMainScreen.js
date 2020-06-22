@@ -61,7 +61,7 @@ export function NoteMainScreen({ navigation }) {
             navigation.navigate("ImportNote");
           }}
         >
-          <Text>{translate("import_note")}</Text>
+          <Text>{translate("import_note_file")}</Text>
         </Button>
       </Content>
     </Container>

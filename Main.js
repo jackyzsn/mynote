@@ -18,8 +18,6 @@ const Stack = createStackNavigator();
 
 const isAndroid8 = Platform.OS === "android" && Platform.Version <= 26;
 
-console.log("Is android 8 and less: " + isAndroid8);
-
 function Main() {
   return (
     <Root>

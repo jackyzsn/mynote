@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/MyNote.iml" filepath="$PROJECT_DIR$/.idea/modules/MyNote.iml" group="MyNote" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="MyNote/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1394059334/react-native-community_masked-view.iml" filepath="$PROJECT_DIR$/.idea/modules/1394059334/react-native-community_masked-view.iml" group="MyNote/react-native-community_masked-view" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1110107147/react-native-document-picker.iml" filepath="$PROJECT_DIR$/.idea/modules/1110107147/react-native-document-picker.iml" group="MyNote/react-native-document-picker" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-483143643/react-native-fetch-blob.iml" filepath="$PROJECT_DIR$/.idea/modules/-483143643/react-native-fetch-blob.iml" group="MyNote/react-native-fetch-blob" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/234231085/react-native-fs.iml" filepath="$PROJECT_DIR$/.idea/modules/234231085/react-native-fs.iml" group="MyNote/react-native-fs" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-2089140399/react-native-gesture-handler.iml" filepath="$PROJECT_DIR$/.idea/modules/-2089140399/react-native-gesture-handler.iml" group="MyNote/react-native-gesture-handler" />

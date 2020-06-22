@@ -31,8 +31,15 @@
   "note_area": "Enter your notes here ..",
   "search_in_notes": "Search Notes",
   "export": "Export",
-  "export_success": "Successful export notes to ",
+  "export_success": "Successfully export notes to ",
   "nothing_export": "Nothing to export ..",
   "export_failed": "Failed to export notes ..",
-  "q_export_note": "Export selected notes to a file?"
+  "q_export_note": "Export selected notes to a file?",
+  "import_note_file": "Impor Notes From File",
+  "import_note": "Import Note",
+  "import_success": "Successfully import notes from ",
+  "import_failed": "Failed to import note ..",
+  "import_file": "File To Import",
+  "file_invalid": "Invalid file for import",
+  "import": "Import"
 }
