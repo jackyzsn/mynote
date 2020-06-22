@@ -20,7 +20,7 @@ import { Store } from "../Store";
 import { encrypt } from "../utils/crypto";
 import { insertNote } from "../utils/dbhelper";
 import DocumentPicker from "react-native-document-picker";
-import RNFetchBlob from "react-native-fetch-blob";
+import RNFetchBlob from "rn-fetch-blob";
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;

@@ -16,7 +16,7 @@ import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
 import { Store } from "../Store";
 import DocumentPicker from "react-native-document-picker";
-import RNFetchBlob from "react-native-fetch-blob";
+import RNFetchBlob from "rn-fetch-blob";
 import { encrypt } from "../utils/crypto";
 import { fileIsValid, importFromFile } from "../utils/dbhelper";
 

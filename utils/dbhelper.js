@@ -1,5 +1,5 @@
 import { openDatabase } from "react-native-sqlite-storage";
-import RNFetchBlob from "react-native-fetch-blob";
+import RNFetchBlob from "rn-fetch-blob";
 import moment from "moment";
 import { Platform } from "react-native";
 
