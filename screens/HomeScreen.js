@@ -164,7 +164,7 @@ export function HomeScreen({ navigation }) {
           <View style={{ flex: 0.5 }}>
             <Fab
               active={favActive}
-              direction="left"
+              direction="up"
               containerStyle={{}}
               style={{ backgroundColor: themeColor }}
               position="bottomRight"
