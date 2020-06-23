@@ -88,7 +88,7 @@ export function BrowseNoteScreen({ navigation }) {
         style: {
           marginLeft: theme.toast_width_margin,
           marginRight: theme.toast_width_margin,
-          backgroundColor: theme.toast_success_bg_color,
+          backgroundColor: state.config.favColor,
         },
       });
       setCheckboxes([]);
@@ -139,7 +139,7 @@ export function BrowseNoteScreen({ navigation }) {
         style: {
           marginLeft: theme.toast_width_margin,
           marginRight: theme.toast_width_margin,
-          backgroundColor: theme.toast_success_bg_color,
+          backgroundColor: state.config.favColor,
         },
       });
     } else {
@@ -190,7 +190,7 @@ export function BrowseNoteScreen({ navigation }) {
       <Left>
         <CheckBox
           key={inx}
-          color={theme.btn_bg_color}
+          color={state.config.favColor}
           checked={checkboxes.includes(r.id) ? true : false}
           onPress={() => toggleCheckbox(r.id)}
         />
@@ -224,7 +224,7 @@ export function BrowseNoteScreen({ navigation }) {
       <Footer>
         <FooterTab
           style={{
-            backgroundColor: theme.btn_bg_color,
+            backgroundColor: state.config.favColor,
           }}
         >
           <Button

@@ -44,7 +44,7 @@ export function NewNoteScreen({ navigation }) {
         style: {
           marginLeft: theme.toast_width_margin,
           marginRight: theme.toast_width_margin,
-          backgroundColor: theme.toast_success_bg_color,
+          backgroundColor: state.config.favColor,
         },
       });
     } else if (rtnCode === "10") {
@@ -143,7 +143,7 @@ export function NewNoteScreen({ navigation }) {
       <Footer>
         <FooterTab
           style={{
-            backgroundColor: theme.btn_bg_color,
+            backgroundColor: state.config.favColor,
           }}
         >
           <Button

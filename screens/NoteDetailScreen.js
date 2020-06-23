@@ -51,7 +51,7 @@ export function NoteDetailScreen({ route, navigation }) {
         style: {
           marginLeft: theme.toast_width_margin,
           marginRight: theme.toast_width_margin,
-          backgroundColor: theme.toast_success_bg_color,
+          backgroundColor: state.config.favColor,
         },
       });
     } else {
@@ -169,7 +169,7 @@ export function NoteDetailScreen({ route, navigation }) {
                     style: {
                       marginLeft: theme.toast_width_margin,
                       marginRight: theme.toast_width_margin,
-                      backgroundColor: theme.toast_success_bg_color,
+                      backgroundColor: state.config.favColor,
                     },
                   });
                 }
@@ -202,15 +202,15 @@ export function NoteDetailScreen({ route, navigation }) {
             textAreaRef = ref;
           }}
           autoCorrect={false}
-          selectionColor={theme.highlight_bg_color}
-          underlineColorAndroid={theme.highlight_bg_color}
+          selectionColor={state.config.favColor}
+          underlineColorAndroid={state.config.favColor}
           maxLength={10240000}
         />
       </Content>
       <Footer>
         <FooterTab
           style={{
-            backgroundColor: theme.btn_bg_color,
+            backgroundColor: state.config.favColor,
           }}
         >
           <Button

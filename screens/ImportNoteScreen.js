@@ -39,7 +39,7 @@ export function ImportNoteScreen({ navigation }) {
         style: {
           marginLeft: theme.toast_width_margin,
           marginRight: theme.toast_width_margin,
-          backgroundColor: theme.toast_success_bg_color,
+          backgroundColor: state.config.favColor,
         },
         onClose: () => {
           navigation.navigate("NoteMain");
@@ -133,7 +133,7 @@ export function ImportNoteScreen({ navigation }) {
             style={{
               marginTop: 50,
               height: theme.btn_full_height,
-              backgroundColor: theme.btn_bg_color,
+              backgroundColor: state.config.favColor,
             }}
             onPress={() => {
               RNFetchBlob.fs.readFile(fileFullName, "utf-8").then((file) => {

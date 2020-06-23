@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Dimensions } from "react-native";
+import { Store } from "../Store";
 import { Container, Content, Button, Text } from "native-base";
 import theme from "../resources/theme.json";
 import translate from "../utils/language.utils";
@@ -8,6 +9,8 @@ const deviceWidth = Dimensions.get("window").width;
 const contentWidth = deviceWidth - theme.content_margin;
 
 export function NoteMainScreen({ navigation }) {
+  const { state } = useContext(Store);
+
   return (
     <Container style={{ width: deviceWidth, alignItems: "center" }}>
       <Content style={{ width: contentWidth }}>
@@ -16,7 +19,7 @@ export function NoteMainScreen({ navigation }) {
           style={{
             marginTop: 20,
             height: theme.btn_full_height,
-            backgroundColor: theme.btn_bg_color,
+            backgroundColor: state.config.favColor,
           }}
           onPress={() => {
             navigation.navigate("BrowseNote");
@@ -29,7 +32,7 @@ export function NoteMainScreen({ navigation }) {
           style={{
             marginTop: 20,
             height: theme.btn_full_height,
-            backgroundColor: theme.btn_bg_color,
+            backgroundColor: state.config.favColor,
           }}
           onPress={() => {
             navigation.navigate("NewNote");
@@ -42,7 +45,7 @@ export function NoteMainScreen({ navigation }) {
           style={{
             marginTop: 20,
             height: theme.btn_full_height,
-            backgroundColor: theme.btn_bg_color,
+            backgroundColor: state.config.favColor,
           }}
           onPress={() => {
             navigation.navigate("SearchExistingNotes");
@@ -55,7 +58,7 @@ export function NoteMainScreen({ navigation }) {
           style={{
             marginTop: 20,
             height: theme.btn_full_height,
-            backgroundColor: theme.btn_bg_color,
+            backgroundColor: state.config.favColor,
           }}
           onPress={() => {
             navigation.navigate("ImportNote");

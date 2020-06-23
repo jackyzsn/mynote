@@ -3,7 +3,12 @@ import React, { createContext, useReducer } from "react";
 export const Store = createContext();
 
 const initialState = {
-  config: { notegroup: "", encryptionkey: "", hasPermission: false },
+  config: {
+    notegroup: "",
+    encryptionkey: "",
+    hasPermission: false,
+    favColor: "#2D9CDB",
+  },
 };
 
 function reducer(state, action) {
