@@ -139,6 +139,7 @@ export function ImportNoteScreen({ navigation }) {
               RNFetchBlob.fs.readFile(fileFullName, "utf-8").then((file) => {
                 var notes = JSON.parse(file);
                 var noteList = notes.noteList;
+
                 importFromFile(
                   state.config.notegroup,
                   noteList,

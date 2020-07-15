@@ -269,22 +269,42 @@ export function importFromFile(notegroup, noteList, key, encrypt, callback) {
     var now = new moment();
     var nowString = now.format("YYYY-MM-DDTHH:mm:ss.SSS");
 
+    var vals = [];
+    var symbols = "";
     for (i = 0; i < noteList.length; i++) {
       var noteTag = noteList[i].noteTag;
+
       var noteText = encrypt(noteList[i].noteText, key);
 
-      db.transaction(function(tx) {
-        tx.executeSql(
-          "INSERT into tbl_notes (note_group, note_tag, updt, note_text) values (?,?,?,?)",
-          [notegroup, noteTag, nowString, noteText],
-          (tx, results) => {
-            if (results.rowsAffected === 0) {
-              throw "Failed to insert";
-            }
-          }
-        );
-      });
+      vals.push(notegroup);
+      vals.push(noteTag);
+      vals.push(nowString);
+      vals.push(noteText);
+
+      if (i === 0) {
+        symbols = symbols + "(?,?,?,?)";
+      } else {
+        symbols = symbols + ",(?,?,?,?)";
+      }
     }
+
+    console.log(symbols);
+
+    console.log("Values: " + [...vals]);
+
+    db.transaction(function(tx) {
+      tx.executeSql(
+        "INSERT into tbl_notes (note_group, note_tag, updt, note_text) values " +
+          symbols,
+        [...vals],
+        (tx, results) => {
+          if (results.rowsAffected === 0) {
+            throw "Failed to insert";
+          }
+        }
+      );
+    });
+
     callback("00");
   } catch (ex) {
     callback("99");
