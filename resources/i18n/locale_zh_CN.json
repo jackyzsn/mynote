@@ -41,5 +41,8 @@
   "import_failed": "导入备忘录失败 ..",
   "import_file": "选择导入文件",
   "file_invalid": "导入文件格式非法",
-  "import": "导入"
+  "import": "导入",
+  "confirm_exit_title": "确认取消",
+  "confirm_exit_body": "需要保存修改的内容吗？",
+  "not_save": "不保存"
 }

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Dimensions, TouchableOpacity } from "react-native";
+import { Dimensions, TouchableOpacity, Alert } from "react-native";
 import {
   Container,
   Content,
@@ -32,6 +32,7 @@ export function NoteDetailScreen({ route, navigation }) {
   const { state } = useContext(Store);
   const [notecontent, setNotecontent] = useState("");
   const [updatable, setUpdatable] = useState(true);
+  const [detailUpdated, setDetailUpdated] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchStartFrom, setSearchStartFrom] = useState(0);
   const { id, notetag, backto } = route.params;
@@ -112,6 +113,29 @@ export function NoteDetailScreen({ route, navigation }) {
     retrieveNoteDetail(id, decryptText);
   }, []);
 
+  const confirmCancel = (navigation) =>
+    Alert.alert(
+      translate("confirm_exit_title"),
+      translate("confirm_exit_body"),
+      [
+        {
+          text: translate("save"),
+          onPress: () => {
+            let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
+            updateNote(id, tmpTxt, updateCallback);
+            navigation.navigate(backto);
+          },
+        },
+        {
+          text: translate("not_save"),
+          onPress: () => {
+            navigation.navigate(backto);
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+
   return (
     <Container>
       <Header style={{ backgroundColor: "transparent" }}>
@@ -119,7 +143,11 @@ export function NoteDetailScreen({ route, navigation }) {
           <Button
             transparent
             onPress={() => {
-              navigation.navigate(backto);
+              if (detailUpdated) {
+                confirmCancel(navigation);
+              } else {
+                navigation.navigate(backto);
+              }
             }}
           >
             <Icon style={{ color: "black" }} name="arrow-back" />
@@ -194,6 +222,7 @@ export function NoteDetailScreen({ route, navigation }) {
           value={notecontent}
           onChangeText={(text) => {
             setNotecontent(text);
+            setDetailUpdated(true);
             textAreaRef._root.setNativeProps({
               selection: null,
             });
@@ -228,7 +257,11 @@ export function NoteDetailScreen({ route, navigation }) {
           <Button
             vertical
             onPress={() => {
-              navigation.navigate(backto);
+              if (detailUpdated) {
+                confirmCancel(navigation);
+              } else {
+                navigation.navigate(backto);
+              }
             }}
           >
             <Text style={{ color: theme.btn_txt_color }}>

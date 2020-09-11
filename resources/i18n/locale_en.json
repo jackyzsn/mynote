@@ -41,5 +41,8 @@
   "import_failed": "Failed to import note ..",
   "import_file": "File To Import",
   "file_invalid": "Invalid file for import",
-  "import": "Import"
+  "import": "Import",
+  "confirm_exit_title": "Confirm Cancel",
+  "confirm_exit_body": "Do you want to save the change before exit?",
+  "not_save": "Not Save"
 }
