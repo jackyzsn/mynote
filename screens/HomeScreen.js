@@ -162,6 +162,15 @@ export function HomeScreen({ navigation }) {
             </Form>
           </Content>
           <View style={{ flex: 0.5 }}>
+            <Text
+              style={{
+                position: "absolute",
+                bottom: 10,
+                left: theme.content_margin / 2,
+              }}
+            >
+              v{theme.ver}
+            </Text>
             <Fab
               active={favActive}
               direction="up"
