@@ -1,0 +1,13 @@
+{
+  "ver": "1.02",
+  "content_margin": 20,
+  "highlight_bg_color": "#2D9CDB",
+  "btn_bg_color": "#2D9CDB",
+  "btn_txt_color": "white",
+  "btn_full_height": 80,
+  "toast_success_bg_color": "#2D9CDB",
+  "toast_fail_bg_color": "#EB5757",
+  "toast_width_margin": 10,
+  "major_text_color": "#4F4F4F",
+  "minor_text_color": "#828282"
+}
