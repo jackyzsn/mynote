@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Dimensions } from 'react-native';
 import { Store } from '../Store';
-import { Container, Content, Button, Text } from 'native-base';
+import { Container, Center, Button, Text, Box } from 'native-base';
 import theme from '../resources/theme.json';
 import translate from '../utils/language.utils';
 
@@ -12,57 +12,51 @@ export function NoteMainScreen({ navigation }) {
   const { state } = useContext(Store);
 
   return (
-    <Container style={{ width: deviceWidth, alignItems: 'center' }}>
-      <Content style={{ width: contentWidth }}>
-        <Button
-          block
-          style={{
-            marginTop: 20,
-            height: theme.btn_full_height,
-            backgroundColor: state.config.favColor,
-          }}
-          onPress={() => {
-            navigation.navigate('BrowseNote');
-          }}>
-          <Text>{translate('browse_all_notes')}</Text>
-        </Button>
-        <Button
-          block
-          style={{
-            marginTop: 20,
-            height: theme.btn_full_height,
-            backgroundColor: state.config.favColor,
-          }}
-          onPress={() => {
-            navigation.navigate('NewNote');
-          }}>
-          <Text>{translate('add_new_note')}</Text>
-        </Button>
-        <Button
-          block
-          style={{
-            marginTop: 20,
-            height: theme.btn_full_height,
-            backgroundColor: state.config.favColor,
-          }}
-          onPress={() => {
-            navigation.navigate('SearchExistingNotes');
-          }}>
-          <Text>{translate('search_note')}</Text>
-        </Button>
-        <Button
-          block
-          style={{
-            marginTop: 20,
-            height: theme.btn_full_height,
-            backgroundColor: state.config.favColor,
-          }}
-          onPress={() => {
-            navigation.navigate('ImportNote');
-          }}>
-          <Text>{translate('import_note_file')}</Text>
-        </Button>
-      </Content>
-    </Container>
+    <Center>
+      <Container width={contentWidth}>
+        <Box alignItems="center" w="100%">
+          <Button
+            block
+            w="100%"
+            mt={10}
+            bgColor={state.config.favColor}
+            onPress={() => {
+              navigation.navigate('BrowseNote');
+            }}>
+            <Text>{translate('browse_all_notes')}</Text>
+          </Button>
+          <Button
+            block
+            mt={10}
+            w="100%"
+            bgColor={state.config.favColor}
+            onPress={() => {
+              navigation.navigate('NewNote');
+            }}>
+            <Text>{translate('add_new_note')}</Text>
+          </Button>
+          <Button
+            block
+            mt={10}
+            w="100%"
+            bgColor={state.config.favColor}
+            onPress={() => {
+              navigation.navigate('SearchExistingNotes');
+            }}>
+            <Text>{translate('search_note')}</Text>
+          </Button>
+          <Button
+            block
+            mt={10}
+            w="100%"
+            bgColor={state.config.favColor}
+            onPress={() => {
+              navigation.navigate('ImportNote');
+            }}>
+            <Text>{translate('import_note_file')}</Text>
+          </Button>
+        </Box>
+      </Container>
+    </Center>
   );
 }

@@ -1,12 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Dimensions, View, Platform } from 'react-native';
-import { Container, Content, Button, Label, Input, Item, Form, Text, Icon, Fab, Spinner } from 'native-base';
+import { Container, Button, Input, FormControl, Text, Icon, Spinner, Stack, Center, Box, Pressable } from 'native-base';
 import theme from '../resources/theme.json';
 import translate from '../utils/language.utils';
 import { Store } from '../Store';
 import { createTable } from '../utils/dbhelper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { requestMultiple, checkMultiple, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -18,8 +19,8 @@ export function HomeScreen({ navigation }) {
   const [encrypkey, setEncrypkey] = useState(state.config.encryptionkey);
   const [hasPermission, setHasPermission] = useState(state.config.hasPermission);
   const [secureKey, setSecureKey] = useState(true);
-  const [favActive, setFavActive] = useState(false);
-  const [themeColor, setThemeColor] = useState('#2D9CDB');
+
+  const [themeColor, setThemeColor] = useState('#6FCF97');
   const [loading, setLoading] = useState(true);
 
   const checkPermission = () => {
@@ -33,10 +34,10 @@ export function HomeScreen({ navigation }) {
             requestMultiple([
               PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
               PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-            ]).then(statuses => {
+            ]).then(sts => {
               if (
-                statuses[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] === RESULTS.GRANTED &&
-                statuses[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] === RESULTS.GRANTED
+                sts[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] === RESULTS.GRANTED &&
+                sts[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] === RESULTS.GRANTED
               ) {
                 setHasPermission(true);
               } else {
@@ -66,134 +67,78 @@ export function HomeScreen({ navigation }) {
   }, []);
 
   return (
-    <Container>
-      {loading ? (
-        <View style={{ marginTop: deviceHeight / 2.5 }}>
-          <Spinner color="blue" />
-        </View>
-      ) : (
-        <React.Fragment>
-          <Content
-            style={{
-              width: contentWidth,
-              marginStart: theme.content_margin / 2,
-            }}>
-            <Form
-              style={{
-                marginTop: 20,
-              }}>
-              <Item floatingLabel>
-                <Label>{translate('note_group')}</Label>
-                <Input
-                  value={notegroup}
-                  onChangeText={text => {
-                    setNotegroup(text);
-                  }}
-                />
-              </Item>
-              <Item floatingLabel last>
-                <Label>{translate('encryption_key')}</Label>
-                <Input
-                  value={encrypkey}
-                  onChangeText={text => {
-                    setEncrypkey(text);
-                  }}
-                  secureTextEntry={secureKey}
-                />
+    <React.Fragment>
+      <Center>
+        <Container width={contentWidth}>
+          <Box alignItems="center" w="100%">
+            {loading ? (
+              <View style={{ marginTop: deviceHeight / 2.5 }}>
+                <Spinner color="blue" />
+              </View>
+            ) : (
+              <Box alignItems="center" w="100%">
+                <FormControl mt={10}>
+                  <Stack space={5}>
+                    <Stack>
+                      <FormControl.Label>{translate('note_group')}</FormControl.Label>
+                      <Input
+                        value={notegroup}
+                        isFullWidth={true}
+                        onChangeText={text => {
+                          setNotegroup(text);
+                        }}
+                      />
+                    </Stack>
 
-                <Icon
-                  active
-                  name={secureKey ? 'eye' : 'eye-off'}
-                  onPress={() => {
-                    let newState = !secureKey;
-                    setSecureKey(newState);
-                  }}
-                />
-              </Item>
-              <Button
-                block
-                style={{
-                  marginTop: 50,
-                  height: theme.btn_full_height,
-                  backgroundColor: themeColor,
-                }}
-                onPress={() => {
-                  dispatch({
-                    type: 'CHANGE_CONFIG',
-                    payload: {
-                      notegroup,
-                      encryptionkey: encrypkey,
-                      hasPermission,
-                      favColor: themeColor,
-                    },
-                  });
-                  AsyncStorage.setItem('MyNote', themeColor);
-                  navigation.navigate('NoteMain');
-                }}>
-                <Text>{translate('next')}</Text>
-              </Button>
-            </Form>
-          </Content>
-          <View style={{ flex: 0.5 }}>
-            <Text
-              style={{
-                position: 'absolute',
-                bottom: 10,
-                left: theme.content_margin / 2,
-              }}>
-              v{theme.ver}
-            </Text>
-            <Fab
-              active={favActive}
-              direction="up"
-              containerStyle={{}}
-              style={{ backgroundColor: themeColor }}
-              position="bottomRight"
-              onPress={() => {
-                let nextState = !favActive;
-                setFavActive(nextState);
-              }}>
-              <Icon name="settings" style={{ fontSize: 36 }} />
-              <Button
-                style={{ backgroundColor: '#2D9CDB' }}
-                onPress={() => {
-                  setThemeColor('#2D9CDB');
-                }}
-              />
-              <Button
-                style={{ backgroundColor: '#56CCF2' }}
-                onPress={() => {
-                  setThemeColor('#56CCF2');
-                }}
-              />
-              <Button
-                style={{ backgroundColor: '#27AE60' }}
-                onPress={() => {
-                  setThemeColor('#27AE60');
-                }}
-              />
-              <Button
-                style={{ backgroundColor: '#6FCF97' }}
-                onPress={() => {
-                  setThemeColor('#6FCF97');
-                }}
-              />
-              <Button
-                style={{ backgroundColor: '#F2994A' }}
-                onPress={() => {
-                  setThemeColor('#F2994A');
-                }}
-              />
-              <Button
-                style={{ backgroundColor: '#2F80ED' }}
-                onPress={() => {
-                  setThemeColor('#2F80ED');
-                }}
-              />
-            </Fab>
-          </View>
-        </React.Fragment>
-      )}
-    </Container>
+                    <Stack>
+                      <FormControl.Label>{translate('encryption_key')}</FormControl.Label>
+                      <Input
+                        type={secureKey ? 'password' : 'text'}
+                        InputRightElement={
+                          <Pressable onPress={() => setSecureKey(!secureKey)}>
+                            <Icon
+                              as={<MaterialIcons name={secureKey ? 'visibility' : 'visibility-off'} />}
+                              size={5}
+                              mr="2"
+                            />
+                          </Pressable>
+                        }
+                        onChangeText={text => {
+                          setEncrypkey(text);
+                        }}
+                      />
+                    </Stack>
+                    <Stack>
+                      <Button
+                        block
+                        mt="32"
+                        bgColor={themeColor}
+                        onPress={() => {
+                          dispatch({
+                            type: 'CHANGE_CONFIG',
+                            payload: {
+                              notegroup,
+                              encryptionkey: encrypkey,
+                              hasPermission,
+                              favColor: themeColor,
+                            },
+                          });
+                          AsyncStorage.setItem('MyNote', themeColor);
+                          navigation.navigate('NoteMain');
+                        }}>
+                        <Text>{translate('next')}</Text>
+                      </Button>
+                    </Stack>
+                  </Stack>
+                </FormControl>
+              </Box>
+            )}
+          </Box>
+        </Container>
+      </Center>
+      <Text position={'absolute'} bottom={5} left={theme.content_margin / 2}>
+        v{theme.ver}
+      </Text>
+    </React.Fragment>
   );
 }

@@ -7,7 +7,7 @@ const initialState = {
     notegroup: '',
     encryptionkey: '',
     hasPermission: false,
-    favColor: '#2D9CDB',
+    favColor: '#6FCF97',
   },
 };
 

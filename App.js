@@ -8,13 +8,13 @@
 
 import React from 'react';
 import { StoreProvider } from './Store';
-import Test from './Test';
+import Main from './Main';
 import 'react-native-gesture-handler';
 
 const App: () => React$Node = () => {
   return (
     <StoreProvider>
-      <Test />
+      <Main />
     </StoreProvider>
   );
 };
