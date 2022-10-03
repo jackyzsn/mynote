@@ -1,0 +1,1 @@
+sudo launchctl remove com.mcafee.agent.macmn
