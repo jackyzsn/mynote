@@ -62,7 +62,7 @@ export function BrowseNoteScreen({ navigation }) {
       toast.show({
         description: translate('export_success') + fileName,
         placement: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         bgColor: state.config.favColor,
       });
       setCheckboxes([]);
@@ -70,14 +70,14 @@ export function BrowseNoteScreen({ navigation }) {
       toast.show({
         description: translate('nothing_export'),
         placement: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         bgColor: theme.toast_fail_bg_color,
       });
     } else {
       toast.show({
         description: translate('export_failed'),
         placement: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         bgColor: theme.toast_fail_bg_color,
       });
     }
@@ -101,14 +101,14 @@ export function BrowseNoteScreen({ navigation }) {
       toast.show({
         description: translate('note_delete_success'),
         placement: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         bgColor: state.config.favColor,
       });
     } else {
       toast.show({
         description: translate('note_delete_failed'),
         placement: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         bgColor: theme.toast_fail_bg_color,
       });
     }
@@ -119,7 +119,7 @@ export function BrowseNoteScreen({ navigation }) {
     deleteNotes(list, deleteCallback);
   };
 
-  const toggleCheckbox = (checked, id) => {
+  const toggleCheckbox = id => {
     let wkChkboxes = [...checkboxes];
 
     if (wkChkboxes && wkChkboxes.includes(id)) {
@@ -148,7 +148,7 @@ export function BrowseNoteScreen({ navigation }) {
                       onFillColor={state.config.favColor}
                       onTintColor={state.config.favColor}
                       value={checkboxes.includes(item.id) ? true : false}
-                      onValueChange={newValue => toggleCheckbox(newValue, item.id)}
+                      onValueChange={() => toggleCheckbox(item.id)}
                     />
 
                     <Pressable

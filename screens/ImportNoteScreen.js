@@ -24,7 +24,7 @@ export function ImportNoteScreen({ navigation }) {
         text: translate('import_success') + fileName,
         buttonText: translate('ok'),
         position: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         style: {
           marginLeft: theme.toast_width_margin,
           marginRight: theme.toast_width_margin,
@@ -39,7 +39,7 @@ export function ImportNoteScreen({ navigation }) {
         text: translate('import_failed'),
         buttonText: translate('ok'),
         position: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         style: {
           marginLeft: theme.toast_width_margin,
           marginRight: theme.toast_width_margin,
@@ -94,7 +94,7 @@ export function ImportNoteScreen({ navigation }) {
                           text: translate('file_invalid'),
                           buttonText: translate('ok'),
                           position: 'top',
-                          duration: 3000,
+                          duration: theme.toast_delay_duration,
                           style: {
                             marginLeft: theme.toast_width_margin,
                             marginRight: theme.toast_width_margin,

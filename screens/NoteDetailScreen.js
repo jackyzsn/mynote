@@ -42,7 +42,7 @@ export function NoteDetailScreen({ route, navigation }) {
       toast.show({
         description: translate('note_update_success'),
         placement: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         onCloseComplete: () => {
           navigation.navigate('BrowseNote');
         },
@@ -52,7 +52,7 @@ export function NoteDetailScreen({ route, navigation }) {
       toast.show({
         description: translate('note_update_failed'),
         placement: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         bgColor: theme.toast_fail_bg_color,
       });
     }
@@ -70,7 +70,7 @@ export function NoteDetailScreen({ route, navigation }) {
         toast.show({
           description: translate('note_not_decrypted'),
           placement: 'top',
-          duration: 3000,
+          duration: theme.toast_delay_duration,
           bgColor: theme.toast_fail_bg_color,
         });
       }
@@ -78,7 +78,7 @@ export function NoteDetailScreen({ route, navigation }) {
       toast.show({
         description: translate('note_not_found'),
         placement: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         onCloseComplete: () => {
           navigation.navigate('BrowseNote');
         },
@@ -134,7 +134,7 @@ export function NoteDetailScreen({ route, navigation }) {
       toast.show({
         description: translate('end_of_search'),
         placement: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         bgColor: state.config.favColor,
       });
     }

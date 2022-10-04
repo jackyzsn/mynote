@@ -140,7 +140,8 @@ export function searchTextAllNotes(notegroup, searchText, key, decrypt, callback
           // has result
           for (let i = 0; i < results.rows.length; i++) {
             let decryptedText = decrypt(results.rows.item(i).note_text, key);
-            if (decryptedText.indexOf(searchText) > -1) {
+
+            if (decryptedText.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
               let rec = {};
               rec.id = results.rows.item(i).id;
               rec.note_tag = results.rows.item(i).note_tag;

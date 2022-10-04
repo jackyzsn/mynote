@@ -38,7 +38,7 @@ export function NewNoteScreen({ navigation }) {
       toast.show({
         description: translate('note_save_success'),
         placement: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         bgColor: state.config.favColor,
         onCloseComplete: () => {
           navigation.navigate('NoteMain');
@@ -48,14 +48,14 @@ export function NewNoteScreen({ navigation }) {
       toast.show({
         description: translate('note_tag_exist'),
         placement: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         bgColor: theme.toast_fail_bg_color,
       });
     } else {
       toast.show({
         text: translate('note_save_failed'),
         placement: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         bgColor: theme.toast_fail_bg_color,
       });
     }

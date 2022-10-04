@@ -1,36 +1,39 @@
 import React, { useState, useContext } from 'react';
-import { Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { Dimensions, Alert } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
 import {
   Container,
-  Content,
-  Footer,
-  FooterTab,
-  Button,
+  Center,
+  HStack,
+  FlatList,
   Text,
-  Toast,
-  Header,
-  Left,
-  Right,
-  Body,
+  VStack,
   Icon,
-  Title,
-  Item,
+  useToast,
+  Box,
+  Pressable,
+  Heading,
   Input,
-  ListItem,
-  CheckBox,
+  Divider,
 } from 'native-base';
 import theme from '../resources/theme.json';
 import translate from '../utils/language.utils';
 import { Store } from '../Store';
 import { decrypt } from '../utils/crypto';
 import { deleteNotes, searchTextAllNotes, exportToFile } from '../utils/dbhelper';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontistoIcons from 'react-native-vector-icons/Fontisto';
+
 const deviceWidth = Dimensions.get('window').width;
+const contentWidth = deviceWidth - theme.content_margin;
 
 export function SearchExistingNotesScreen({ route, navigation }) {
   const { state } = useContext(Store);
   const [searchText, setSearchText] = useState('');
   const [notelist, setNotelist] = useState([]);
   const [checkboxes, setCheckboxes] = useState([]);
+
+  const toast = useToast();
 
   const confirmExport = list => {
     Alert.alert(
@@ -52,41 +55,26 @@ export function SearchExistingNotesScreen({ route, navigation }) {
 
   const exportCallback = (rtnCode, fileName) => {
     if (rtnCode === '00') {
-      Toast.show({
-        text: translate('export_success') + fileName,
-        buttonText: translate('ok'),
-        position: 'top',
-        duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-          backgroundColor: state.config.favColor,
-        },
+      toast.show({
+        description: translate('export_success') + fileName,
+        placement: 'top',
+        duration: theme.toast_delay_duration,
+        bgColor: state.config.favColor,
       });
       setCheckboxes([]);
     } else if (rtnCode === '10') {
-      Toast.show({
-        text: translate('nothing_export'),
-        buttonText: translate('ok'),
-        position: 'top',
-        duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-        },
-        backgroundColor: theme.toast_fail_bg_color,
+      toast.show({
+        description: translate('nothing_export'),
+        placement: 'top',
+        duration: theme.toast_delay_duration,
+        bgColor: theme.toast_fail_bg_color,
       });
     } else {
-      Toast.show({
-        text: translate('export_failed'),
-        buttonText: translate('ok'),
-        position: 'top',
-        duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-        },
-        backgroundColor: theme.toast_fail_bg_color,
+      toast.show({
+        description: translate('export_failed'),
+        placement: 'top',
+        duration: theme.toast_delay_duration,
+        bgColor: theme.toast_fail_bg_color,
       });
     }
   };
@@ -121,28 +109,18 @@ export function SearchExistingNotesScreen({ route, navigation }) {
       setCheckboxes([]);
       setNotelist(wkNotelist);
 
-      Toast.show({
-        text: translate('note_delete_success'),
-        buttonText: translate('ok'),
-        position: 'top',
-        duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-          backgroundColor: state.config.favColor,
-        },
+      toast.show({
+        description: translate('note_delete_success'),
+        placement: 'top',
+        duration: theme.toast_delay_duration,
+        bgColor: state.config.favColor,
       });
     } else {
-      Toast.show({
-        text: translate('note_delete_failed'),
-        buttonText: translate('ok'),
-        position: 'top',
-        duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-        },
-        backgroundColor: theme.toast_fail_bg_color,
+      toast.show({
+        description: translate('note_delete_failed'),
+        placement: 'top',
+        duration: theme.toast_delay_duration,
+        bgColor: theme.toast_fail_bg_color,
       });
     }
   };
@@ -164,77 +142,31 @@ export function SearchExistingNotesScreen({ route, navigation }) {
     setCheckboxes(wkChkboxes);
   };
 
-  const noteListItems = notelist.map((r, inx) => (
-    <ListItem
-      icon
-      key={inx}
-      style={{ marginTop: 5 }}
-      onPress={() => {
-        navigation.navigate('NoteDetail', {
-          id: r.id,
-          notetag: r.note_tag,
-          backto: 'SearchExistingNotes',
-        });
-      }}>
-      <Left>
-        <CheckBox
-          key={inx}
-          color={state.config.favColor}
-          checked={checkboxes.includes(r.id) ? true : false}
-          onPress={() => toggleCheckbox(r.id)}
-        />
-      </Left>
-      <Body>
-        <Text
-          style={{
-            color: theme.major_text_color,
-          }}>
-          {r.note_tag}
-        </Text>
-        <Text
-          style={{
-            color: theme.minor_text_color,
-            fontWeight: '100',
-          }}>
-          {r.updt}
-        </Text>
-      </Body>
-      <Right>
-        <Icon active name="arrow-forward" />
-      </Right>
-    </ListItem>
-  ));
-
   return (
-    <Container>
-      <Header style={{ backgroundColor: 'transparent' }}>
-        <Left>
-          <Button
-            transparent
-            onPress={() => {
-              navigation.navigate('NoteMain');
-            }}>
-            <Icon style={{ color: 'black' }} name="arrow-back" />
-          </Button>
-        </Left>
-        <Body>
-          <Title style={{ color: 'black' }}>{translate('search_in_notes')}</Title>
-        </Body>
-        <Right>
-          <Item
-            style={{
-              marginLeft: 10,
-              marginRight: 20,
-              marginTop: 5,
-            }}>
-            <Input
-              value={searchText}
-              onChangeText={text => {
-                setSearchText(text);
-              }}
-              placeholder={translate('search_text')}
-            />
-            <TouchableOpacity
+    <Box flex={1} bg="white" safeAreaTop width="100%" alignSelf="center">
+      <HStack w="98%" bg="transparent" alignItems="center" justifyContent="space-between" safeAreaBottom shadow={6}>
+        <Pressable
+          cursor="pointer"
+          mt={2}
+          ml={2}
+          onPress={() => {
+            navigation.navigate('NoteMain');
+          }}>
+          <MaterialIcons name="arrow-back-ios" size={24} color={theme.major_text_color} />
+        </Pressable>
+        <Heading size="md" color={theme.major_text_color}>
+          {translate('search_in_notes')}
+        </Heading>
+        <Input
+          borderWidth={0}
+          w="30%"
+          value={searchText}
+          onChangeText={text => {
+            setSearchText(text);
+          }}
+          placeholder={translate('search_text')}
+          InputRightElement={
+            <Pressable
               onPress={() => {
                 searchTextAllNotes(
                   state.config.notegroup,
@@ -244,43 +176,110 @@ export function SearchExistingNotesScreen({ route, navigation }) {
                   setNotelist
                 );
               }}
+              opacity={!searchText || searchText.trim().length === 0 ? 0.5 : 1}
               disabled={!searchText || searchText.trim().length === 0}>
-              <Icon active name="search" />
-            </TouchableOpacity>
-          </Item>
-        </Right>
-      </Header>
-      <Content>{noteListItems}</Content>
-      <Footer>
-        <FooterTab
-          style={{
-            backgroundColor: state.config.favColor,
+              <Icon as={<MaterialIcons name="search" />} size={8} mr="2" />
+            </Pressable>
+          }
+        />
+      </HStack>
+      <Divider my="2" bg="lightgrey" />
+      <Center justifyContent="flex-start" flex={1}>
+        <Container width={contentWidth}>
+          <Box w="100%">
+            <FlatList
+              data={notelist}
+              renderItem={({ item, inx }) => (
+                <Box borderBottomWidth="1" borderColor={theme.minor_text_color} pl={['0', '4']} pr={['0', '5']} py="2">
+                  <HStack space={[2, 3]} justifyContent="space-evenly" alignItems="center" w="100%">
+                    <CheckBox
+                      key={inx}
+                      boxType="square"
+                      onCheckColor="white"
+                      onFillColor={state.config.favColor}
+                      onTintColor={state.config.favColor}
+                      value={checkboxes.includes(item.id) ? true : false}
+                      onValueChange={() => toggleCheckbox(item.id)}
+                    />
+
+                    <Pressable
+                      onPress={() =>
+                        navigation.navigate('NoteDetail', {
+                          id: item.id,
+                          notetag: item.note_tag,
+                          backto: 'SearchExistingNotes',
+                        })
+                      }>
+                      <VStack>
+                        <Text color={theme.major_text_color}>{item.note_tag}</Text>
+                        <Text color={theme.major_text_color}>{item.updt}</Text>
+                      </VStack>
+                    </Pressable>
+                    <Pressable
+                      onPress={() =>
+                        navigation.navigate('NoteDetail', {
+                          id: item.id,
+                          notetag: item.note_tag,
+                          backto: 'SearchExistingNotes',
+                        })
+                      }>
+                      <MaterialIcons name="arrow-forward" size={24} color={theme.major_text_color} />
+                    </Pressable>
+                  </HStack>
+                </Box>
+              )}
+            />
+          </Box>
+        </Container>
+      </Center>
+      <HStack bg={state.config.favColor} alignItems="center" safeAreaBottom shadow={6}>
+        <Pressable
+          cursor="pointer"
+          opacity={checkboxes.length === 0 ? 0.5 : 1}
+          py="3"
+          flex={1}
+          disabled={checkboxes.length === 0}
+          onPress={() => {
+            confirmDelete(checkboxes);
           }}>
-          <Button
-            vertical
-            onPress={() => {
-              confirmDelete(checkboxes);
-            }}
-            disabled={checkboxes.length === 0}>
-            <Text style={{ color: theme.btn_txt_color }}>{translate('delete')}</Text>
-          </Button>
-          <Button
-            vertical
-            onPress={() => {
-              confirmExport(checkboxes);
-            }}
-            disabled={checkboxes.length === 0}>
-            <Text style={{ color: theme.btn_txt_color }}>{translate('export')}</Text>
-          </Button>
-          <Button
-            vertical
-            onPress={() => {
-              navigation.navigate('NoteMain');
-            }}>
-            <Text style={{ color: theme.btn_txt_color }}>{translate('cancel')}</Text>
-          </Button>
-        </FooterTab>
-      </Footer>
-    </Container>
+          <Center>
+            <Icon mb="1" as={<MaterialIcons name="delete" />} color="white" size="sm" />
+            <Text color="white" fontSize="12">
+              {translate('delete')}
+            </Text>
+          </Center>
+        </Pressable>
+        <Pressable
+          cursor="pointer"
+          opacity={checkboxes.length === 0 || !state.config.hasPermission ? 0.5 : 1}
+          py="2"
+          flex={1}
+          disabled={checkboxes.length === 0 || !state.config.hasPermission}
+          onPress={() => {
+            confirmExport(checkboxes);
+          }}>
+          <Center>
+            <Icon mb="1" as={<FontistoIcons name="export" />} color="white" size="sm" />
+            <Text color="white" fontSize="12">
+              {translate('export')}
+            </Text>
+          </Center>
+        </Pressable>
+        <Pressable
+          cursor="pointer"
+          py="2"
+          flex={1}
+          onPress={() => {
+            navigation.navigate('NoteMain');
+          }}>
+          <Center>
+            <Icon mb="1" as={<MaterialIcons name="cancel" />} color="white" size="sm" />
+            <Text color="white" fontSize="12">
+              {translate('cancel')}
+            </Text>
+          </Center>
+        </Pressable>
+      </HStack>
+    </Box>
   );
 }

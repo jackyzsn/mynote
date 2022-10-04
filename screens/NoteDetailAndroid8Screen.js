@@ -46,7 +46,7 @@ export function NoteDetailAndroid8Screen({ route, navigation }) {
         text: translate('note_update_success'),
         buttonText: translate('ok'),
         position: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         onClose: () => {
           navigation.navigate('BrowseNote');
         },
@@ -61,7 +61,7 @@ export function NoteDetailAndroid8Screen({ route, navigation }) {
         text: translate('note_update_failed'),
         buttonText: translate('ok'),
         position: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         style: {
           marginLeft: theme.toast_width_margin,
           marginRight: theme.toast_width_margin,
@@ -84,7 +84,7 @@ export function NoteDetailAndroid8Screen({ route, navigation }) {
           text: translate('note_not_decrypted'),
           buttonText: translate('ok'),
           position: 'top',
-          duration: 3000,
+          duration: theme.toast_delay_duration,
           style: {
             marginLeft: theme.toast_width_margin,
             marginRight: theme.toast_width_margin,
@@ -97,7 +97,7 @@ export function NoteDetailAndroid8Screen({ route, navigation }) {
         text: translate('note_not_found'),
         buttonText: translate('ok'),
         position: 'top',
-        duration: 3000,
+        duration: theme.toast_delay_duration,
         style: {
           marginLeft: theme.toast_width_margin,
           marginRight: theme.toast_width_margin,
@@ -191,7 +191,7 @@ export function NoteDetailAndroid8Screen({ route, navigation }) {
                     text: translate('end_of_search'),
                     buttonText: translate('ok'),
                     position: 'top',
-                    duration: 3000,
+                    duration: theme.toast_delay_duration,
                     style: {
                       marginLeft: theme.toast_width_margin,
                       marginRight: theme.toast_width_margin,
