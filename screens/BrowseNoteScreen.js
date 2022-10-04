@@ -1,34 +1,23 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Dimensions, Alert } from 'react-native';
-import {
-  Container,
-  Content,
-  Footer,
-  FooterTab,
-  Button,
-  ListItem,
-  Text,
-  Left,
-  Body,
-  Icon,
-  Right,
-  CheckBox,
-  Toast,
-} from 'native-base';
+import { Container, Center, HStack, FlatList, Text, VStack, Icon, Checkbox, Toast, Box, Pressable } from 'native-base';
 import theme from '../resources/theme.json';
 import translate from '../utils/language.utils';
 import { Store } from '../Store';
 import { deleteNotes, retrieveAllNotes, exportToFile } from '../utils/dbhelper';
 import { decrypt } from '../utils/crypto';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontistoIcons from 'react-native-vector-icons/Fontisto';
 
 const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
+// const deviceHeight = Dimensions.get('window').height;
 const contentWidth = deviceWidth - theme.content_margin;
 
 export function BrowseNoteScreen({ navigation }) {
   const { state } = useContext(Store);
   const [notelist, setNotelist] = useState([]);
   const [checkboxes, setCheckboxes] = useState([]);
+  const [selected, setSelected] = React.useState(1);
 
   // Refresh browse all page everytime when focus, to refesh the timestamp on the page
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -166,80 +155,114 @@ export function BrowseNoteScreen({ navigation }) {
     setCheckboxes(wkChkboxes);
   };
 
-  const noteListItems = notelist.map((r, inx) => (
-    <ListItem
-      icon
-      key={inx}
-      style={{ marginTop: 5 }}
-      onPress={() => {
-        navigation.navigate('NoteDetail', {
-          id: r.id,
-          notetag: r.note_tag,
-          backto: 'BrowseNote',
-        });
-      }}>
-      <Left>
-        <CheckBox
-          key={inx}
-          color={state.config.favColor}
-          checked={checkboxes.includes(r.id) ? true : false}
-          onPress={() => toggleCheckbox(r.id)}
-        />
-      </Left>
-      <Body>
-        <Text
-          style={{
-            color: theme.major_text_color,
-          }}>
-          {r.note_tag}
-        </Text>
-        <Text
-          style={{
-            color: theme.minor_text_color,
-            fontWeight: '100',
-          }}>
-          {r.updt}
-        </Text>
-      </Body>
-      <Right>
-        <Icon active name="arrow-forward" />
-      </Right>
-    </ListItem>
-  ));
-
   return (
-    <Container>
-      <Content>{noteListItems}</Content>
-      <Footer>
-        <FooterTab
-          style={{
-            backgroundColor: state.config.favColor,
+    <Box flex={1} bg="white" safeAreaTop width="100%" alignSelf="center">
+      <Center justifyContent="flex-start" flex={1}>
+        <Container width={contentWidth}>
+          <Box w="100%">
+            <FlatList
+              data={notelist}
+              renderItem={({ item, inx }) => (
+                <Box
+                  borderBottomWidth="1"
+                  _dark={{
+                    borderColor: 'muted.50',
+                  }}
+                  borderColor="muted.800"
+                  pl={['0', '4']}
+                  pr={['0', '5']}
+                  py="2">
+                  <HStack space={[2, 3]} justifyContent="space-evenly" alignItems="center" w="100%">
+                    <Checkbox
+                      key={inx}
+                      accessibilityLabel="choose note"
+                      color={state.config.favColor}
+                      checked={checkboxes.includes(item.id) ? true : false}
+                      onPress={() => toggleCheckbox(item.id)}
+                    />
+
+                    <Pressable
+                      onPress={() =>
+                        navigation.navigate('NoteDetail', {
+                          id: item.id,
+                          notetag: item.note_tag,
+                          backto: 'BrowseNote',
+                        })
+                      }>
+                      <VStack>
+                        <Text color={theme.major_text_color}>{item.note_tag}</Text>
+                        <Text color={theme.major_text_color}>{item.updt}</Text>
+                      </VStack>
+                    </Pressable>
+                    <Pressable
+                      onPress={() =>
+                        navigation.navigate('NoteDetail', {
+                          id: item.id,
+                          notetag: item.note_tag,
+                          backto: 'BrowseNote',
+                        })
+                      }>
+                      <MaterialIcons name="arrow-forward" size={24} color={theme.major_text_color} />
+                    </Pressable>
+                  </HStack>
+                </Box>
+              )}
+            />
+          </Box>
+        </Container>
+      </Center>
+      <HStack bg={state.config.favColor} alignItems="center" safeAreaBottom shadow={6}>
+        <Pressable
+          cursor="pointer"
+          opacity={selected === 0 ? 1 : 0.5}
+          py="3"
+          flex={1}
+          disabled={checkboxes.length === 0}
+          onPress={() => {
+            setSelected(0);
+            confirmDelete(checkboxes);
           }}>
-          <Button
-            vertical
-            onPress={() => {
-              confirmDelete(checkboxes);
-            }}
-            disabled={checkboxes.length === 0}>
-            <Text style={{ color: theme.btn_txt_color }}>{translate('delete')}</Text>
-          </Button>
-          <Button
-            vertical
-            onPress={() => {
-              confirmExport(checkboxes);
-            }}
-            disabled={checkboxes.length === 0 || !state.config.hasPermission}>
-            <Text style={{ color: theme.btn_txt_color }}>{translate('export')}</Text>
-          </Button>
-          <Button
-            vertical
-            onPress={() => {
-              navigation.navigate('NoteMain');
-            }}>
-            <Text style={{ color: theme.btn_txt_color }}>{translate('cancel')}</Text>
-          </Button>
-        </FooterTab>
-      </Footer>
-    </Container>
+          <Center>
+            <Icon mb="1" as={<MaterialIcons name="delete" />} color="white" size="sm" />
+            <Text color="white" fontSize="12">
+              {translate('delete')}
+            </Text>
+          </Center>
+        </Pressable>
+        <Pressable
+          cursor="pointer"
+          opacity={selected === 1 ? 1 : 0.5}
+          py="2"
+          flex={1}
+          disabled={checkboxes.length === 0 || !state.config.hasPermission}
+          onPress={() => {
+            setSelected(1);
+            confirmExport(checkboxes);
+          }}>
+          <Center>
+            <Icon mb="1" as={<FontistoIcons name="export" />} color="white" size="sm" />
+            <Text color="white" fontSize="12">
+              {translate('export')}
+            </Text>
+          </Center>
+        </Pressable>
+        <Pressable
+          cursor="pointer"
+          opacity={selected === 2 ? 1 : 0.5}
+          py="2"
+          flex={1}
+          onPress={() => {
+            setSelected(2);
+            navigation.navigate('NoteMain');
+          }}>
+          <Center>
+            <Icon mb="1" as={<MaterialIcons name="cancel" />} color="white" size="sm" />
+            <Text color="white" fontSize="12">
+              {translate('cancel')}
+            </Text>
+          </Center>
+        </Pressable>
+      </HStack>
+    </Box>
   );
 }
