@@ -1,6 +1,18 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Dimensions, Alert } from 'react-native';
-import { Container, Center, HStack, FlatList, Text, VStack, Icon, Checkbox, Toast, Box, Pressable } from 'native-base';
+import {
+  Container,
+  Center,
+  HStack,
+  FlatList,
+  Text,
+  VStack,
+  Icon,
+  Checkbox,
+  useToast,
+  Box,
+  Pressable,
+} from 'native-base';
 import theme from '../resources/theme.json';
 import translate from '../utils/language.utils';
 import { Store } from '../Store';
@@ -10,7 +22,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontistoIcons from 'react-native-vector-icons/Fontisto';
 
 const deviceWidth = Dimensions.get('window').width;
-// const deviceHeight = Dimensions.get('window').height;
 const contentWidth = deviceWidth - theme.content_margin;
 
 export function BrowseNoteScreen({ navigation }) {
@@ -18,6 +29,7 @@ export function BrowseNoteScreen({ navigation }) {
   const [notelist, setNotelist] = useState([]);
   const [checkboxes, setCheckboxes] = useState([]);
   const [selected, setSelected] = React.useState(1);
+  const toast = useToast();
 
   // Refresh browse all page everytime when focus, to refesh the timestamp on the page
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,41 +70,26 @@ export function BrowseNoteScreen({ navigation }) {
 
   const exportCallback = (rtnCode, fileName) => {
     if (rtnCode === '00') {
-      Toast.show({
-        text: translate('export_success') + fileName,
-        buttonText: translate('ok'),
-        position: 'top',
+      toast.show({
+        description: translate('export_success') + fileName,
+        placement: 'top',
         duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-          backgroundColor: state.config.favColor,
-        },
+        bgColor: state.config.favColor,
       });
       setCheckboxes([]);
     } else if (rtnCode === '10') {
-      Toast.show({
-        text: translate('nothing_export'),
-        buttonText: translate('ok'),
-        position: 'top',
+      toast.show({
+        description: translate('nothing_export'),
+        placement: 'top',
         duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-        },
-        backgroundColor: theme.toast_fail_bg_color,
+        bgColor: theme.toast_fail_bg_color,
       });
     } else {
-      Toast.show({
-        text: translate('export_failed'),
-        buttonText: translate('ok'),
-        position: 'top',
+      toast.show({
+        description: translate('export_failed'),
+        placement: 'top',
         duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-        },
-        backgroundColor: theme.toast_fail_bg_color,
+        bgColor: theme.toast_fail_bg_color,
       });
     }
   };
@@ -112,28 +109,18 @@ export function BrowseNoteScreen({ navigation }) {
       setCheckboxes([]);
       setNotelist(wkNotelist);
 
-      Toast.show({
-        text: translate('note_delete_success'),
-        buttonText: translate('ok'),
-        position: 'top',
+      toast.show({
+        description: translate('note_delete_success'),
+        placement: 'top',
         duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-          backgroundColor: state.config.favColor,
-        },
+        bgColor: state.config.favColor,
       });
     } else {
-      Toast.show({
-        text: translate('note_delete_failed'),
-        buttonText: translate('ok'),
-        position: 'top',
+      toast.show({
+        description: translate('note_delete_failed'),
+        placement: 'top',
         duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-        },
-        backgroundColor: theme.toast_fail_bg_color,
+        bgColor: theme.toast_fail_bg_color,
       });
     }
   };

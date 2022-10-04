@@ -2,17 +2,17 @@ import React, { useState, useContext } from 'react';
 import { Dimensions, Platform } from 'react-native';
 import {
   Container,
-  Content,
-  Footer,
-  FooterTab,
-  Button,
-  Textarea,
   Text,
-  Toast,
-  Item,
   Input,
-  Label,
+  useToast,
   Icon,
+  Box,
+  Center,
+  HStack,
+  Pressable,
+  FormControl,
+  Stack,
+  TextArea,
 } from 'native-base';
 import theme from '../resources/theme.json';
 import translate from '../utils/language.utils';
@@ -21,145 +21,149 @@ import { encrypt } from '../utils/crypto';
 import { insertNote } from '../utils/dbhelper';
 import DocumentPicker from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FeatherIcons from 'react-native-vector-icons/Feather';
 
 const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
 const contentWidth = deviceWidth - theme.content_margin;
 
 export function NewNoteScreen({ navigation }) {
   const { state } = useContext(Store);
   const [notecontent, setNotecontent] = useState('');
   const [notetag, setNotetag] = useState('');
+  const [selected, setSelected] = React.useState(1);
+  const toast = useToast();
 
   const showToast = rtnCode => {
     if (rtnCode === '00') {
-      Toast.show({
-        text: translate('note_save_success'),
-        buttonText: translate('ok'),
-        position: 'top',
+      toast.show({
+        description: translate('note_save_success'),
+        placement: 'top',
         duration: 3000,
-        onClose: () => {
+        bgColor: state.config.favColor,
+        onCloseComplete: () => {
           navigation.navigate('NoteMain');
-        },
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-          backgroundColor: state.config.favColor,
         },
       });
     } else if (rtnCode === '10') {
-      Toast.show({
-        text: translate('note_tag_exist'),
-        buttonText: translate('ok'),
-        position: 'top',
+      toast.show({
+        description: translate('note_tag_exist'),
+        placement: 'top',
         duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-        },
-        backgroundColor: theme.toast_fail_bg_color,
+        bgColor: theme.toast_fail_bg_color,
       });
     } else {
-      Toast.show({
+      toast.show({
         text: translate('note_save_failed'),
-        buttonText: translate('ok'),
-        position: 'top',
+        placement: 'top',
         duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-        },
-        backgroundColor: theme.toast_fail_bg_color,
+        bgColor: theme.toast_fail_bg_color,
       });
     }
   };
 
   return (
-    <Container>
-      <Content>
-        <Item
-          floatingLabel
-          style={{
-            marginLeft: 15,
-            marginTop: 5,
-          }}>
-          <Label>{translate('note_tag')}</Label>
-          <Input
-            value={notetag}
-            onChangeText={text => {
-              setNotetag(text);
-            }}
-          />
-          <Icon
-            active
-            type="FontAwesome"
-            name="download"
-            onPress={() => {
-              DocumentPicker.pick({
-                type: [DocumentPicker.types.allFiles],
-              })
-                .then(res => {
-                  let filePath;
-                  if (Platform.OS === 'ios') {
-                    filePath = res.uri.replace('file://', '');
-                  } else {
-                    filePath = res.uri.split('raw%3A')[1].replace(/\%2F/gm, '/');
-                  }
+    <Box flex={1} bg="white" safeAreaTop width="100%" alignSelf="center">
+      <Center justifyContent="flex-start" flex={1}>
+        <Container width={contentWidth}>
+          <Box w="100%">
+            <FormControl mt={2}>
+              <Stack space={5}>
+                <Stack>
+                  {/* <FormControl.Label>{translate('note_tag')}</FormControl.Label> */}
+                  <Input
+                    value={notetag}
+                    placeholder={translate('note_tag')}
+                    isFullWidth={true}
+                    InputRightElement={
+                      <Pressable
+                        onPress={() =>
+                          DocumentPicker.pick({
+                            type: [DocumentPicker.types.allFiles],
+                          })
+                            .then(res => {
+                              let filePath;
+                              if (Platform.OS === 'ios') {
+                                filePath = res.uri.replace('file://', '');
+                              } else {
+                                filePath = res.uri.split('raw%3A')[1].replace(/%2F/gm, '/');
+                              }
 
-                  RNFetchBlob.fs.readFile(filePath, 'utf-8').then(file => {
-                    setNotecontent(file);
-                  });
-                })
-                .catch(err => {
-                  if (DocumentPicker.isCancel(err)) {
-                    console.log('User Cancelled..');
-                  } else {
-                    throw err;
-                  }
-                });
-            }}
-          />
-        </Item>
-        <Textarea
-          style={{
-            height: '100%',
-            width: '100%',
-            marginLeft: 5,
-            marginRight: 5,
-            marginTop: 5,
-          }}
-          placeholder={translate('note_area')}
-          value={notecontent}
-          onChangeText={text => {
-            setNotecontent(text);
-          }}
-          autoCorrect={false}
-          maxLength={10240000}
-        />
-      </Content>
-      <Footer>
-        <FooterTab
-          style={{
-            backgroundColor: state.config.favColor,
+                              RNFetchBlob.fs.readFile(filePath, 'utf-8').then(file => {
+                                setNotecontent(file);
+                              });
+                            })
+                            .catch(err => {
+                              if (DocumentPicker.isCancel(err)) {
+                                console.log('User Cancelled..');
+                              } else {
+                                throw err;
+                              }
+                            })
+                        }>
+                        <Icon as={<FeatherIcons name="file-text" />} size={5} mr="2" />
+                      </Pressable>
+                    }
+                    onChangeText={text => {
+                      setNotetag(text);
+                    }}
+                  />
+                </Stack>
+                <Stack>
+                  <TextArea
+                    w="100%"
+                    h="93%"
+                    borderWidth={0}
+                    placeholder={translate('note_area')}
+                    value={notecontent}
+                    onChangeText={text => {
+                      setNotecontent(text);
+                    }}
+                    autoCorrect={false}
+                    maxLength={10240000}
+                  />
+                </Stack>
+              </Stack>
+            </FormControl>
+          </Box>
+        </Container>
+      </Center>
+      <HStack bg={state.config.favColor} alignItems="center" safeAreaBottom shadow={6}>
+        <Pressable
+          cursor="pointer"
+          opacity={selected === 0 ? 1 : 0.5}
+          py="3"
+          flex={1}
+          disabled={notetag.trim() === ''}
+          onPress={() => {
+            setSelected(0);
+            let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
+            insertNote(state.config.notegroup, notetag, tmpTxt, showToast);
           }}>
-          <Button
-            vertical
-            onPress={() => {
-              let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
-              insertNote(state.config.notegroup, notetag, tmpTxt, showToast);
-            }}
-            disabled={notetag.trim() === ''}>
-            <Text style={{ color: theme.btn_txt_color }}>{translate('save')}</Text>
-          </Button>
-          <Button
-            vertical
-            onPress={() => {
-              navigation.navigate('NoteMain');
-            }}>
-            <Text style={{ color: theme.btn_txt_color }}>{translate('cancel')}</Text>
-          </Button>
-        </FooterTab>
-      </Footer>
-    </Container>
+          <Center>
+            <Icon mb="1" as={<MaterialIcons name="save" />} color="white" size="sm" />
+            <Text color="white" fontSize="12">
+              {translate('save')}
+            </Text>
+          </Center>
+        </Pressable>
+        <Pressable
+          cursor="pointer"
+          opacity={selected === 1 ? 1 : 0.5}
+          py="2"
+          flex={1}
+          onPress={() => {
+            setSelected(1);
+            navigation.navigate('NoteMain');
+          }}>
+          <Center>
+            <Icon mb="1" as={<MaterialIcons name="cancel" />} color="white" size="sm" />
+            <Text color="white" fontSize="12">
+              {translate('cancel')}
+            </Text>
+          </Center>
+        </Pressable>
+      </HStack>
+    </Box>
   );
 }

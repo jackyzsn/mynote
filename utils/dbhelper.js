@@ -69,6 +69,7 @@ export function retrieveAllNotes(notegroup, callback) {
             noteList.push(rec);
           }
         }
+
         callback(noteList);
       }
     );
