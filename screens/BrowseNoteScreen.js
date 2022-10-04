@@ -17,7 +17,7 @@ export function BrowseNoteScreen({ navigation }) {
   const { state } = useContext(Store);
   const [notelist, setNotelist] = useState([]);
   const [checkboxes, setCheckboxes] = useState([]);
-  const [selected, setSelected] = React.useState(1);
+
   const toast = useToast();
 
   // Refresh browse all page everytime when focus, to refesh the timestamp on the page
@@ -192,12 +192,11 @@ export function BrowseNoteScreen({ navigation }) {
       <HStack bg={state.config.favColor} alignItems="center" safeAreaBottom shadow={6}>
         <Pressable
           cursor="pointer"
-          opacity={selected === 0 ? 1 : 0.5}
+          opacity={checkboxes.length === 0 ? 0.5 : 1}
           py="3"
           flex={1}
           disabled={checkboxes.length === 0}
           onPress={() => {
-            setSelected(0);
             confirmDelete(checkboxes);
           }}>
           <Center>
@@ -209,12 +208,11 @@ export function BrowseNoteScreen({ navigation }) {
         </Pressable>
         <Pressable
           cursor="pointer"
-          opacity={selected === 1 ? 1 : 0.5}
+          opacity={checkboxes.length === 0 || !state.config.hasPermission ? 0.5 : 1}
           py="2"
           flex={1}
           disabled={checkboxes.length === 0 || !state.config.hasPermission}
           onPress={() => {
-            setSelected(1);
             confirmExport(checkboxes);
           }}>
           <Center>
@@ -226,11 +224,9 @@ export function BrowseNoteScreen({ navigation }) {
         </Pressable>
         <Pressable
           cursor="pointer"
-          opacity={selected === 2 ? 1 : 0.5}
           py="2"
           flex={1}
           onPress={() => {
-            setSelected(2);
             navigation.navigate('NoteMain');
           }}>
           <Center>

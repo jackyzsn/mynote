@@ -31,7 +31,6 @@ export function NewNoteScreen({ navigation }) {
   const { state } = useContext(Store);
   const [notecontent, setNotecontent] = useState('');
   const [notetag, setNotetag] = useState('');
-  const [selected, setSelected] = React.useState(1);
   const toast = useToast();
 
   const showToast = rtnCode => {
@@ -131,12 +130,11 @@ export function NewNoteScreen({ navigation }) {
       <HStack bg={state.config.favColor} alignItems="center" safeAreaBottom shadow={6}>
         <Pressable
           cursor="pointer"
-          opacity={selected === 0 ? 1 : 0.5}
+          opacity={notetag.trim() === '' ? 0.5 : 1}
           py="3"
           flex={1}
           disabled={notetag.trim() === ''}
           onPress={() => {
-            setSelected(0);
             let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
             insertNote(state.config.notegroup, notetag, tmpTxt, showToast);
           }}>
@@ -149,11 +147,9 @@ export function NewNoteScreen({ navigation }) {
         </Pressable>
         <Pressable
           cursor="pointer"
-          opacity={selected === 1 ? 1 : 0.5}
           py="2"
           flex={1}
           onPress={() => {
-            setSelected(1);
             navigation.navigate('NoteMain');
           }}>
           <Center>
