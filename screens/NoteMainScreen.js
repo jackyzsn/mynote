@@ -23,7 +23,7 @@ export function NoteMainScreen({ navigation }) {
             onPress={() => {
               navigation.navigate('BrowseNote');
             }}>
-            <Text>{translate('browse_all_notes')}</Text>
+            <Text color={theme.btn_txt_color}>{translate('browse_all_notes')}</Text>
           </Button>
           <Button
             block
@@ -33,7 +33,7 @@ export function NoteMainScreen({ navigation }) {
             onPress={() => {
               navigation.navigate('NewNote');
             }}>
-            <Text>{translate('add_new_note')}</Text>
+            <Text color={theme.btn_txt_color}>{translate('add_new_note')}</Text>
           </Button>
           <Button
             block
@@ -43,7 +43,7 @@ export function NoteMainScreen({ navigation }) {
             onPress={() => {
               navigation.navigate('SearchExistingNotes');
             }}>
-            <Text>{translate('search_note')}</Text>
+            <Text color={theme.btn_txt_color}>{translate('search_note')}</Text>
           </Button>
           <Button
             block
@@ -53,7 +53,7 @@ export function NoteMainScreen({ navigation }) {
             onPress={() => {
               navigation.navigate('ImportNote');
             }}>
-            <Text>{translate('import_note_file')}</Text>
+            <Text color={theme.btn_txt_color}>{translate('import_note_file')}</Text>
           </Button>
         </Box>
       </Container>

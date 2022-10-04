@@ -1,1 +1,2 @@
 sudo launchctl remove com.mcafee.agent.macmn
+sudo lsof -i tcp:8081

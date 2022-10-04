@@ -154,9 +154,11 @@ export function NoteDetailScreen({ route, navigation }) {
               navigation.navigate(backto);
             }
           }}>
-          <MaterialIcons name="arrow-back-ios" size={28} color={state.config.favColor} />
+          <MaterialIcons name="arrow-back-ios" size={24} color={theme.major_text_color} />
         </Pressable>
-        <Heading size="md">{notetag}</Heading>
+        <Heading size="md" color={theme.major_text_color}>
+          {notetag}
+        </Heading>
         <Input
           borderWidth={0}
           w="30%"

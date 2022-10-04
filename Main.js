@@ -13,6 +13,7 @@ import { NoteDetailAndroid8Screen } from './screens/NoteDetailAndroid8Screen';
 import { SearchExistingNotesScreen } from './screens/SearchExistingNotesScreen';
 import translate from './utils/language.utils';
 import { NativeBaseProvider } from 'native-base';
+import theme from './resources/theme.json';
 // import Test from './Test';
 
 const Stack = createStackNavigator();
@@ -36,7 +37,11 @@ function Main() {
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Home">
             <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="NoteMain" component={NoteMainScreen} options={{ title: translate('note_main') }} />
+            <Stack.Screen
+              name="NoteMain"
+              component={NoteMainScreen}
+              options={{ title: translate('note_main'), headerTintColor: theme.major_text_color }}
+            />
             {isAndroid8 ? (
               <React.Fragment>
                 <Stack.Screen
@@ -48,14 +53,18 @@ function Main() {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <Stack.Screen name="NewNote" component={NewNoteScreen} options={{ title: translate('new_note') }} />
+                <Stack.Screen
+                  name="NewNote"
+                  component={NewNoteScreen}
+                  options={{ title: translate('new_note'), headerTintColor: theme.major_text_color }}
+                />
                 <Stack.Screen name="NoteDetail" component={NoteDetailScreen} options={{ headerShown: false }} />
               </React.Fragment>
             )}
             <Stack.Screen
               name="BrowseNote"
               component={BrowseNoteScreen}
-              options={{ title: translate('browse_note') }}
+              options={{ title: translate('browse_note'), headerTintColor: theme.major_text_color }}
             />
             <Stack.Screen
               name="SearchExistingNotes"
@@ -65,7 +74,7 @@ function Main() {
             <Stack.Screen
               name="ImportNote"
               component={ImportNoteScreen}
-              options={{ title: translate('import_note') }}
+              options={{ title: translate('import_note'), headerTintColor: theme.major_text_color }}
             />
           </Stack.Navigator>
         </NavigationContainer>
