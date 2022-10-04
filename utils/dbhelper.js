@@ -265,10 +265,6 @@ export function importFromFile(notegroup, noteList, key, encrypt, callback) {
       }
     }
 
-    console.log(symbols);
-
-    console.log('Values: ' + [...vals]);
-
     db.transaction(function (trans) {
       trans.executeSql(
         'INSERT into tbl_notes (note_group, note_tag, updt, note_text) values ' + symbols,

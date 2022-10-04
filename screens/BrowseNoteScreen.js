@@ -1,18 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Dimensions, Alert } from 'react-native';
-import {
-  Container,
-  Center,
-  HStack,
-  FlatList,
-  Text,
-  VStack,
-  Icon,
-  Checkbox,
-  useToast,
-  Box,
-  Pressable,
-} from 'native-base';
+import CheckBox from '@react-native-community/checkbox';
+import { Container, Center, HStack, FlatList, Text, VStack, Icon, useToast, Box, Pressable } from 'native-base';
 import theme from '../resources/theme.json';
 import translate from '../utils/language.utils';
 import { Store } from '../Store';
@@ -130,7 +119,7 @@ export function BrowseNoteScreen({ navigation }) {
     deleteNotes(list, deleteCallback);
   };
 
-  const toggleCheckbox = id => {
+  const toggleCheckbox = (checked, id) => {
     let wkChkboxes = [...checkboxes];
 
     if (wkChkboxes && wkChkboxes.includes(id)) {
@@ -160,12 +149,14 @@ export function BrowseNoteScreen({ navigation }) {
                   pr={['0', '5']}
                   py="2">
                   <HStack space={[2, 3]} justifyContent="space-evenly" alignItems="center" w="100%">
-                    <Checkbox
+                    <CheckBox
                       key={inx}
-                      accessibilityLabel="choose note"
-                      color={state.config.favColor}
-                      checked={checkboxes.includes(item.id) ? true : false}
-                      onPress={() => toggleCheckbox(item.id)}
+                      boxType="square"
+                      onCheckColor="white"
+                      onFillColor={state.config.favColor}
+                      onTintColor={state.config.favColor}
+                      value={checkboxes.includes(item.id) ? true : false}
+                      onValueChange={newValue => toggleCheckbox(newValue, item.id)}
                     />
 
                     <Pressable

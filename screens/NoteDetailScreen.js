@@ -17,12 +17,19 @@ import {
   Title,
   Item,
   Input,
+  Box,
+  Center,
+  HStack,
+  Pressable,
+  useToast,
 } from 'native-base';
 import theme from '../resources/theme.json';
 import translate from '../utils/language.utils';
 import { Store } from '../Store';
 import { encrypt, decrypt } from '../utils/crypto';
 import { retrieveNoteDetail, updateNote } from '../utils/dbhelper';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FeatherIcons from 'react-native-vector-icons/Feather';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -36,36 +43,28 @@ export function NoteDetailScreen({ route, navigation }) {
   const [searchText, setSearchText] = useState('');
   const [searchStartFrom, setSearchStartFrom] = useState(0);
   const { id, notetag, backto } = route.params;
+  const [selected, setSelected] = React.useState(1);
+  const toast = useToast();
 
   let textAreaRef = null;
 
   const updateCallback = rtnCode => {
     if (rtnCode === '00') {
-      Toast.show({
-        text: translate('note_update_success'),
-        buttonText: translate('ok'),
-        position: 'top',
+      toast.show({
+        description: translate('note_update_success'),
+        placement: 'top',
         duration: 3000,
-        onClose: () => {
+        onCloseComplete: () => {
           navigation.navigate('BrowseNote');
         },
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-          backgroundColor: state.config.favColor,
-        },
+        bgColor: state.config.favColor,
       });
     } else {
-      Toast.show({
-        text: translate('note_update_failed'),
-        buttonText: translate('ok'),
-        position: 'top',
+      toast.show({
+        description: translate('note_update_failed'),
+        placement: 'top',
         duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-        },
-        backgroundColor: theme.toast_fail_bg_color,
+        bgColor: theme.toast_fail_bg_color,
       });
     }
   };
@@ -79,32 +78,22 @@ export function NoteDetailScreen({ route, navigation }) {
       } else {
         setNotecontent(encryptedText);
         setUpdatable(false);
-        Toast.show({
-          text: translate('note_not_decrypted'),
-          buttonText: translate('ok'),
-          position: 'top',
+        toast.show({
+          description: translate('note_not_decrypted'),
+          placement: 'top',
           duration: 3000,
-          style: {
-            marginLeft: theme.toast_width_margin,
-            marginRight: theme.toast_width_margin,
-          },
-          backgroundColor: theme.toast_fail_bg_color,
+          bgColor: theme.toast_fail_bg_color,
         });
       }
     } else {
-      Toast.show({
-        text: translate('note_not_found'),
-        buttonText: translate('ok'),
-        position: 'top',
+      toast.show({
+        description: translate('note_not_found'),
+        placement: 'top',
         duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-        },
-        onClose: () => {
+        onCloseComplete: () => {
           navigation.navigate('BrowseNote');
         },
-        backgroundColor: theme.toast_fail_bg_color,
+        bgColor: theme.toast_fail_bg_color,
       });
     }
   };
@@ -138,127 +127,174 @@ export function NoteDetailScreen({ route, navigation }) {
     );
 
   return (
-    <Container>
-      <Header style={{ backgroundColor: 'transparent' }}>
-        <Left>
-          <Button
-            transparent
-            onPress={() => {
-              if (detailUpdated) {
-                confirmCancel(navigation);
-              } else {
-                navigation.navigate(backto);
-              }
-            }}>
-            <Icon style={{ color: 'black' }} name="arrow-back" />
-          </Button>
-        </Left>
-        <Body>
-          <Title style={{ color: 'black' }}>{notetag}</Title>
-        </Body>
-        <Right>
-          <Item
-            style={{
-              marginLeft: 10,
-              marginRight: 20,
-              marginTop: 5,
-            }}>
-            <Input
-              value={searchText}
-              onChangeText={text => {
-                setSearchText(text);
-              }}
-              placeholder={translate('search_text')}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                let inx = notecontent.toLowerCase().indexOf(searchText.trim().toLowerCase(), searchStartFrom);
+    // <Container>
+    //   <Header style={{ backgroundColor: 'transparent' }}>
+    //     <Left>
+    //       <Button
+    //         transparent
+    //         onPress={() => {
+    //           if (detailUpdated) {
+    //             confirmCancel(navigation);
+    //           } else {
+    //             navigation.navigate(backto);
+    //           }
+    //         }}>
+    //         <Icon style={{ color: 'black' }} name="arrow-back" />
+    //       </Button>
+    //     </Left>
+    //     <Body>
+    //       <Title style={{ color: 'black' }}>{notetag}</Title>
+    //     </Body>
+    //     <Right>
+    //       <Item
+    //         style={{
+    //           marginLeft: 10,
+    //           marginRight: 20,
+    //           marginTop: 5,
+    //         }}>
+    //         <Input
+    //           value={searchText}
+    //           onChangeText={text => {
+    //             setSearchText(text);
+    //           }}
+    //           placeholder={translate('search_text')}
+    //         />
+    //         <TouchableOpacity
+    //           onPress={() => {
+    //             let inx = notecontent.toLowerCase().indexOf(searchText.trim().toLowerCase(), searchStartFrom);
 
-                if (inx > -1) {
-                  setSearchStartFrom(inx + searchText.length);
-                  textAreaRef._root.setNativeProps({
-                    selection: {
-                      start: inx,
-                      end: inx + searchText.length,
-                    },
-                  });
-                  textAreaRef._root.focus();
-                } else {
-                  setSearchStartFrom(0);
-                  textAreaRef._root.setNativeProps({ start: 0, end: 0 });
-                  Toast.show({
-                    text: translate('end_of_search'),
-                    buttonText: translate('ok'),
-                    position: 'top',
-                    duration: 3000,
-                    style: {
-                      marginLeft: theme.toast_width_margin,
-                      marginRight: theme.toast_width_margin,
-                      backgroundColor: state.config.favColor,
-                    },
-                  });
-                }
-              }}
-              disabled={!searchText || searchText.trim().length === 0}>
-              <Icon active name="search" />
-            </TouchableOpacity>
-          </Item>
-        </Right>
-      </Header>
-      <Content>
-        <Textarea
-          style={{
-            height: '100%',
-            width: '100%',
-            marginLeft: 5,
-            marginRight: 5,
-            marginTop: 5,
-          }}
-          placeholder={translate('note_area')}
-          value={notecontent}
-          onChangeText={text => {
-            setNotecontent(text);
-            setDetailUpdated(true);
-            textAreaRef._root.setNativeProps({
-              selection: null,
-            });
-          }}
-          ref={ref => {
-            textAreaRef = ref;
-          }}
-          autoCorrect={false}
-          selectionColor={state.config.favColor}
-          underlineColorAndroid={state.config.favColor}
-          maxLength={10240000}
-        />
-      </Content>
-      <Footer>
-        <FooterTab
-          style={{
-            backgroundColor: state.config.favColor,
+    //             if (inx > -1) {
+    //               setSearchStartFrom(inx + searchText.length);
+    //               textAreaRef._root.setNativeProps({
+    //                 selection: {
+    //                   start: inx,
+    //                   end: inx + searchText.length,
+    //                 },
+    //               });
+    //               textAreaRef._root.focus();
+    //             } else {
+    //               setSearchStartFrom(0);
+    //               textAreaRef._root.setNativeProps({ start: 0, end: 0 });
+    //               Toast.show({
+    //                 text: translate('end_of_search'),
+    //                 buttonText: translate('ok'),
+    //                 position: 'top',
+    //                 duration: 3000,
+    //                 style: {
+    //                   marginLeft: theme.toast_width_margin,
+    //                   marginRight: theme.toast_width_margin,
+    //                   backgroundColor: state.config.favColor,
+    //                 },
+    //               });
+    //             }
+    //           }}
+    //           disabled={!searchText || searchText.trim().length === 0}>
+    //           <Icon active name="search" />
+    //         </TouchableOpacity>
+    //       </Item>
+    //     </Right>
+    //   </Header>
+    //   <Content>
+    //     <Textarea
+    //       style={{
+    //         height: '100%',
+    //         width: '100%',
+    //         marginLeft: 5,
+    //         marginRight: 5,
+    //         marginTop: 5,
+    //       }}
+    //       placeholder={translate('note_area')}
+    //       value={notecontent}
+    //       onChangeText={text => {
+    //         setNotecontent(text);
+    //         setDetailUpdated(true);
+    //         textAreaRef._root.setNativeProps({
+    //           selection: null,
+    //         });
+    //       }}
+    //       ref={ref => {
+    //         textAreaRef = ref;
+    //       }}
+    //       autoCorrect={false}
+    //       selectionColor={state.config.favColor}
+    //       underlineColorAndroid={state.config.favColor}
+    //       maxLength={10240000}
+    //     />
+    //   </Content>
+    //   <Footer>
+    //     <FooterTab
+    //       style={{
+    //         backgroundColor: state.config.favColor,
+    //       }}>
+    //       <Button
+    //         vertical
+    //         onPress={() => {
+    //           let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
+    //           updateNote(id, tmpTxt, updateCallback);
+    //         }}
+    //         disabled={!updatable || notecontent.trim() === ''}>
+    //         <Text style={{ color: theme.btn_txt_color }}>{translate('update')}</Text>
+    //       </Button>
+    //       <Button
+    //         vertical
+    //         onPress={() => {
+    //           if (detailUpdated) {
+    //             confirmCancel(navigation);
+    //           } else {
+    //             navigation.navigate(backto);
+    //           }
+    //         }}>
+    //         <Text style={{ color: theme.btn_txt_color }}>{translate('cancel')}</Text>
+    //       </Button>
+    //     </FooterTab>
+    //   </Footer>
+    // </Container>
+    <Box flex={1} bg="white" safeAreaTop width="100%" alignSelf="center">
+      <Center justifyContent="flex-start" flex={1}>
+        <Container width={contentWidth}>
+          <Box w="100%"></Box>
+        </Container>
+      </Center>
+      <HStack bg={state.config.favColor} alignItems="center" safeAreaBottom shadow={6}>
+        <Pressable
+          cursor="pointer"
+          opacity={selected === 0 ? 1 : 0.5}
+          py="3"
+          flex={1}
+          disabled={!updatable || notecontent.trim() === ''}
+          onPress={() => {
+            setSelected(0);
+            let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
+            updateNote(id, tmpTxt, updateCallback);
           }}>
-          <Button
-            vertical
-            onPress={() => {
-              let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
-              updateNote(id, tmpTxt, updateCallback);
-            }}
-            disabled={!updatable || notecontent.trim() === ''}>
-            <Text style={{ color: theme.btn_txt_color }}>{translate('update')}</Text>
-          </Button>
-          <Button
-            vertical
-            onPress={() => {
-              if (detailUpdated) {
-                confirmCancel(navigation);
-              } else {
-                navigation.navigate(backto);
-              }
-            }}>
-            <Text style={{ color: theme.btn_txt_color }}>{translate('cancel')}</Text>
-          </Button>
-        </FooterTab>
-      </Footer>
-    </Container>
+          <Center>
+            <Icon mb="1" as={<MaterialIcons name="update" />} color="white" size="sm" />
+            <Text color="white" fontSize="12">
+              {translate('save')}
+            </Text>
+          </Center>
+        </Pressable>
+        <Pressable
+          cursor="pointer"
+          opacity={selected === 1 ? 1 : 0.5}
+          py="2"
+          flex={1}
+          onPress={() => {
+            setSelected(1);
+            if (detailUpdated) {
+              confirmCancel(navigation);
+            } else {
+              navigation.navigate(backto);
+            }
+          }}>
+          <Center>
+            <Icon mb="1" as={<MaterialIcons name="cancel" />} color="white" size="sm" />
+            <Text color="white" fontSize="12">
+              {translate('cancel')}
+            </Text>
+          </Center>
+        </Pressable>
+      </HStack>
+    </Box>
   );
 }

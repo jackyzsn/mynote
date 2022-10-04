@@ -6,5 +6,6 @@ export function encrypt(text, key) {
 
 export function decrypt(ciphertext, key) {
   let bytes = CryptoJS.AES.decrypt(ciphertext, key);
+
   return bytes.toString(CryptoJS.enc.Utf8);
 }

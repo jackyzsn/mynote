@@ -382,6 +382,8 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.17.10):
     - React-Core
+  - RNCCheckbox (0.5.12):
+    - React-Core
   - RNCMaskedView (0.2.8):
     - React-Core
   - RNGestureHandler (2.6.2):
@@ -493,6 +495,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
@@ -598,6 +601,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-fetch-blob"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNCCheckbox:
+    :path: "../node_modules/@react-native-community/checkbox"
   RNCMaskedView:
     :path: "../node_modules/@react-native-masked-view/masked-view"
   RNGestureHandler:
@@ -669,6 +674,7 @@ SPEC CHECKSUMS:
   ReactCommon: 7f86326b92009925c6dcf93f8e825060171c379f
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNCAsyncStorage: 73b194e58ded504eee17b9a3c125651e2507ddde
+  RNCCheckbox: 934e11d33abb6b0db105cfa5a22a42bd89dfb4b9
   RNCMaskedView: 1f6cd0cb5e38ec01960e12fd8f95ecad809f8fbb
   RNGestureHandler: 4defbd70b2faf3d6761b82fa7880285241762cb0
   RNLocalize: ea02d6ee626a9239c9efe0b2b3f8a4660dff6df6
