@@ -139,15 +139,7 @@ export function BrowseNoteScreen({ navigation }) {
             <FlatList
               data={notelist}
               renderItem={({ item, inx }) => (
-                <Box
-                  borderBottomWidth="1"
-                  _dark={{
-                    borderColor: 'muted.50',
-                  }}
-                  borderColor="muted.800"
-                  pl={['0', '4']}
-                  pr={['0', '5']}
-                  py="2">
+                <Box borderBottomWidth="1" borderColor={theme.minor_text_color} pl={['0', '4']} pr={['0', '5']} py="2">
                   <HStack space={[2, 3]} justifyContent="space-evenly" alignItems="center" w="100%">
                     <CheckBox
                       key={inx}
