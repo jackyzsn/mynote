@@ -17,7 +17,7 @@ import theme from '../resources/theme.json';
 import translate from '../utils/language.utils';
 import { Store } from '../Store';
 import DocumentPicker from 'react-native-document-picker';
-import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
 import { encrypt } from '../utils/crypto';
 import { fileIsValid, importFromFile } from '../utils/dbhelper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -69,18 +69,15 @@ export function ImportNoteScreen({ navigation }) {
                           type: [DocumentPicker.types.allFiles],
                         })
                           .then(res => {
-                            console.log(res[0]);
                             let filePath;
                             if (Platform.OS === 'ios') {
                               filePath = res[0].uri.replace('file://', '');
                             } else {
-                              filePath = res[0].uri.split('raw%3A')[1].replace(/%2F/gm, '/');
+                              filePath = res[0].uri;
                             }
                             try {
-                              RNFetchBlob.fs.readFile(filePath, 'utf-8').then(file => {
-                                console.log('!!!!!!!' + res[0].name);
+                              RNFS.readFile(filePath, 'utf8').then(file => {
                                 if (fileIsValid(file)) {
-                                  console.log('!!!!!!! Valid !!!!!');
                                   setFileName(res[0].name);
                                   setExportDisabled(false);
                                   setFileFullName(filePath);
@@ -124,7 +121,7 @@ export function ImportNoteScreen({ navigation }) {
                   bgColor={state.config.favColor}
                   disabled={exportDisabled}
                   onPress={() => {
-                    RNFetchBlob.fs.readFile(fileFullName, 'utf-8').then(file => {
+                    RNFS.readFile(fileFullName, 'utf8').then(file => {
                       let notes = JSON.parse(file);
                       let noteList = notes.noteList;
 

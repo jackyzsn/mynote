@@ -46,7 +46,9 @@ export function SearchExistingNotesScreen({ route, navigation }) {
         },
         {
           text: translate('ok'),
-          onPress: () => exportToFile(list, state.config.encryptionkey, decrypt, exportCallback),
+          onPress: () => {
+            exportToFile(list, state.config.encryptionkey, decrypt, exportCallback);
+          },
         },
       ],
       { cancelable: false }

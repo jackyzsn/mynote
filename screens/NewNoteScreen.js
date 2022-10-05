@@ -20,7 +20,7 @@ import { Store } from '../Store';
 import { encrypt } from '../utils/crypto';
 import { insertNote } from '../utils/dbhelper';
 import DocumentPicker from 'react-native-document-picker';
-import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FeatherIcons from 'react-native-vector-icons/Feather';
 
@@ -82,14 +82,15 @@ export function NewNoteScreen({ navigation }) {
                           })
                             .then(res => {
                               let filePath;
+
                               if (Platform.OS === 'ios') {
                                 filePath = res[0].uri.replace('file://', '');
                               } else {
-                                filePath = res[0].uri.split('raw%3A')[1].replace(/%2F/gm, '/');
+                                // filePath = res[0].uri.split('raw%3A')[1].replace(/%2F/gm, '/');
+                                filePath = res[0].uri;
                               }
 
-                              RNFetchBlob.fs
-                                .readFile(filePath, 'utf-8')
+                              RNFS.readFile(filePath, 'utf8')
                                 .then(file => {
                                   setNotecontent(file);
                                 })

@@ -20,7 +20,7 @@ import { Store } from '../Store';
 import { encrypt } from '../utils/crypto';
 import { insertNote } from '../utils/dbhelper';
 import DocumentPicker from 'react-native-document-picker';
-import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -107,7 +107,7 @@ export function NewNoteAndroid8Screen({ navigation }) {
                     filePath = res.uri.split('raw%3A')[1].replace(/\%2F/gm, '/');
                   }
 
-                  RNFetchBlob.fs.readFile(filePath, 'utf-8').then(file => {
+                  RNFS.readFile(filePath, 'utf8').then(file => {
                     setNotecontent(file);
                   });
                 })

@@ -1,5 +1,5 @@
 import { openDatabase } from 'react-native-sqlite-storage';
-import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
 import moment from 'moment';
 import { Platform } from 'react-native';
 
@@ -175,8 +175,10 @@ export function exportToFile(list, key, decrypt, callback) {
 
         let noteList = [];
         // has result
+
         for (let i = 0; i < results.rows.length; i++) {
           let note = {};
+
           note.id = results.rows.item(i).id;
           note.noteTag = results.rows.item(i).note_tag;
           note.updateTime = results.rows.item(i).updt;
@@ -192,25 +194,25 @@ export function exportToFile(list, key, decrypt, callback) {
 
         let now = new moment();
         let nowString = now.format('YYYY-MM-DDTHHmmss');
-        const dirs = RNFetchBlob.fs.dirs;
 
-        let path = Platform.OS === 'android' ? dirs.DownloadDir : dirs.DocumentDir;
-        let fullPath = path + '/MyNotes_' + nowString + '.json';
+        let savedPath = RNFS.DownloadDirectoryPath;
+        if (Platform.OS === 'ios') {
+          savedPath = RNFS.DocumentDirectoryPath;
+        }
+
+        let fullPath = savedPath + '/MyNotes_' + nowString + '.json';
 
         let noteString = JSON.stringify(notes, null, 2);
 
         // write the file
-        RNFetchBlob.fs
-          .createFile(
-            fullPath,
-            noteString,
-            // encoding, should be one of `base64`, `utf8`, `ascii`
-            'utf8'
-          )
-          .then(result => {
-            callback('00', fullPath);
-          })
-          .catch(err => callback('20', ''));
+        RNFS.writeFile(
+          fullPath,
+          noteString,
+          // encoding, should be one of `base64`, `utf8`, `ascii`
+          'utf8'
+        ).then(result => {
+          callback('00', fullPath);
+        });
       } else {
         callback('10', '');
       }
@@ -221,23 +223,21 @@ export function exportToFile(list, key, decrypt, callback) {
 export function fileIsValid(fileContent) {
   try {
     let notes = JSON.parse(fileContent);
-
     let noteList = notes.noteList;
 
     if (noteList && noteList.length > 0) {
-      for (let i = 0; i < noteList.length; i++) {
-        let noteTag = noteList[i].noteTag;
-        let noteText = noteList[i].noteText;
+      noteList.forEach(note => {
+        let noteTag = note.note_tag;
+        let noteText = note.note_text;
         if (!noteTag || !noteText || noteTag.trim() === '' || noteText.trim() === '') {
           return false;
         }
-      }
+      });
       return true;
     } else {
       return false;
     }
   } catch (err) {
-    console.log(err);
     return false;
   }
 }
