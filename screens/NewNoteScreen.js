@@ -83,14 +83,20 @@ export function NewNoteScreen({ navigation }) {
                             .then(res => {
                               let filePath;
                               if (Platform.OS === 'ios') {
-                                filePath = res.uri.replace('file://', '');
+                                filePath = res[0].uri.replace('file://', '');
                               } else {
                                 filePath = res.uri.split('raw%3A')[1].replace(/%2F/gm, '/');
                               }
 
-                              RNFetchBlob.fs.readFile(filePath, 'utf-8').then(file => {
-                                setNotecontent(file);
-                              });
+                              console.log(filePath);
+                              RNFetchBlob.fs
+                                .readFile(filePath, 'utf-8')
+                                .then(file => {
+                                  setNotecontent(file);
+                                })
+                                .catch(err => {
+                                  throw err;
+                                });
                             })
                             .catch(err => {
                               if (DocumentPicker.isCancel(err)) {
