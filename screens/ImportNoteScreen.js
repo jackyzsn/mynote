@@ -74,14 +74,14 @@ export function ImportNoteScreen({ navigation }) {
                             if (Platform.OS === 'ios') {
                               filePath = res[0].uri.replace('file://', '');
                             } else {
-                              filePath = res.uri.split('raw%3A')[1].replace(/%2F/gm, '/');
+                              filePath = res[0].uri.split('raw%3A')[1].replace(/%2F/gm, '/');
                             }
-                            console.log('File full path: ' + filePath);
                             try {
                               RNFetchBlob.fs.readFile(filePath, 'utf-8').then(file => {
-                                console.log('Read file');
+                                console.log('!!!!!!!' + res[0].name);
                                 if (fileIsValid(file)) {
-                                  setFileName(res.name);
+                                  console.log('!!!!!!! Valid !!!!!');
+                                  setFileName(res[0].name);
                                   setExportDisabled(false);
                                   setFileFullName(filePath);
                                 } else {
@@ -111,6 +111,7 @@ export function ImportNoteScreen({ navigation }) {
                       <Icon as={<MaterialCommunityIcons name="import" />} size={5} mr="2" />
                     </Pressable>
                   }
+                  value={fileName}
                   onChangeText={text => {
                     setFileName(text);
                   }}

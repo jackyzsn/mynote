@@ -85,10 +85,9 @@ export function NewNoteScreen({ navigation }) {
                               if (Platform.OS === 'ios') {
                                 filePath = res[0].uri.replace('file://', '');
                               } else {
-                                filePath = res.uri.split('raw%3A')[1].replace(/%2F/gm, '/');
+                                filePath = res[0].uri.split('raw%3A')[1].replace(/%2F/gm, '/');
                               }
 
-                              console.log(filePath);
                               RNFetchBlob.fs
                                 .readFile(filePath, 'utf-8')
                                 .then(file => {
