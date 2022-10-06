@@ -44,5 +44,8 @@
   "import": "导入",
   "confirm_exit_title": "确认取消",
   "confirm_exit_body": "需要保存修改的内容吗？",
-  "not_save": "不保存"
+  "not_save": "不保存",
+  "sync_to_cloud": "备份到云端",
+  "sync_success": "备份成功",
+  "sync_failed": "备份失败"
 }

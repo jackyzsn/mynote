@@ -9,6 +9,7 @@ import { deleteNotes, retrieveAllNotes, exportToFile } from '../utils/dbhelper';
 import { decrypt } from '../utils/crypto';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontistoIcons from 'react-native-vector-icons/Fontisto';
+import { sha256 } from 'react-native-sha256';
 
 const deviceWidth = Dimensions.get('window').width;
 const contentWidth = deviceWidth - theme.content_margin;
@@ -21,8 +22,17 @@ export function BrowseNoteScreen({ navigation }) {
   const toast = useToast();
 
   // Refresh browse all page everytime when focus, to refesh the timestamp on the page
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => navigation.addListener('focus', () => retrieveAllNotes(state.config.notegroup, setNotelist)), []);
+
+  useEffect(
+    () =>
+      navigation.addListener('focus', () => {
+        sha256(state.config.encryptionkey).then(hash => {
+          retrieveAllNotes(state.config.notegroup, hash, setNotelist);
+        });
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const confirmDelete = list => {
     Alert.alert(

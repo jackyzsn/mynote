@@ -395,6 +395,8 @@ PODS:
   - RNScreens (3.18.0):
     - React-Core
     - React-RCTImage
+  - RNSha256 (1.4.8):
+    - React-Core
   - RNSVG (13.2.0):
     - React-Core
   - RNVectorIcons (9.2.0):
@@ -474,6 +476,7 @@ DEPENDENCIES:
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSha256 (from `../node_modules/react-native-sha256`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -585,6 +588,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-permissions"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSha256:
+    :path: "../node_modules/react-native-sha256"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
@@ -650,6 +655,7 @@ SPEC CHECKSUMS:
   RNLocalize: ea02d6ee626a9239c9efe0b2b3f8a4660dff6df6
   RNPermissions: 79d0c889562fd792329821bea3155fe6eb54d359
   RNScreens: f3230dd008a7d0ce5c0a8bc78ff12cf2315bda24
+  RNSha256: 03d70c81d84084560180c1858dbf2c980a01c1b1
   RNSVG: 07037623c36f12e41312730622d5f6b3656227ca
   RNVectorIcons: 73350091a17c9482615dbbdca149d6b7b9427b3e
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608

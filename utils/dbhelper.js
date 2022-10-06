@@ -2,8 +2,9 @@ import { openDatabase } from 'react-native-sqlite-storage';
 import RNFS from 'react-native-fs';
 import moment from 'moment';
 import { Platform } from 'react-native';
+import setting from '../setting.json';
 
-let db = openDatabase({ name: 'MyNote.db' });
+let db = openDatabase({ name: 'MyNote_v2.db' });
 
 export function createTable() {
   db.transaction(function (trans) {
@@ -11,7 +12,7 @@ export function createTable() {
       if (results.rows.length === 0) {
         tx.executeSql('DROP TABLE IF EXISTS tbl_notes', []);
         tx.executeSql(
-          'CREATE TABLE IF NOT EXISTS tbl_notes(id INTEGER PRIMARY KEY AUTOINCREMENT, note_group VARCHAR(255), note_tag VARCHAR(255), updt VARCHAR(64), note_text VARCHAR(10240000))',
+          'CREATE TABLE IF NOT EXISTS tbl_notes(id INTEGER PRIMARY KEY AUTOINCREMENT, note_group VARCHAR(255), note_tag VARCHAR(255), updt VARCHAR(64), note_text VARCHAR(10240000), delete_key VARCHAR(255))',
           []
         );
       }
@@ -19,12 +20,12 @@ export function createTable() {
   });
 }
 
-export function insertNote(notegroup, notetag, noteText, callback) {
+export function insertNote(notegroup, notetag, noteText, deleteKey, callback) {
   if (noteText) {
     db.transaction(function (trans) {
       trans.executeSql(
-        'SELECT id from tbl_notes where note_group = ? and note_tag = ?',
-        [notegroup, notetag],
+        'SELECT id from tbl_notes where note_group = ? and note_tag = ? and delete_key = ?',
+        [notegroup, notetag, deleteKey],
         (tx, results) => {
           if (results.rows.length > 0) {
             // note_tag exists..
@@ -34,10 +35,10 @@ export function insertNote(notegroup, notetag, noteText, callback) {
             let nowString = now.format('YYYY-MM-DDTHH:mm:ss.SSS');
 
             tx.executeSql(
-              'INSERT into tbl_notes (note_group, note_tag, updt, note_text) values (?,?,?,?)',
-              [notegroup, notetag, nowString, noteText],
-              (tx, results) => {
-                if (results.rowsAffected > 0) {
+              'INSERT into tbl_notes (note_group, note_tag, updt, note_text, delete_key) values (?,?,?,?,?)',
+              [notegroup, notetag, nowString, noteText, deleteKey],
+              (tx1, results1) => {
+                if (results1.rowsAffected > 0) {
                   callback('00');
                 } else {
                   callback('99');
@@ -51,11 +52,11 @@ export function insertNote(notegroup, notetag, noteText, callback) {
   }
 }
 
-export function retrieveAllNotes(notegroup, callback) {
+export function retrieveAllNotes(notegroup, deleteKey, callback) {
   db.transaction(function (trans) {
     trans.executeSql(
-      'SELECT id, note_group, note_tag, updt  from tbl_notes where note_group = ? order by id desc',
-      [notegroup],
+      'SELECT id, note_group, note_tag, updt  from tbl_notes where note_group = ? and delete_key = ? order by id desc',
+      [notegroup, deleteKey],
       (tx, results) => {
         let noteList = [];
 
@@ -282,4 +283,53 @@ export function importFromFile(notegroup, noteList, key, encrypt, callback) {
   } catch (ex) {
     callback('99');
   }
+}
+
+export function syncToCloud(callback) {
+  db.transaction(function (trans) {
+    trans.executeSql(
+      'SELECT id, note_group, note_tag, note_text, delete_key, updt from tbl_notes order by id',
+      [],
+      (tx, results) => {
+        let noteList = [];
+
+        if (results.rows.length > 0) {
+          // has result
+          for (let i = 0; i < results.rows.length; i++) {
+            let rec = {};
+            rec.id = results.rows.item(i).id;
+            rec.note_tag = results.rows.item(i).note_tag;
+            rec.updt = results.rows.item(i).updt;
+            rec.note_content = results.rows.item(i).note_text;
+            rec.note_group = results.rows.item(i).note_group;
+            rec.delete_key = results.rows.item(i).delete_key;
+            noteList.push(rec);
+          }
+        }
+
+        let now = new moment();
+        let nowString = now.format('YYYY-MM-DDTHH:mm:ss.SSS');
+
+        fetch(setting.backupURL, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'X-Api-Key': setting.backupAPIKey,
+          },
+          body: JSON.stringify({
+            item: {
+              content: JSON.stringify(noteList),
+              updt: nowString,
+            },
+          }),
+        })
+          .then(response => callback('00'))
+          .catch(error => {
+            console.error(error);
+            callback('99');
+          });
+      }
+    );
+  });
 }

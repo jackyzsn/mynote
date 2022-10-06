@@ -23,6 +23,7 @@ import DocumentPicker from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FeatherIcons from 'react-native-vector-icons/Feather';
+import { sha256 } from 'react-native-sha256';
 
 const deviceWidth = Dimensions.get('window').width;
 const contentWidth = deviceWidth - theme.content_margin;
@@ -142,7 +143,10 @@ export function NewNoteScreen({ navigation }) {
           disabled={notetag.trim() === ''}
           onPress={() => {
             let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
-            insertNote(state.config.notegroup, notetag, tmpTxt, showToast);
+
+            sha256(state.config.encryptionkey).then(hash => {
+              insertNote(state.config.notegroup, notetag, tmpTxt, hash, showToast);
+            });
           }}>
           <Center>
             <Icon mb="1" as={<MaterialIcons name="save" />} color="white" size="sm" />
