@@ -243,7 +243,7 @@ export function fileIsValid(fileContent) {
   }
 }
 
-export function importFromFile(notegroup, noteList, key, encrypt, callback) {
+export function importFromFile(notegroup, noteList, key, encrypt, deleteKey, callback) {
   try {
     let now = new moment();
     let nowString = now.format('YYYY-MM-DDTHH:mm:ss.SSS');
@@ -259,26 +259,26 @@ export function importFromFile(notegroup, noteList, key, encrypt, callback) {
       vals.push(noteTag);
       vals.push(nowString);
       vals.push(noteText);
+      vals.push(deleteKey);
 
       if (i === 0) {
-        symbols = symbols + '(?,?,?,?)';
+        symbols = symbols + '(?,?,?,?,?)';
       } else {
-        symbols = symbols + ',(?,?,?,?)';
+        symbols = symbols + ',(?,?,?,?,?)';
       }
-    }
 
-    db.transaction(function (trans) {
-      trans.executeSql(
-        'INSERT into tbl_notes (note_group, note_tag, updt, note_text) values ' + symbols,
-        [...vals],
-        (tx, results) => {
-          if (results.rowsAffected === 0) {
-            throw 'Failed to insert';
+      db.transaction(function (trans) {
+        trans.executeSql(
+          'INSERT into tbl_notes (note_group, note_tag, updt, note_text, delete_key) values ' + symbols,
+          [...vals],
+          (tx, results) => {
+            if (results.rowsAffected === 0) {
+              throw 'Failed to insert';
+            }
           }
-        }
-      );
-    });
-
+        );
+      });
+    }
     callback('00');
   } catch (ex) {
     callback('99');

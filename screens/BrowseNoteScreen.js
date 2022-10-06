@@ -78,6 +78,7 @@ export function BrowseNoteScreen({ navigation }) {
         bgColor: state.config.favColor,
       });
       setCheckboxes([]);
+      navigation.navigate('NoteMain');
     } else if (rtnCode === '10') {
       toast.show({
         description: translate('nothing_export'),
@@ -116,6 +117,7 @@ export function BrowseNoteScreen({ navigation }) {
         duration: theme.toast_delay_duration,
         bgColor: state.config.favColor,
       });
+      navigation.navigate('NoteMain');
     } else {
       toast.show({
         description: translate('note_delete_failed'),

@@ -21,6 +21,7 @@ import RNFS from 'react-native-fs';
 import { encrypt } from '../utils/crypto';
 import { fileIsValid, importFromFile } from '../utils/dbhelper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { sha256 } from 'react-native-sha256';
 
 const deviceWidth = Dimensions.get('window').width;
 const contentWidth = deviceWidth - theme.content_margin;
@@ -43,6 +44,7 @@ export function ImportNoteScreen({ navigation }) {
           navigation.navigate('NoteMain');
         },
       });
+      navigation.navigate('NoteMain');
     } else {
       toast.show({
         description: translate('import_failed'),
@@ -125,13 +127,16 @@ export function ImportNoteScreen({ navigation }) {
                       let notes = JSON.parse(file);
                       let noteList = notes.noteList;
 
-                      importFromFile(
-                        state.config.notegroup,
-                        noteList,
-                        state.config.encryptionkey,
-                        encrypt,
-                        importCallback
-                      );
+                      sha256(state.config.encryptionkey).then(hash => {
+                        importFromFile(
+                          state.config.notegroup,
+                          noteList,
+                          state.config.encryptionkey,
+                          encrypt,
+                          hash,
+                          importCallback
+                        );
+                      });
                     });
                   }}>
                   <Text color={theme.btn_txt_color}>{translate('import')}</Text>

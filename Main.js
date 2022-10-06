@@ -1,24 +1,19 @@
 import React from 'react';
-import { Platform, StyleSheet, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from './screens/HomeScreen';
 import { NoteMainScreen } from './screens/NoteMainScreen';
 import { NewNoteScreen } from './screens/NewNoteScreen';
-import { NewNoteAndroid8Screen } from './screens/NewNoteAndroid8Screen';
 import { BrowseNoteScreen } from './screens/BrowseNoteScreen';
 import { ImportNoteScreen } from './screens/ImportNoteScreen';
 import { NoteDetailScreen } from './screens/NoteDetailScreen';
-import { NoteDetailAndroid8Screen } from './screens/NoteDetailAndroid8Screen';
 import { SearchExistingNotesScreen } from './screens/SearchExistingNotesScreen';
 import translate from './utils/language.utils';
 import { NativeBaseProvider } from 'native-base';
 import theme from './resources/theme.json';
-// import Test from './Test';
 
 const Stack = createStackNavigator();
-
-const isAndroid8 = Platform.OS === 'android' && Platform.Version <= 26;
 
 const styles = StyleSheet.create({
   container: {
@@ -42,25 +37,12 @@ function Main() {
               component={NoteMainScreen}
               options={{ title: translate('note_main'), headerTintColor: theme.major_text_color }}
             />
-            {isAndroid8 ? (
-              <React.Fragment>
-                <Stack.Screen
-                  name="NewNote"
-                  component={NewNoteAndroid8Screen}
-                  options={{ title: translate('new_note') }}
-                />
-                <Stack.Screen name="NoteDetail" component={NoteDetailAndroid8Screen} options={{ headerShown: false }} />
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <Stack.Screen
-                  name="NewNote"
-                  component={NewNoteScreen}
-                  options={{ title: translate('new_note'), headerTintColor: theme.major_text_color }}
-                />
-                <Stack.Screen name="NoteDetail" component={NoteDetailScreen} options={{ headerShown: false }} />
-              </React.Fragment>
-            )}
+            <Stack.Screen
+              name="NewNote"
+              component={NewNoteScreen}
+              options={{ title: translate('new_note'), headerTintColor: theme.major_text_color }}
+            />
+            <Stack.Screen name="NoteDetail" component={NoteDetailScreen} options={{ headerShown: false }} />
             <Stack.Screen
               name="BrowseNote"
               component={BrowseNoteScreen}
