@@ -274,14 +274,16 @@ export function importFromFile(notegroup, noteList, key, encrypt, deleteKey, cal
         [...vals],
         (tx, results) => {
           if (results.rowsAffected === 0) {
-            throw 'Failed to insert';
+            callback('99');
+            console.log('Failed to insert');
+          } else {
+            callback('00');
           }
         }
       );
     });
-
-    callback('00');
   } catch (ex) {
+    console.log(ex);
     callback('99');
   }
 }

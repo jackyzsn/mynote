@@ -92,7 +92,7 @@ export function NoteDetailScreen({ route, navigation }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const confirmCancel = navigation =>
+  const confirmCancel = () =>
     Alert.alert(
       translate('confirm_exit_title'),
       translate('confirm_exit_body'),
@@ -149,7 +149,7 @@ export function NoteDetailScreen({ route, navigation }) {
           ml={2}
           onPress={() => {
             if (detailUpdated) {
-              confirmCancel(navigation);
+              confirmCancel();
             } else {
               navigation.navigate(backto);
             }
@@ -179,30 +179,30 @@ export function NoteDetailScreen({ route, navigation }) {
       </HStack>
       <Divider my="2" bg="lightgrey" />
       <Center justifyContent="flex-start" flex={1}>
-        <Container width={contentWidth}>
-          <Box w="100%">
-            <TextArea
-              w="100%"
-              h="100%"
-              borderWidth={0}
-              placeholder={translate('note_area')}
-              value={notecontent}
-              onChangeText={text => {
-                setNotecontent(text);
-                setDetailUpdated(true);
-                textAreaRef.setNativeProps({
-                  selection: null,
-                });
-              }}
-              ref={ref => {
-                textAreaRef = ref;
-              }}
-              autoCorrect={false}
-              selectionColor={state.config.favColor}
-              underlineColorAndroid={state.config.favColor}
-              maxLength={10240000}
-            />
-          </Box>
+        <Container>
+          <TextArea
+            w="115%"
+            h="100%"
+            ml={-8}
+            mr={-8}
+            borderWidth={0}
+            placeholder={translate('note_area')}
+            value={notecontent}
+            onChangeText={text => {
+              setNotecontent(text);
+              setDetailUpdated(true);
+              textAreaRef.setNativeProps({
+                selection: null,
+              });
+            }}
+            ref={ref => {
+              textAreaRef = ref;
+            }}
+            autoCorrect={false}
+            selectionColor={state.config.favColor}
+            underlineColorAndroid={state.config.favColor}
+            maxLength={10240000}
+          />
         </Container>
       </Center>
       <HStack bg={state.config.favColor} alignItems="center" safeAreaBottom shadow={6}>
@@ -229,7 +229,7 @@ export function NoteDetailScreen({ route, navigation }) {
           flex={1}
           onPress={() => {
             if (detailUpdated) {
-              confirmCancel(navigation);
+              confirmCancel();
             } else {
               navigation.navigate(backto);
             }
