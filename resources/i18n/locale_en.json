@@ -13,7 +13,7 @@
   "ok": "OK",
   "save": "Save",
   "cancel": "Cancel",
-  "browse_note": "Browser All Notes",
+  "browse_note": "Browse All Notes",
   "delete": "Delete",
   "confirm": "Confirm",
   "q_delete_note": "You want to delete selected notes?",
@@ -44,5 +44,8 @@
   "import": "Import",
   "confirm_exit_title": "Confirm Cancel",
   "confirm_exit_body": "Do you want to save the change before exit?",
-  "not_save": "Not Save"
+  "not_save": "Not Save",
+  "sync_to_cloud": "Backup To Cloud",
+  "sync_success": "Successfully backup database to cloud",
+  "sync_failed": "Failed to backup database to cloud"
 }

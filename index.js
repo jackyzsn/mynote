@@ -2,11 +2,10 @@
  * @format
  */
 
-import { AppRegistry } from "react-native";
-import App from "./App";
-import { name as appName } from "./app.json";
-import { YellowBox } from "react-native";
+import { AppRegistry, LogBox } from 'react-native';
+import App from './App';
+import { name as appName } from './app.json';
 
-YellowBox.ignoreWarnings(["Animated: `useNativeDriver` was not specified."]);
+LogBox.ignoreLogs(['Animated: `useNativeDriver` was not specified.']);
 
 AppRegistry.registerComponent(appName, () => App);

@@ -1,19 +1,19 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer } from 'react';
 
 export const Store = createContext();
 
 const initialState = {
   config: {
-    notegroup: "",
-    encryptionkey: "",
+    notegroup: '',
+    encryptionkey: '',
     hasPermission: false,
-    favColor: "#2D9CDB",
+    favColor: '#6FCF97',
   },
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "CHANGE_CONFIG":
+    case 'CHANGE_CONFIG':
       return { ...state, config: action.payload };
     default:
       return state;

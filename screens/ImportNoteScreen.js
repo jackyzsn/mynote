@@ -1,160 +1,151 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Dimensions, Platform } from "react-native";
+import React, { useState, useContext } from 'react';
+import { Dimensions, Platform } from 'react-native';
 import {
   Container,
-  Content,
+  Center,
   Button,
-  Label,
+  Box,
   Input,
-  Item,
-  Form,
+  Stack,
+  FormControl,
   Text,
   Icon,
-  Toast,
-} from "native-base";
-import theme from "../resources/theme.json";
-import translate from "../utils/language.utils";
-import { Store } from "../Store";
-import DocumentPicker from "react-native-document-picker";
-import RNFetchBlob from "rn-fetch-blob";
-import { encrypt } from "../utils/crypto";
-import { fileIsValid, importFromFile } from "../utils/dbhelper";
+  Pressable,
+  useToast,
+} from 'native-base';
+import theme from '../resources/theme.json';
+import translate from '../utils/language.utils';
+import { Store } from '../Store';
+import DocumentPicker from 'react-native-document-picker';
+import RNFS from 'react-native-fs';
+import { encrypt } from '../utils/crypto';
+import { fileIsValid, importFromFile } from '../utils/dbhelper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { sha256 } from 'react-native-sha256';
 
-const deviceWidth = Dimensions.get("window").width;
+const deviceWidth = Dimensions.get('window').width;
 const contentWidth = deviceWidth - theme.content_margin;
 
 export function ImportNoteScreen({ navigation }) {
   const { state } = useContext(Store);
-  const [fileName, setFileName] = useState("");
-  const [fileFullName, setFileFullName] = useState("");
+  const [fileName, setFileName] = useState('');
+  const [fileFullName, setFileFullName] = useState('');
   const [exportDisabled, setExportDisabled] = useState(true);
+  const toast = useToast();
 
-  const importCallback = (rtnCode) => {
-    if (rtnCode === "00") {
-      Toast.show({
-        text: translate("import_success") + fileName,
-        buttonText: translate("ok"),
-        position: "top",
-        duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-          backgroundColor: state.config.favColor,
-        },
+  const importCallback = rtnCode => {
+    if (rtnCode === '00') {
+      toast.show({
+        description: translate('import_success') + fileName,
+        placement: 'top',
+        duration: theme.toast_delay_duration,
+        bgColor: state.config.favColor,
         onClose: () => {
-          navigation.navigate("NoteMain");
+          navigation.navigate('NoteMain');
         },
       });
+      navigation.navigate('NoteMain');
     } else {
-      Toast.show({
-        text: translate("import_failed"),
-        buttonText: translate("ok"),
-        position: "top",
-        duration: 3000,
-        style: {
-          marginLeft: theme.toast_width_margin,
-          marginRight: theme.toast_width_margin,
-        },
-        backgroundColor: theme.toast_fail_bg_color,
+      toast.show({
+        description: translate('import_failed'),
+        placement: 'top',
+        duration: theme.toast_delay_duration,
+        bgColor: theme.toast_fail_bg_color,
       });
     }
   };
 
   return (
-    <Container style={{ width: deviceWidth, alignItems: "center" }}>
-      <Content style={{ width: contentWidth }}>
-        <Form
-          style={{
-            marginTop: 20,
-          }}
-        >
-          <Item floatingLabel last>
-            <Label>{translate("import_file")}</Label>
-            <Input
-              value={fileName}
-              onChangeText={(text) => {
-                setFileName(text);
-              }}
-            />
+    <Center>
+      <Container width={contentWidth}>
+        <Box alignItems="center" w="100%">
+          <FormControl mt={10}>
+            <Stack space={5}>
+              <Stack>
+                <FormControl.Label>{translate('import_file')}</FormControl.Label>
+                <Input
+                  InputRightElement={
+                    <Pressable
+                      onPress={() => {
+                        DocumentPicker.pick({
+                          type: [DocumentPicker.types.allFiles],
+                        })
+                          .then(res => {
+                            let filePath;
+                            if (Platform.OS === 'ios') {
+                              filePath = res[0].uri.replace('file://', '');
+                            } else {
+                              filePath = res[0].uri;
+                            }
+                            try {
+                              RNFS.readFile(filePath, 'utf8').then(file => {
+                                if (fileIsValid(file)) {
+                                  setFileName(res[0].name);
+                                  setExportDisabled(false);
+                                  setFileFullName(filePath);
+                                } else {
+                                  setFileName('');
+                                  setExportDisabled(true);
+                                  setFileFullName('');
+                                  toast.show({
+                                    description: translate('file_invalid'),
+                                    placement: 'top',
+                                    duration: theme.toast_delay_duration,
+                                    bgColor: theme.toast_fail_bg_color,
+                                  });
+                                }
+                              });
+                            } catch (e) {
+                              console.log(e);
+                            }
+                          })
+                          .catch(err => {
+                            if (DocumentPicker.isCancel(err)) {
+                              console.log('User Cancelled..');
+                            } else {
+                              throw err;
+                            }
+                          });
+                      }}>
+                      <Icon as={<MaterialCommunityIcons name="import" />} size={5} mr="2" />
+                    </Pressable>
+                  }
+                  value={fileName}
+                  onChangeText={text => {
+                    setFileName(text);
+                  }}
+                />
+              </Stack>
+              <Stack>
+                <Button
+                  block
+                  mt="8"
+                  bgColor={state.config.favColor}
+                  disabled={exportDisabled}
+                  onPress={() => {
+                    RNFS.readFile(fileFullName, 'utf8').then(file => {
+                      let notes = JSON.parse(file);
+                      let noteList = notes.noteList;
 
-            <Icon
-              active
-              type="FontAwesome"
-              name="file-text-o"
-              onPress={() => {
-                DocumentPicker.pick({
-                  type: [DocumentPicker.types.allFiles],
-                })
-                  .then((res) => {
-                    var filePath;
-                    if (Platform.OS === "ios") {
-                      filePath = res.uri.replace("file://", "");
-                    } else {
-                      filePath = res.uri
-                        .split("raw%3A")[1]
-                        .replace(/\%2F/gm, "/");
-                    }
-
-                    RNFetchBlob.fs.readFile(filePath, "utf-8").then((file) => {
-                      if (fileIsValid(file)) {
-                        setFileName(res.name);
-                        setExportDisabled(false);
-                        setFileFullName(filePath);
-                      } else {
-                        setFileName("");
-                        setExportDisabled(true);
-                        setFileFullName("");
-                        Toast.show({
-                          text: translate("file_invalid"),
-                          buttonText: translate("ok"),
-                          position: "top",
-                          duration: 3000,
-                          style: {
-                            marginLeft: theme.toast_width_margin,
-                            marginRight: theme.toast_width_margin,
-                          },
-                          backgroundColor: theme.toast_fail_bg_color,
-                        });
-                      }
+                      sha256(state.config.encryptionkey).then(hash => {
+                        importFromFile(
+                          state.config.notegroup,
+                          noteList,
+                          state.config.encryptionkey,
+                          encrypt,
+                          hash,
+                          importCallback
+                        );
+                      });
                     });
-                  })
-                  .catch((err) => {
-                    if (DocumentPicker.isCancel(err)) {
-                      console.log("User Cancelled..");
-                    } else {
-                      throw err;
-                    }
-                  });
-              }}
-            />
-          </Item>
-          <Button
-            block
-            style={{
-              marginTop: 50,
-              height: theme.btn_full_height,
-              backgroundColor: state.config.favColor,
-            }}
-            onPress={() => {
-              RNFetchBlob.fs.readFile(fileFullName, "utf-8").then((file) => {
-                var notes = JSON.parse(file);
-                var noteList = notes.noteList;
-
-                importFromFile(
-                  state.config.notegroup,
-                  noteList,
-                  state.config.encryptionkey,
-                  encrypt,
-                  importCallback
-                );
-              });
-            }}
-            disabled={exportDisabled}
-          >
-            <Text>{translate("import")}</Text>
-          </Button>
-        </Form>
-      </Content>
-    </Container>
+                  }}>
+                  <Text color={theme.btn_txt_color}>{translate('import')}</Text>
+                </Button>
+              </Stack>
+            </Stack>
+          </FormControl>
+        </Box>
+      </Container>
+    </Center>
   );
 }
