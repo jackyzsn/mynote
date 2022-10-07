@@ -4,19 +4,18 @@
 
 ### McAfee blocks 8081 port
 
-sudo launchctl remove com.mcafee.agent.macmn
-sudo lsof -i tcp:8081
+1. sudo launchctl remove com.mcafee.agent.macmn
+2. sudo lsof -i tcp:8081
 
 ### Vector icon ios duplicated issue
 
-node_modules/react-native-vector-icons/RNVectorIcons.podspec, remove the s.resources = "Fonts/\*.ttf"
-npx pod-install
+1. find in node_modules/react-native-vector-icons/RNVectorIcons.podspec
+2. remove the s.resources = "Fonts/\*.ttf"
+3. npx pod-install
 
 ### At least one permission fix
 
-node_modules --> react-native-permission --> RNPermissions.m
-in this file Search for "No permission handler detected"
-and comment this line "RCTLogError(@"%@", message)"
+node_modules --> react-native-permission --> RNPermissions.m, in this file Search for "No permission handler detected", and comment this line "RCTLogError(@"%@", message)"
 
 ### File for API key
 
