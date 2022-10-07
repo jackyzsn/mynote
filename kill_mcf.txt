@@ -1,7 +1,0 @@
-sudo launchctl remove com.mcafee.agent.macmn
-sudo lsof -i tcp:8081
-
-node_modules/react-native-vector-icons/RNVectorIcons.podspec, remove the s.resources = "Fonts/*.ttf"
-npx pod-install
-
-remember copy setting.json
