@@ -266,19 +266,20 @@ export function importFromFile(notegroup, noteList, key, encrypt, deleteKey, cal
       } else {
         symbols = symbols + ',(?,?,?,?,?)';
       }
-
-      db.transaction(function (trans) {
-        trans.executeSql(
-          'INSERT into tbl_notes (note_group, note_tag, updt, note_text, delete_key) values ' + symbols,
-          [...vals],
-          (tx, results) => {
-            if (results.rowsAffected === 0) {
-              throw 'Failed to insert';
-            }
-          }
-        );
-      });
     }
+
+    db.transaction(function (trans) {
+      trans.executeSql(
+        'INSERT into tbl_notes (note_group, note_tag, updt, note_text, delete_key) values ' + symbols,
+        [...vals],
+        (tx, results) => {
+          if (results.rowsAffected === 0) {
+            throw 'Failed to insert';
+          }
+        }
+      );
+    });
+
     callback('00');
   } catch (ex) {
     callback('99');
