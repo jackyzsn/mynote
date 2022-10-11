@@ -200,6 +200,8 @@ export function SearchExistingNotesScreen({ route, navigation }) {
                       onCheckColor="white"
                       onFillColor={state.config.favColor}
                       onTintColor={state.config.favColor}
+                      tintColors={{ true: state.config.favColor, false: theme.minor_text_color }}
+                      tintColor={theme.minor_text_color}
                       value={checkboxes.includes(item.id) ? true : false}
                       onValueChange={() => toggleCheckbox(item.id)}
                     />
