@@ -8,7 +8,7 @@
   "toast_success_bg_color": "#2D9CDB",
   "toast_fail_bg_color": "#EB5757",
   "toast_width_margin": 10,
-  "toast_delay_duration": 2000,
+  "toast_delay_duration": 1000,
   "major_text_color": "#4F4F4F",
   "minor_text_color": "#828282"
 }
