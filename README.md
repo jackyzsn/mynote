@@ -19,7 +19,12 @@ node_modules --> react-native-permission --> RNPermissions.m, in this file Searc
 
 ### File for API key
 
-remember copy setting.json
+create setting.json for back up
+
+{
+"backupURL": "Deta base URL",
+"backupAPIKey": "deta.sh api key"
+}
 
 ### Android studio build issue
 
