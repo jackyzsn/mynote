@@ -22,7 +22,7 @@
     "native-base": "^3.4.17",
     "npm": "^8.19.2",
     "react": "18.1.0",
-    "react-native": "0.70.1",
+    "react-native": "0.70.3",
     "react-native-crypto-js": "^1.0.0",
     "react-native-document-picker": "^8.1.1",
     "react-native-fs": "^2.20.0",
