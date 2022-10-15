@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Dimensions, Alert } from 'react-native';
+import { Dimensions, Alert, Keyboard } from 'react-native';
 import {
   Container,
   TextArea,
@@ -13,7 +13,10 @@ import {
   useToast,
   Heading,
   Divider,
+  ScrollView,
+  IconButton,
 } from 'native-base';
+import HighlightText from '@sanar/react-native-highlight-text';
 import theme from '../resources/theme.json';
 import translate from '../utils/language.utils';
 import { Store } from '../Store';
@@ -32,6 +35,8 @@ export function NoteDetailScreen({ route, navigation }) {
   const [searchText, setSearchText] = useState('');
   const [searchStartFrom, setSearchStartFrom] = useState(0);
   const { id, notetag, backto } = route.params;
+  const [edit, setEdit] = useState(false);
+  const [searchHit, setSearchHit] = useState(false);
 
   const toast = useToast();
 
@@ -140,6 +145,22 @@ export function NoteDetailScreen({ route, navigation }) {
     }
   };
 
+  const searchTextView = () => {
+    Keyboard.dismiss();
+    let inx = notecontent.toLowerCase().indexOf(searchText.trim().toLowerCase(), searchStartFrom);
+    if (inx > -1) {
+      setSearchHit(true);
+    } else {
+      setSearchHit(false);
+      toast.show({
+        description: translate('end_of_search'),
+        placement: 'top',
+        duration: theme.toast_delay_duration,
+        bgColor: state.config.favColor,
+      });
+    }
+  };
+
   return (
     <Box flex={1} bg="white" safeAreaTop width="100%" alignSelf="center">
       <HStack w="98%" bg="transparent" alignItems="center" justifyContent="space-between" safeAreaBottom shadow={6}>
@@ -159,53 +180,92 @@ export function NoteDetailScreen({ route, navigation }) {
         <Heading size="md" color={theme.major_text_color}>
           {notetag}
         </Heading>
-        <Input
-          borderWidth={0}
-          w="30%"
-          value={searchText}
-          onChangeText={text => {
-            setSearchText(text);
-          }}
-          placeholder={translate('search_text')}
-          InputRightElement={
-            <Pressable
-              onPress={searchTextArea}
-              opacity={!searchText || searchText.trim().length === 0 ? 0.5 : 1}
-              disabled={!searchText || searchText.trim().length === 0}>
-              <Icon as={<MaterialIcons name="search" />} size={8} mr="2" />
-            </Pressable>
-          }
-        />
+        <HStack bg="transparent" justifyContent="center" w="35%">
+          <IconButton
+            icon={<Icon as={MaterialIcons} name="edit" />}
+            borderRadius="full"
+            _icon={{
+              color: state.config.favColor,
+              size: 'md',
+            }}
+            _pressed={{
+              bg: theme.bg_highlight_color,
+            }}
+            onPress={() => {
+              setEdit(!edit);
+            }}
+          />
+          <Input
+            borderWidth={0}
+            value={searchText}
+            mr={5}
+            onChangeText={text => {
+              setSearchText(text);
+            }}
+            placeholder={translate('search_text')}
+            InputRightElement={
+              <Pressable
+                onPress={() => {
+                  if (edit) {
+                    searchTextArea();
+                  } else {
+                    searchTextView();
+                  }
+                }}
+                opacity={!searchText || searchText.trim().length === 0 ? 0.5 : 1}
+                disabled={!searchText || searchText.trim().length === 0}>
+                <Icon as={<MaterialIcons name="search" />} size={8} mr="2" />
+              </Pressable>
+            }
+          />
+        </HStack>
       </HStack>
       <Divider my="2" bg="lightgrey" />
+      {!edit && (
+        <ScrollView>
+          <Box w="100%" width={contentWidth} ml={theme.content_margin / 2}>
+            {!searchHit ? (
+              <Text textAlign="left">{notecontent}</Text>
+            ) : (
+              <HighlightText
+                highlightStyle={{ backgroundColor: state.config.favColor }}
+                searchWords={[searchText]}
+                textToHighlight={notecontent}
+              />
+            )}
+          </Box>
+        </ScrollView>
+      )}
       <Center justifyContent="flex-start" flex={1}>
         <Container>
-          <TextArea
-            w="115%"
-            h="100%"
-            ml={-8}
-            mr={-8}
-            borderWidth={0}
-            placeholder={translate('note_area')}
-            value={notecontent}
-            onChangeText={text => {
-              setNotecontent(text);
-              setDetailUpdated(true);
-              textAreaRef.setNativeProps({
-                selection: null,
-              });
-            }}
-            onSelectionChange={() => {
-              textAreaRef.setNativeProps({
-                selectionColor: state.config.favColor,
-              });
-            }}
-            ref={ref => {
-              textAreaRef = ref;
-            }}
-            autoCorrect={false}
-            maxLength={10240000}
-          />
+          {edit && (
+            <TextArea
+              w="115%"
+              h="100%"
+              ml={-8}
+              mr={-8}
+              borderWidth={0}
+              placeholder={translate('note_area')}
+              value={notecontent}
+              onChangeText={text => {
+                setNotecontent(text);
+                setDetailUpdated(true);
+                textAreaRef.setNativeProps({
+                  selection: null,
+                });
+              }}
+              onSelectionChange={() => {
+                textAreaRef.setNativeProps({
+                  selectionColor: state.config.favColor,
+                });
+              }}
+              ref={ref => {
+                textAreaRef = ref;
+              }}
+              autoCorrect={false}
+              maxLength={10240000}
+            />
+          )}
         </Container>
       </Center>
       <HStack bg={state.config.favColor} alignItems="center" safeAreaBottom shadow={6}>
