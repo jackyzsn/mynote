@@ -10,6 +10,12 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
+  "engines": {
+    "npm": ">=8.7.0"
+  },
+  "overrides": {
+    "react": "$react"
+  },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-native-community/checkbox": "^0.5.12",

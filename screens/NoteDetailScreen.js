@@ -195,12 +195,15 @@ export function NoteDetailScreen({ route, navigation }) {
                 selection: null,
               });
             }}
+            onSelectionChange={() => {
+              textAreaRef.setNativeProps({
+                selectionColor: state.config.favColor,
+              });
+            }}
             ref={ref => {
               textAreaRef = ref;
             }}
             autoCorrect={false}
-            selectionColor={state.config.favColor}
-            underlineColorAndroid={state.config.favColor}
             maxLength={10240000}
           />
         </Container>
