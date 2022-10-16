@@ -38,8 +38,7 @@ export function NoteDetailScreen({ route, navigation }) {
   const [edit, setEdit] = useState(false);
   const [toLocate, setToLocate] = useState(false);
   const [searchHit, setSearchHit] = useState(false);
-  const [scrollContentX, setScrollContentX] = useState(0.0);
-  const [scrollContentY, setScrollContentY] = useState(0.0);
+
   const [lines, setLines] = useState([]);
 
   const toast = useToast();
@@ -186,30 +185,25 @@ export function NoteDetailScreen({ route, navigation }) {
   const switchToEdit = event => {
     let clickX = event.nativeEvent.locationX;
     let clickY = event.nativeEvent.locationY;
-    let rowHeight = scrollContentY / lines.length;
-    let clickedRow = Math.ceil(clickY / rowHeight);
-    // console.log('Content x: ' + scrollContentX);
-    // console.log('Content Y: ' + scrollContentY);
 
-    // console.log('locationX: ' + clickX);
-    // console.log('locationY: ' + clickY);
-    // console.log('Total length: ' + notecontent.length);
-    // console.log('Total rows: ' + lines.length);
-    // console.log('Row height: ' + rowHeight);
-    // console.log('Click Row: ' + clickedRow);
-    let row = lines[clickedRow - 1].text;
-    let rowX = Math.ceil((row.length * clickX) / scrollContentX);
+    let clickedRow = -1;
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].baseline - lines[i].ascender < clickY && clickY <= lines[i].baseline + lines[i].descender) {
+        clickedRow = i;
+      }
+    }
+    if (clickedRow === -1) {
+      clickedRow = lines.length;
+    }
+
+    let row = lines[clickedRow].text;
+    let rowX = Math.ceil((row.length * clickX) / lines[clickedRow].width) + 1;
 
     let offset = 0;
     for (let i = 0; i < clickedRow - 1; i++) {
       offset += lines[i].text.length;
     }
     offset += rowX;
-
-    // console.log('Row: ' + row);
-    // console.log('Row x: ' + rowX);
-    // console.log('offset: ' + offset);
-    // console.log('Text: ' + notecontent.substring(offset, offset + 1));
 
     setSearchText('');
     setSearchStartFrom(offset);
@@ -279,11 +273,7 @@ export function NoteDetailScreen({ route, navigation }) {
       </HStack>
       <Divider my="2" bg="lightgrey" />
       {!edit && (
-        <ScrollView
-          onContentSizeChange={(width, height) => {
-            setScrollContentX(width);
-            setScrollContentY(height);
-          }}>
+        <ScrollView>
           <Box w="100%" width={contentWidth} ml={theme.content_margin / 8} mr={theme.content_margin / 8}>
             {!searchHit ? (
               <Text
