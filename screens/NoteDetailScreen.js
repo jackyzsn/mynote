@@ -36,7 +36,11 @@ export function NoteDetailScreen({ route, navigation }) {
   const [searchStartFrom, setSearchStartFrom] = useState(0);
   const { id, notetag, backto } = route.params;
   const [edit, setEdit] = useState(false);
+  const [toLocate, setToLocate] = useState(false);
   const [searchHit, setSearchHit] = useState(false);
+  const [scrollContentX, setScrollContentX] = useState(0.0);
+  const [scrollContentY, setScrollContentY] = useState(0.0);
+  const [lines, setLines] = useState([]);
 
   const toast = useToast();
 
@@ -97,6 +101,14 @@ export function NoteDetailScreen({ route, navigation }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (toLocate) {
+      locateTextArea();
+      setToLocate(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [toLocate]);
+
   const confirmCancel = () =>
     Alert.alert(
       translate('confirm_exit_title'),
@@ -119,6 +131,16 @@ export function NoteDetailScreen({ route, navigation }) {
       ],
       { cancelable: false }
     );
+
+  const locateTextArea = () => {
+    textAreaRef.setNativeProps({
+      selection: {
+        start: searchStartFrom,
+        end: searchStartFrom,
+      },
+    });
+    textAreaRef.focus();
+  };
 
   const searchTextArea = () => {
     let inx = notecontent.toLowerCase().indexOf(searchText.trim().toLowerCase(), searchStartFrom);
@@ -161,6 +183,40 @@ export function NoteDetailScreen({ route, navigation }) {
     }
   };
 
+  const switchToEdit = event => {
+    let clickX = event.nativeEvent.locationX;
+    let clickY = event.nativeEvent.locationY;
+    let rowHeight = scrollContentY / lines.length;
+    let clickedRow = Math.ceil(clickY / rowHeight);
+    // console.log('Content x: ' + scrollContentX);
+    // console.log('Content Y: ' + scrollContentY);
+
+    // console.log('locationX: ' + clickX);
+    // console.log('locationY: ' + clickY);
+    // console.log('Total length: ' + notecontent.length);
+    // console.log('Total rows: ' + lines.length);
+    // console.log('Row height: ' + rowHeight);
+    // console.log('Click Row: ' + clickedRow);
+    let row = lines[clickedRow - 1].text;
+    let rowX = Math.ceil((row.length * clickX) / scrollContentX);
+
+    let offset = 0;
+    for (let i = 0; i < clickedRow - 1; i++) {
+      offset += lines[i].text.length;
+    }
+    offset += rowX;
+
+    // console.log('Row: ' + row);
+    // console.log('Row x: ' + rowX);
+    // console.log('offset: ' + offset);
+    // console.log('Text: ' + notecontent.substring(offset, offset + 1));
+
+    setSearchText('');
+    setSearchStartFrom(offset);
+    setEdit(true);
+    setToLocate(true);
+  };
+
   return (
     <Box flex={1} bg="white" safeAreaTop width="100%" alignSelf="center">
       <HStack w="98%" bg="transparent" alignItems="center" justifyContent="space-between" safeAreaBottom shadow={6}>
@@ -201,6 +257,7 @@ export function NoteDetailScreen({ route, navigation }) {
             mr={5}
             onChangeText={text => {
               setSearchText(text);
+              setSearchStartFrom(0);
             }}
             placeholder={translate('search_text')}
             InputRightElement={
@@ -222,15 +279,27 @@ export function NoteDetailScreen({ route, navigation }) {
       </HStack>
       <Divider my="2" bg="lightgrey" />
       {!edit && (
-        <ScrollView>
+        <ScrollView
+          onContentSizeChange={(width, height) => {
+            setScrollContentX(width);
+            setScrollContentY(height);
+          }}>
           <Box w="100%" width={contentWidth} ml={theme.content_margin / 8} mr={theme.content_margin / 8}>
             {!searchHit ? (
-              <Text textAlign="left">{notecontent}</Text>
+              <Text
+                textAlign="left"
+                onTextLayout={event => {
+                  setLines(event.nativeEvent.lines);
+                }}
+                onPress={switchToEdit}>
+                {notecontent}
+              </Text>
             ) : (
               <HighlightText
                 highlightStyle={{ backgroundColor: state.config.favColor }}
                 searchWords={[searchText]}
                 textToHighlight={notecontent}
+                onPress={switchToEdit}
               />
             )}
           </Box>
