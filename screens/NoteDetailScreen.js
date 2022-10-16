@@ -298,6 +298,7 @@ export function NoteDetailScreen({ route, navigation }) {
             ) : (
               <HighlightText
                 highlightStyle={{ backgroundColor: state.config.favColor }}
+                style={{ color: theme.major_text_color }}
                 searchWords={[searchText]}
                 textToHighlight={notecontent}
                 onPress={switchToEdit}
