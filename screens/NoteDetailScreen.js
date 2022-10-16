@@ -223,7 +223,7 @@ export function NoteDetailScreen({ route, navigation }) {
       <Divider my="2" bg="lightgrey" />
       {!edit && (
         <ScrollView>
-          <Box w="100%" width={contentWidth} ml={theme.content_margin / 2}>
+          <Box w="100%" width={contentWidth} ml={theme.content_margin / 8} mr={theme.content_margin / 8}>
             {!searchHit ? (
               <Text textAlign="left">{notecontent}</Text>
             ) : (
@@ -271,10 +271,10 @@ export function NoteDetailScreen({ route, navigation }) {
       <HStack bg={state.config.favColor} alignItems="center" safeAreaBottom shadow={6}>
         <Pressable
           cursor="pointer"
-          opacity={!updatable || notecontent.trim() === '' ? 0.5 : 1}
+          opacity={!edit || !updatable || notecontent.trim() === '' ? 0.5 : 1}
           py="3"
           flex={1}
-          disabled={!updatable || notecontent.trim() === ''}
+          disabled={!edit || !updatable || notecontent.trim() === ''}
           onPress={() => {
             let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
             updateNote(id, tmpTxt, updateCallback);
