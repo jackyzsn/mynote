@@ -198,12 +198,14 @@ export function NoteDetailScreen({ route, navigation }) {
     }
 
     let row = lines[clickedRow].text;
-    let rowX = Math.ceil((row.length * clickX) / lines[clickedRow].width) + 1;
+    let calculatedOffset = Math.ceil((row.length * clickX) / lines[clickedRow].width) - 1;
+    let rowX = calculatedOffset > row.length ? row.length : calculatedOffset;
 
     let offset = 0;
-    for (let i = 0; i < clickedRow - 1; i++) {
+    for (let i = 0; i < clickedRow; i++) {
       offset += lines[i].text.length;
     }
+
     offset += rowX;
 
     setSearchText('');
