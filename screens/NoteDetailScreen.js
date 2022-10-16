@@ -44,6 +44,7 @@ export function NoteDetailScreen({ route, navigation }) {
   const toast = useToast();
 
   let textAreaRef = null;
+  let searchTextInputRef = null;
 
   const updateCallback = rtnCode => {
     if (rtnCode === '00') {
@@ -252,6 +253,14 @@ export function NoteDetailScreen({ route, navigation }) {
             onChangeText={text => {
               setSearchText(text);
               setSearchStartFrom(0);
+            }}
+            onSelectionChange={() => {
+              searchTextInputRef.setNativeProps({
+                selectionColor: state.config.favColor,
+              });
+            }}
+            ref={ref => {
+              searchTextInputRef = ref;
             }}
             placeholder={translate('search_text')}
             InputRightElement={

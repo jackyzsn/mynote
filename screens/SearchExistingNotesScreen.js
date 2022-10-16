@@ -35,6 +35,8 @@ export function SearchExistingNotesScreen({ route, navigation }) {
 
   const toast = useToast();
 
+  let searchTextInputRef = null;
+
   const confirmExport = list => {
     Alert.alert(
       translate('confirm'),
@@ -165,6 +167,14 @@ export function SearchExistingNotesScreen({ route, navigation }) {
           value={searchText}
           onChangeText={text => {
             setSearchText(text);
+          }}
+          onSelectionChange={() => {
+            searchTextInputRef.setNativeProps({
+              selectionColor: state.config.favColor,
+            });
+          }}
+          ref={ref => {
+            searchTextInputRef = ref;
           }}
           placeholder={translate('search_text')}
           InputRightElement={
