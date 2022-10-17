@@ -213,7 +213,7 @@ export function NoteDetailScreen({ route, navigation }) {
       }
     }
     if (clickedRow === -1) {
-      clickedRow = lines.length;
+      clickedRow = lines.length - 1;
     }
 
     let row = lines[clickedRow].text;
