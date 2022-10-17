@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Dimensions, Alert, Keyboard } from 'react-native';
+import { Dimensions, Alert, Keyboard, Platform } from 'react-native';
 import {
   Container,
   TextArea,
@@ -141,6 +141,7 @@ export function NoteDetailScreen({ route, navigation }) {
         end: searchStartFrom,
       },
     });
+
     textAreaRef.focus();
   };
 
@@ -179,15 +180,18 @@ export function NoteDetailScreen({ route, navigation }) {
 
       for (let i = 0; i < lines.length; i++) {
         if (lines[i].text.toLowerCase().indexOf(searchText.trim().toLowerCase()) > -1) {
-          firstOccurancePosition = lines[i].baseline;
+          firstOccurancePosition = lines[i].y;
           break;
         }
       }
 
+      let scrollToPosition =
+        Platform.OS === 'ios' ? firstOccurancePosition - deviceHeight / 2 : firstOccurancePosition - deviceHeight;
+
       if (scrollViewRef) {
         scrollViewRef.scrollTo({
           x: 0,
-          y: firstOccurancePosition - deviceHeight > 0 ? firstOccurancePosition - deviceHeight : 0.0,
+          y: scrollToPosition > 0 ? scrollToPosition : 0.0,
           animated: true,
         });
       }
@@ -208,7 +212,7 @@ export function NoteDetailScreen({ route, navigation }) {
 
     let clickedRow = -1;
     for (let i = 0; i < lines.length; i++) {
-      if (lines[i].baseline - lines[i].ascender < clickY && clickY <= lines[i].baseline + lines[i].descender) {
+      if (lines[i].y < clickY && clickY <= lines[i].y + lines[i].height) {
         clickedRow = i;
       }
     }
