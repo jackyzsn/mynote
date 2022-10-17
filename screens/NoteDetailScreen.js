@@ -25,6 +25,7 @@ import { retrieveNoteDetail, updateNote } from '../utils/dbhelper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
 const contentWidth = deviceWidth - theme.content_margin;
 
 export function NoteDetailScreen({ route, navigation }) {
@@ -38,6 +39,7 @@ export function NoteDetailScreen({ route, navigation }) {
   const [edit, setEdit] = useState(false);
   const [toLocate, setToLocate] = useState(false);
   const [searchHit, setSearchHit] = useState(false);
+  const [scrollViewRef, setScrollViewRef] = useState(null);
 
   const [lines, setLines] = useState([]);
 
@@ -172,6 +174,23 @@ export function NoteDetailScreen({ route, navigation }) {
     let inx = notecontent.toLowerCase().indexOf(searchText.trim().toLowerCase(), searchStartFrom);
     if (inx > -1) {
       setSearchHit(true);
+
+      let firstOccurancePosition = 0.0;
+
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].text.toLowerCase().indexOf(searchText.trim().toLowerCase()) > -1) {
+          firstOccurancePosition = lines[i].baseline;
+          break;
+        }
+      }
+
+      if (scrollViewRef) {
+        scrollViewRef.scrollTo({
+          x: 0,
+          y: firstOccurancePosition - deviceHeight > 0 ? firstOccurancePosition - deviceHeight : 0.0,
+          animated: true,
+        });
+      }
     } else {
       setSearchHit(false);
       toast.show({
@@ -284,7 +303,11 @@ export function NoteDetailScreen({ route, navigation }) {
       </HStack>
       <Divider my="2" bg="lightgrey" />
       {!edit && (
-        <ScrollView>
+        <ScrollView
+          on
+          ref={ref => {
+            setScrollViewRef(ref);
+          }}>
           <Box w="100%" width={contentWidth} ml={theme.content_margin / 8} mr={theme.content_margin / 8}>
             {!searchHit ? (
               <Text
