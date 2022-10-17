@@ -40,6 +40,7 @@ export function NoteDetailScreen({ route, navigation }) {
   const [toLocate, setToLocate] = useState(false);
   const [searchHit, setSearchHit] = useState(false);
   const [scrollViewRef, setScrollViewRef] = useState(null);
+  const [originalContent, setOriginalContent] = useState('');
 
   const [lines, setLines] = useState([]);
 
@@ -69,11 +70,30 @@ export function NoteDetailScreen({ route, navigation }) {
     }
   };
 
+  const updateCallbackNotBack = rtnCode => {
+    if (rtnCode === '00') {
+      toast.show({
+        description: translate('note_update_success'),
+        placement: 'top',
+        duration: theme.toast_delay_duration,
+        bgColor: state.config.favColor,
+      });
+    } else {
+      toast.show({
+        description: translate('note_update_failed'),
+        placement: 'top',
+        duration: theme.toast_delay_duration,
+        bgColor: theme.toast_fail_bg_color,
+      });
+    }
+  };
+
   const decryptText = (rtnCode, encryptedText) => {
     if (rtnCode === '00') {
       let decryptedText = decrypt(encryptedText, state.config.encryptionkey);
       if (decryptedText) {
         setNotecontent(decryptedText);
+        setOriginalContent(decryptedText);
         setUpdatable(true);
       } else {
         setNotecontent(encryptedText);
@@ -111,28 +131,33 @@ export function NoteDetailScreen({ route, navigation }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toLocate]);
 
-  const confirmCancel = () =>
-    Alert.alert(
-      translate('confirm_exit_title'),
-      translate('confirm_exit_body'),
-      [
-        {
-          text: translate('save'),
-          onPress: () => {
-            let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
-            updateNote(id, tmpTxt, updateCallback);
-            navigation.navigate(backto);
+  const confirmCancel = () => {
+    if (originalContent !== notecontent) {
+      Alert.alert(
+        translate('confirm_exit_title'),
+        translate('confirm_exit_body'),
+        [
+          {
+            text: translate('save'),
+            onPress: () => {
+              let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
+              updateNote(id, tmpTxt, updateCallback);
+              navigation.navigate(backto);
+            },
           },
-        },
-        {
-          text: translate('not_save'),
-          onPress: () => {
-            navigation.navigate(backto);
+          {
+            text: translate('not_save'),
+            onPress: () => {
+              navigation.navigate(backto);
+            },
           },
-        },
-      ],
-      { cancelable: false }
-    );
+        ],
+        { cancelable: false }
+      );
+    } else {
+      navigation.navigate(backto);
+    }
+  };
 
   const locateTextArea = () => {
     textAreaRef.setNativeProps({
@@ -258,7 +283,7 @@ export function NoteDetailScreen({ route, navigation }) {
         </Heading>
         <HStack bg="transparent" justifyContent="center" w="35%">
           <IconButton
-            icon={<Icon as={MaterialIcons} name="edit" />}
+            icon={<Icon as={MaterialIcons} name={edit ? 'edit-off' : 'edit'} />}
             borderRadius="full"
             _icon={{
               color: state.config.favColor,
@@ -268,7 +293,37 @@ export function NoteDetailScreen({ route, navigation }) {
               bg: theme.bg_highlight_color,
             }}
             onPress={() => {
-              setEdit(!edit);
+              if (edit && detailUpdated) {
+                if (originalContent !== notecontent) {
+                  Alert.alert(
+                    translate('confirm_exit_title'),
+                    translate('confirm_exit_body'),
+                    [
+                      {
+                        text: translate('save'),
+                        onPress: () => {
+                          let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
+                          updateNote(id, tmpTxt, updateCallbackNotBack);
+                          setOriginalContent(notecontent);
+                          setEdit(!edit);
+                        },
+                      },
+                      {
+                        text: translate('not_save'),
+                        onPress: () => {
+                          setNotecontent(originalContent);
+                          setEdit(!edit);
+                        },
+                      },
+                    ],
+                    { cancelable: false }
+                  );
+                } else {
+                  setEdit(!edit);
+                }
+              } else {
+                setEdit(!edit);
+              }
             }}
           />
           <Input
