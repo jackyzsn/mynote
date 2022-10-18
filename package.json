@@ -36,6 +36,7 @@
     "react-native-gesture-handler": "^2.6.2",
     "react-native-localize": "^2.2.4",
     "react-native-permissions": "^3.6.1",
+    "react-native-restart": "^0.0.24",
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "^3.17.0",
     "react-native-sha256": "^1.4.8",

@@ -11,5 +11,6 @@
   "toast_delay_duration": 1000,
   "major_text_color": "#4F4F4F",
   "minor_text_color": "#828282",
-  "bg_highlight_color": "#faf9f7"
+  "bg_highlight_color": "#faf9f7",
+  "session_timeout": 900
 }

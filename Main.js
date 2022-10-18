@@ -1,5 +1,7 @@
-import React from 'react';
-import { StyleSheet, SafeAreaView } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, SafeAreaView, AppState } from 'react-native';
+import RNRestart from 'react-native-restart';
+import moment from 'moment';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from './screens/HomeScreen';
@@ -26,6 +28,32 @@ const styles = StyleSheet.create({
 });
 
 function Main() {
+  const appState = useRef(AppState.currentState);
+  const [offlineAt, setOfflineAt] = useState(null);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+        let now = new moment();
+
+        let diff = now.diff(offlineAt, 'seconds');
+        if (diff > theme.session_timeout) {
+          RNRestart.Restart();
+        }
+      } else if (appState.current === 'active' && nextAppState.match(/inactive|background/)) {
+        let now = new moment();
+
+        setOfflineAt(now);
+      }
+
+      appState.current = nextAppState;
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, [offlineAt]);
+
   return (
     <SafeAreaView style={styles.container}>
       <NativeBaseProvider>

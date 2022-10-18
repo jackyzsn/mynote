@@ -280,6 +280,7 @@ dependencies {
     }
 
     implementation project(':react-native-fs')
+    implementation project(':react-native-restart')
 }
 
 if (isNewArchitectureEnabled()) {
