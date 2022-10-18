@@ -37,6 +37,8 @@ function Main() {
         let now = new moment();
 
         let diff = now.diff(offlineAt, 'seconds');
+        let currentScreen = Stack.Screen.name;
+        console.log(currentScreen);
         if (diff > theme.session_timeout) {
           RNRestart.Restart();
         }

@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { useNavigationContainerRef } from '@react-navigation/native';
 import { Dimensions, Alert } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { Container, Center, HStack, FlatList, Text, VStack, Icon, useToast, Box, Pressable } from 'native-base';
@@ -14,10 +15,11 @@ import { sha256 } from 'react-native-sha256';
 const deviceWidth = Dimensions.get('window').width;
 const contentWidth = deviceWidth - theme.content_margin;
 
-export function BrowseNoteScreen({ navigation }) {
+export function BrowseNoteScreen() {
   const { state } = useContext(Store);
   const [notelist, setNotelist] = useState([]);
   const [checkboxes, setCheckboxes] = useState([]);
+  const navigation = useNavigationContainerRef();
 
   const toast = useToast();
 
