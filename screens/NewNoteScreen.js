@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Dimensions, Platform } from 'react-native';
 import {
   Container,
@@ -29,10 +29,17 @@ const deviceWidth = Dimensions.get('window').width;
 const contentWidth = deviceWidth - theme.content_margin;
 
 export function NewNoteScreen({ navigation }) {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const [notecontent, setNotecontent] = useState('');
   const [notetag, setNotetag] = useState('');
   const toast = useToast();
+
+  useEffect(() => {
+    dispatch({
+      type: 'CHANGE_SCREEN',
+      payload: 'NewNote',
+    });
+  }, [dispatch]);
 
   const showToast = rtnCode => {
     if (rtnCode === '00') {
@@ -43,6 +50,10 @@ export function NewNoteScreen({ navigation }) {
         bgColor: state.config.favColor,
         onCloseComplete: () => {
           navigation.navigate('NoteMain');
+          dispatch({
+            type: 'CHANGE_SCREEN',
+            payload: 'NoteMain',
+          });
         },
       });
     } else if (rtnCode === '10') {
@@ -161,6 +172,10 @@ export function NewNoteScreen({ navigation }) {
           flex={1}
           onPress={() => {
             navigation.navigate('NoteMain');
+            dispatch({
+              type: 'CHANGE_SCREEN',
+              payload: 'NoteMain',
+            });
           }}>
           <Center>
             <Icon mb="1" as={<MaterialIcons name="cancel" />} color="white" size="sm" />

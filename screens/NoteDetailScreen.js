@@ -29,7 +29,7 @@ const deviceHeight = Dimensions.get('window').height;
 const contentWidth = deviceWidth - theme.content_margin;
 
 export function NoteDetailScreen({ route, navigation }) {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const [notecontent, setNotecontent] = useState('');
   const [updatable, setUpdatable] = useState(true);
   const [detailUpdated, setDetailUpdated] = useState(false);
@@ -57,6 +57,10 @@ export function NoteDetailScreen({ route, navigation }) {
         duration: theme.toast_delay_duration,
         onCloseComplete: () => {
           navigation.navigate('BrowseNote');
+          dispatch({
+            type: 'CHANGE_SCREEN',
+            payload: 'BrowseNote',
+          });
         },
         bgColor: state.config.favColor,
       });
@@ -112,6 +116,10 @@ export function NoteDetailScreen({ route, navigation }) {
         duration: theme.toast_delay_duration,
         onCloseComplete: () => {
           navigation.navigate('BrowseNote');
+          dispatch({
+            type: 'CHANGE_SCREEN',
+            payload: 'BrowseNote',
+          });
         },
         bgColor: theme.toast_fail_bg_color,
       });
@@ -122,6 +130,13 @@ export function NoteDetailScreen({ route, navigation }) {
     retrieveNoteDetail(id, decryptText);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    dispatch({
+      type: 'CHANGE_SCREEN',
+      payload: 'NoteDetail',
+    });
+  }, [dispatch]);
 
   useEffect(() => {
     if (toLocate) {
@@ -143,12 +158,20 @@ export function NoteDetailScreen({ route, navigation }) {
               let tmpTxt = encrypt(notecontent, state.config.encryptionkey);
               updateNote(id, tmpTxt, updateCallback);
               navigation.navigate(backto);
+              dispatch({
+                type: 'CHANGE_SCREEN',
+                payload: backto,
+              });
             },
           },
           {
             text: translate('not_save'),
             onPress: () => {
               navigation.navigate(backto);
+              dispatch({
+                type: 'CHANGE_SCREEN',
+                payload: backto,
+              });
             },
           },
         ],
@@ -156,6 +179,10 @@ export function NoteDetailScreen({ route, navigation }) {
       );
     } else {
       navigation.navigate(backto);
+      dispatch({
+        type: 'CHANGE_SCREEN',
+        payload: backto,
+      });
     }
   };
 
@@ -274,6 +301,10 @@ export function NoteDetailScreen({ route, navigation }) {
               confirmCancel();
             } else {
               navigation.navigate(backto);
+              dispatch({
+                type: 'CHANGE_SCREEN',
+                payload: backto,
+              });
             }
           }}>
           <MaterialIcons name="arrow-back-ios" size={24} color={theme.major_text_color} />
@@ -448,6 +479,10 @@ export function NoteDetailScreen({ route, navigation }) {
               confirmCancel();
             } else {
               navigation.navigate(backto);
+              dispatch({
+                type: 'CHANGE_SCREEN',
+                payload: backto,
+              });
             }
           }}>
           <Center>

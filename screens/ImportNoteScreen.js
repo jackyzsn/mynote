@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Dimensions, Platform } from 'react-native';
 import {
   Container,
@@ -27,11 +27,18 @@ const deviceWidth = Dimensions.get('window').width;
 const contentWidth = deviceWidth - theme.content_margin;
 
 export function ImportNoteScreen({ navigation }) {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const [fileName, setFileName] = useState('');
   const [fileFullName, setFileFullName] = useState('');
   const [exportDisabled, setExportDisabled] = useState(true);
   const toast = useToast();
+
+  useEffect(() => {
+    dispatch({
+      type: 'CHANGE_SCREEN',
+      payload: 'ImportNote',
+    });
+  }, [dispatch]);
 
   const importCallback = rtnCode => {
     if (rtnCode === '00') {
@@ -42,9 +49,12 @@ export function ImportNoteScreen({ navigation }) {
         bgColor: state.config.favColor,
         onClose: () => {
           navigation.navigate('NoteMain');
+          dispatch({
+            type: 'CHANGE_SCREEN',
+            payload: 'NoteMain',
+          });
         },
       });
-      navigation.navigate('NoteMain');
     } else {
       toast.show({
         description: translate('import_failed'),

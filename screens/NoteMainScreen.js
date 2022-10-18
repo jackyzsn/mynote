@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import { Store } from '../Store';
 import { Container, Center, Button, Text, Box, useToast } from 'native-base';
@@ -10,7 +10,7 @@ const deviceWidth = Dimensions.get('window').width;
 const contentWidth = deviceWidth - theme.content_margin;
 
 export function NoteMainScreen({ navigation }) {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const toast = useToast();
 
   const syncCallback = rtnCode => {
@@ -30,6 +30,13 @@ export function NoteMainScreen({ navigation }) {
       });
     }
   };
+
+  useEffect(() => {
+    dispatch({
+      type: 'CHANGE_SCREEN',
+      payload: 'NoteMain',
+    });
+  }, [dispatch]);
 
   return (
     <Center>

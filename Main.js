@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { StyleSheet, SafeAreaView, AppState } from 'react-native';
 import RNRestart from 'react-native-restart';
 import moment from 'moment';
@@ -14,6 +14,7 @@ import { SearchExistingNotesScreen } from './screens/SearchExistingNotesScreen';
 import translate from './utils/language.utils';
 import { NativeBaseProvider } from 'native-base';
 import theme from './resources/theme.json';
+import { Store } from './Store';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
 
 function Main() {
   const appState = useRef(AppState.currentState);
+  const { state, dispatch } = useContext(Store);
   const [offlineAt, setOfflineAt] = useState(null);
 
   useEffect(() => {
@@ -37,10 +39,13 @@ function Main() {
         let now = new moment();
 
         let diff = now.diff(offlineAt, 'seconds');
-        let currentScreen = Stack.Screen.name;
-        console.log(currentScreen);
-        if (diff > theme.session_timeout) {
+
+        if (diff > theme.session_timeout && state.currentScreen !== 'HOME') {
           RNRestart.Restart();
+          dispatch({
+            type: 'CHANGE_SCREEN',
+            payload: 'HOME',
+          });
         }
       } else if (appState.current === 'active' && nextAppState.match(/inactive|background/)) {
         let now = new moment();
@@ -54,7 +59,7 @@ function Main() {
     return () => {
       subscription.remove();
     };
-  }, [offlineAt]);
+  }, [offlineAt, dispatch, state.currentScreen]);
 
   return (
     <SafeAreaView style={styles.container}>

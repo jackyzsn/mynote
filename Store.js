@@ -9,12 +9,15 @@ const initialState = {
     hasPermission: false,
     favColor: '#6FCF97',
   },
+  currentScreen: 'HOME',
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case 'CHANGE_CONFIG':
       return { ...state, config: action.payload };
+    case 'CHANGE_SCREEN':
+      return { ...state, currentScreen: action.payload };
     default:
       return state;
   }

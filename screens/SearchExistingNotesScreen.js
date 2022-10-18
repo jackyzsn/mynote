@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Dimensions, Alert } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {
@@ -28,7 +28,7 @@ const deviceWidth = Dimensions.get('window').width;
 const contentWidth = deviceWidth - theme.content_margin;
 
 export function SearchExistingNotesScreen({ route, navigation }) {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const [searchText, setSearchText] = useState('');
   const [notelist, setNotelist] = useState([]);
   const [checkboxes, setCheckboxes] = useState([]);
@@ -36,6 +36,13 @@ export function SearchExistingNotesScreen({ route, navigation }) {
   const toast = useToast();
 
   let searchTextInputRef = null;
+
+  useEffect(() => {
+    dispatch({
+      type: 'CHANGE_SCREEN',
+      payload: 'SearchExistingNotes',
+    });
+  }, [dispatch]);
 
   const confirmExport = list => {
     Alert.alert(
@@ -155,6 +162,10 @@ export function SearchExistingNotesScreen({ route, navigation }) {
           ml={2}
           onPress={() => {
             navigation.navigate('NoteMain');
+            dispatch({
+              type: 'CHANGE_SCREEN',
+              payload: 'NoteMain',
+            });
           }}>
           <MaterialIcons name="arrow-back-ios" size={24} color={theme.major_text_color} />
         </Pressable>
@@ -217,26 +228,34 @@ export function SearchExistingNotesScreen({ route, navigation }) {
                     />
 
                     <Pressable
-                      onPress={() =>
+                      onPress={() => {
                         navigation.navigate('NoteDetail', {
                           id: item.id,
                           notetag: item.note_tag,
                           backto: 'SearchExistingNotes',
-                        })
-                      }>
+                        });
+                        dispatch({
+                          type: 'CHANGE_SCREEN',
+                          payload: 'SearchExistingNotes',
+                        });
+                      }}>
                       <VStack>
                         <Text color={theme.major_text_color}>{item.note_tag}</Text>
                         <Text color={theme.major_text_color}>{item.updt}</Text>
                       </VStack>
                     </Pressable>
                     <Pressable
-                      onPress={() =>
+                      onPress={() => {
                         navigation.navigate('NoteDetail', {
                           id: item.id,
                           notetag: item.note_tag,
                           backto: 'SearchExistingNotes',
-                        })
-                      }>
+                        });
+                        dispatch({
+                          type: 'CHANGE_SCREEN',
+                          payload: 'SearchExistingNotes',
+                        });
+                      }}>
                       <MaterialIcons name="arrow-forward" size={24} color={theme.major_text_color} />
                     </Pressable>
                   </HStack>
@@ -285,6 +304,10 @@ export function SearchExistingNotesScreen({ route, navigation }) {
           flex={1}
           onPress={() => {
             navigation.navigate('NoteMain');
+            dispatch({
+              type: 'CHANGE_SCREEN',
+              payload: 'NoteMain',
+            });
           }}>
           <Center>
             <Icon mb="1" as={<MaterialIcons name="cancel" />} color="white" size="sm" />

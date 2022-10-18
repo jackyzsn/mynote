@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigationContainerRef } from '@react-navigation/native';
 import { Dimensions, Alert } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { Container, Center, HStack, FlatList, Text, VStack, Icon, useToast, Box, Pressable } from 'native-base';
@@ -15,11 +14,10 @@ import { sha256 } from 'react-native-sha256';
 const deviceWidth = Dimensions.get('window').width;
 const contentWidth = deviceWidth - theme.content_margin;
 
-export function BrowseNoteScreen() {
-  const { state } = useContext(Store);
+export function BrowseNoteScreen({ navigation }) {
+  const { state, dispatch } = useContext(Store);
   const [notelist, setNotelist] = useState([]);
   const [checkboxes, setCheckboxes] = useState([]);
-  const navigation = useNavigationContainerRef();
 
   const toast = useToast();
 
@@ -35,6 +33,13 @@ export function BrowseNoteScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+
+  useEffect(() => {
+    dispatch({
+      type: 'CHANGE_SCREEN',
+      payload: 'BrowseNote',
+    });
+  }, [dispatch]);
 
   const confirmDelete = list => {
     Alert.alert(
@@ -81,6 +86,10 @@ export function BrowseNoteScreen() {
       });
       setCheckboxes([]);
       navigation.navigate('NoteMain');
+      dispatch({
+        type: 'CHANGE_SCREEN',
+        payload: 'NoteMain',
+      });
     } else if (rtnCode === '10') {
       toast.show({
         description: translate('nothing_export'),
@@ -120,6 +129,10 @@ export function BrowseNoteScreen() {
         bgColor: state.config.favColor,
       });
       navigation.navigate('NoteMain');
+      dispatch({
+        type: 'CHANGE_SCREEN',
+        payload: 'NoteMain',
+      });
     } else {
       toast.show({
         description: translate('note_delete_failed'),
@@ -238,6 +251,10 @@ export function BrowseNoteScreen() {
           flex={1}
           onPress={() => {
             navigation.navigate('NoteMain');
+            dispatch({
+              type: 'CHANGE_SCREEN',
+              payload: 'NoteMain',
+            });
           }}>
           <Center>
             <Icon mb="1" as={<MaterialIcons name="cancel" />} color="white" size="sm" />
