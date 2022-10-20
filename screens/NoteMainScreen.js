@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, Alert } from 'react-native';
 import { Store } from '../Store';
 import { Container, Center, Button, Text, Box, useToast } from 'native-base';
 import theme from '../resources/theme.json';
 import translate from '../utils/language.utils';
 import { syncToCloud } from '../utils/dbhelper';
+import DeviceInfo from 'react-native-device-info';
 
 const deviceWidth = Dimensions.get('window').width;
 const contentWidth = deviceWidth - theme.content_margin;
@@ -87,10 +88,24 @@ export function NoteMainScreen({ navigation }) {
             mt={10}
             w="100%"
             bgColor={state.config.favColor}
-            onPress={() => {
-              syncToCloud(syncCallback);
+            onPress={async () => {
+              let uniqueId = await DeviceInfo.getUniqueId();
+              let buildId = await DeviceInfo.getBuildId();
+              let userAgent = await DeviceInfo.getUserAgent();
+              let deviceId = buildId + '(' + uniqueId + ')';
+              syncToCloud(deviceId, userAgent, syncCallback);
             }}>
             <Text color={theme.btn_txt_color}>{translate('sync_to_cloud')}</Text>
+          </Button>
+          <Button
+            block
+            mt={10}
+            w="100%"
+            bgColor={state.config.favColor}
+            onPress={() => {
+              navigation.navigate('RestoreCloud');
+            }}>
+            <Text color={theme.btn_txt_color}>{translate('restore_from_cloud')}</Text>
           </Button>
         </Box>
       </Container>

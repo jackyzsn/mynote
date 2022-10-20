@@ -31,6 +31,7 @@
     "react": "18.1.0",
     "react-native": "0.70.3",
     "react-native-crypto-js": "^1.0.0",
+    "react-native-device-info": "^10.2.1",
     "react-native-document-picker": "^8.1.1",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.6.2",
@@ -42,6 +43,7 @@
     "react-native-sha256": "^1.4.8",
     "react-native-sqlite-storage": "^6.0.1",
     "react-native-svg": "^13.2.0",
+    "react-native-uuid-generator": "^6.1.1",
     "react-native-vector-icons": "^9.2.0"
   },
   "devDependencies": {

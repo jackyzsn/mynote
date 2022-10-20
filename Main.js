@@ -11,6 +11,7 @@ import { BrowseNoteScreen } from './screens/BrowseNoteScreen';
 import { ImportNoteScreen } from './screens/ImportNoteScreen';
 import { NoteDetailScreen } from './screens/NoteDetailScreen';
 import { SearchExistingNotesScreen } from './screens/SearchExistingNotesScreen';
+import { RestoreCloudScreen } from './screens/RestoreCloudScreen';
 import translate from './utils/language.utils';
 import { NativeBaseProvider } from 'native-base';
 import theme from './resources/theme.json';
@@ -92,6 +93,11 @@ function Main() {
               name="ImportNote"
               component={ImportNoteScreen}
               options={{ title: translate('import_note'), headerTintColor: theme.major_text_color }}
+            />
+            <Stack.Screen
+              name="RestoreCloud"
+              component={RestoreCloudScreen}
+              options={{ title: translate('restore_cloud'), headerTintColor: theme.major_text_color }}
             />
           </Stack.Navigator>
         </NavigationContainer>

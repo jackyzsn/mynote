@@ -1,10 +1,14 @@
 import { openDatabase } from 'react-native-sqlite-storage';
+import UUIDGenerator from 'react-native-uuid-generator';
 import RNFS from 'react-native-fs';
 import moment from 'moment';
 import { Platform } from 'react-native';
 import setting from '../setting.json';
 
 let db = openDatabase({ name: 'MyNote_v2.db' });
+
+const mynote = 'mynote';
+const mynoteIndex = 'mynote_index';
 
 export function createTable() {
   db.transaction(function (trans) {
@@ -288,7 +292,7 @@ export function importFromFile(notegroup, noteList, key, encrypt, deleteKey, cal
   }
 }
 
-export function syncToCloud(callback) {
+export function syncToCloud(deviceId, userAgent, callback) {
   db.transaction(function (trans) {
     trans.executeSql(
       'SELECT id, note_group, note_tag, note_text, delete_key, updt from tbl_notes order by id',
@@ -312,27 +316,156 @@ export function syncToCloud(callback) {
 
         let now = new moment();
         let nowString = now.format('YYYY-MM-DDTHH:mm:ss.SSS');
-
-        fetch(setting.backupURL, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'X-Api-Key': setting.backupAPIKey,
-          },
-          body: JSON.stringify({
-            item: {
-              content: JSON.stringify(noteList),
-              updt: nowString,
+        UUIDGenerator.getRandomUUID().then(uid => {
+          fetch(setting.backupURL + mynote + '/items', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'X-Api-Key': setting.backupAPIKey,
             },
-          }),
-        })
-          .then(response => callback('00'))
-          .catch(error => {
-            console.error(error);
-            callback('99');
-          });
+            body: JSON.stringify({
+              item: {
+                uuid: uid,
+                agent: userAgent,
+                content: JSON.stringify(noteList),
+              },
+            }),
+          })
+            .then(response => {
+              callback('00');
+              // save index
+              fetch(setting.backupURL + mynoteIndex + '/items', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  'X-Api-Key': setting.backupAPIKey,
+                },
+                body: JSON.stringify({
+                  item: {
+                    uuid: uid,
+                    device: deviceId,
+                    updt: nowString,
+                  },
+                }),
+              });
+            })
+            .catch(error => {
+              console.error(error);
+              callback('99');
+            });
+        });
       }
     );
   });
+}
+
+export function retrieveBackups(callback, showError) {
+  fetch(setting.backupURL + mynoteIndex + '/query', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'X-Api-Key': setting.backupAPIKey,
+    },
+    body: JSON.stringify({
+      query: [],
+    }),
+  })
+    .then(response => {
+      if (!response.ok) {
+        showError();
+        console.error('HTTP error ' + response.status);
+      }
+      return response.json();
+    })
+    .then(json => {
+      let backupList = json.items.map(item => ({
+        uuid: item.uuid,
+        device: item.device,
+        backupAt: item.updt,
+      }));
+
+      backupList.sort((a, b) => {
+        if (b.backupAt > a.backupAt) {
+          return 1;
+        }
+        if (a.backupAt > b.backupAt) {
+          return -1;
+        }
+        return 0;
+      });
+
+      callback(backupList);
+    })
+    .catch(error => {
+      console.error(error);
+      showError();
+      callback([]);
+    });
+}
+
+export function restoreToDB(uuid, callback) {
+  fetch(setting.backupURL + mynote + '/query', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'X-Api-Key': setting.backupAPIKey,
+    },
+    body: JSON.stringify({
+      query: [{ uuid: uuid }],
+    }),
+  })
+    .then(response => {
+      if (!response.ok) {
+        callback('99');
+        console.error('HTTP error ' + response.status);
+      }
+      return response.json();
+    })
+    .then(json => {
+      let notes = JSON.parse(json.items[0].content);
+
+      db.transaction(function (trans) {
+        trans.executeSql('DELETE from tbl_notes', []);
+        let symbols = '';
+        let vals = [];
+        for (let i = 0; i < notes.length; i++) {
+          // let id = notes[i].id;
+          let noteTag = notes[i].note_tag;
+          let noteContent = notes[i].note_content;
+          let noteGroup = notes[i].note_group;
+          let deleteKey = notes[i].delete_key;
+          let updt = notes[i].updt;
+          vals.push(noteGroup);
+          vals.push(noteTag);
+          vals.push(updt);
+          vals.push(noteContent);
+          vals.push(deleteKey);
+          if (i === 0) {
+            symbols = symbols + '(?,?,?,?,?)';
+          } else {
+            symbols = symbols + ',(?,?,?,?,?)';
+          }
+        }
+        trans.executeSql(
+          'INSERT into tbl_notes (note_group, note_tag, updt, note_text, delete_key) values ' + symbols,
+          [...vals],
+          (tx, results) => {
+            if (results.rowsAffected === 0) {
+              callback('99');
+              console.log('Failed to insert');
+            } else {
+              callback('00');
+            }
+          }
+        );
+      });
+    })
+    .catch(error => {
+      console.error(error);
+      callback('99');
+    });
 }
