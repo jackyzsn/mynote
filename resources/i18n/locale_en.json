@@ -54,5 +54,6 @@
   "restore": "Restore",
   "retrieve_failed": "Failed to retrieve backup list",
   "restore_failed": "Failed to restore",
-  "restore_success": "Successfully restore from cloud"
+  "restore_success": "Successfully restore from cloud",
+  "message": "Meaage"
 }

@@ -54,5 +54,6 @@
   "restore": "恢复",
   "retrieve_failed": "获取备份列表失败",
   "restore_failed": "恢复失败",
-  "restore_success": "成功从云端备份恢复"
+  "restore_success": "成功从云端备份恢复",
+  "message": "返回信息"
 }
