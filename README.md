@@ -3,7 +3,7 @@
 ## New react native project
 
 ```
-npx @react-native-community/cli@latest init MyNote --version 2.00.0
+npx @react-native-community/cli@latest init MyNote --version 2.0.0
 ```
 
 ## Build react native apk
