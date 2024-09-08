@@ -496,7 +496,7 @@ export function NoteDetailScreen({ route, navigation }: NoteDetailScreenProps): 
                                 {notecontent}
                             </Text>
                         ) : (
-                            <HighlightedText onPress={switchToEdit} highlights={[new Highlight({
+                            <HighlightedText style={{ color: theme.major_text_color }} onPress={switchToEdit} highlights={[new Highlight({
                                 keywords: [searchText],
                                 style: { color: theme.major_text_color, backgroundColor: mynoteConfig.config.favColor, fontWeight: 'bold' },
                             })]}>
