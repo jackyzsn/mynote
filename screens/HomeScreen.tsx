@@ -112,8 +112,8 @@ export function HomeScreen({ navigation }: ImportHomeScreenProps): JSX.Element {
                                 <FormControl mt={10} w="100%">
                                     <VStack space="xs">
                                         <VStack>
-                                            <FormControl.Label><Text>{t('note_group')}</Text></FormControl.Label>
-                                            <Input>
+                                            <FormControl.Label mt="$2"><Text>{t('note_group')}</Text></FormControl.Label>
+                                            <Input mt="$2">
                                                 <InputField value={notegroup} onChangeText={(text: string) => {
                                                     setNotegroup(text);
                                                 }} />
@@ -121,9 +121,9 @@ export function HomeScreen({ navigation }: ImportHomeScreenProps): JSX.Element {
                                         </VStack>
 
                                         <VStack>
-                                            <FormControl.Label><Text>{t('encryption_key')}</Text></FormControl.Label>
+                                            <FormControl.Label mt="$2"><Text>{t('encryption_key')}</Text></FormControl.Label>
 
-                                            <Input>
+                                            <Input mt="$2">
                                                 <InputField type={secureKey ? 'password' : 'text'} onChangeText={text => {
                                                     setEncrypkey(text);
                                                 }} />
@@ -157,7 +157,7 @@ export function HomeScreen({ navigation }: ImportHomeScreenProps): JSX.Element {
                     </Box>
                 </Box>
             </Center>
-            <Box position={'absolute'} bottom={5} alignSelf="center">
+            <Box position={'absolute'} bottom="$5" alignSelf="center">
                 <HStack alignItems="flex-end" justifyContent="space-between" width={contentWidth}>
                     <Text left={2}>v{theme.ver}</Text>
 

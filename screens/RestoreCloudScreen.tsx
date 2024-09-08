@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { MynoteContext } from '../context/mynoteContext';
 import { MynoteContextType, ScreenType, BackupType } from '../@types/mynote.d';
 import { retrieveBackups, restoreToDB } from '../utils/dbhelper';
-import { CircleX, CircleCheck, ArchiveRestore } from 'lucide-react-native';
+import { CircleX, CircleCheck, ArchiveRestore, Circle } from 'lucide-react-native';
 
 const deviceWidth = Dimensions.get('window').width;
 const contentWidth = deviceWidth - theme.content_margin;
@@ -35,7 +35,7 @@ export function RestoreCloudScreen({ navigation }: RestoreCloudScreenProps) {
     const { mynoteConfig, changeScreen } = useContext(MynoteContext) as MynoteContextType;
     const { t } = useTranslation();
     const [backuplist, setBackuplist] = useState<BackupType[]>([]);
-    const [selected, setSelected] = useState<string | undefined>(undefined);
+    const [selected, setSelected] = useState<string | undefined>('1');
 
     const toast = useToast();
 
@@ -64,12 +64,19 @@ export function RestoreCloudScreen({ navigation }: RestoreCloudScreenProps) {
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             retrieveBackups(setBackuplist, showError);
+
         });
 
         // Clean up the listener when the component is unmounted
         return unsubscribe;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (backuplist.length > 0) {
+            setSelected(backuplist[0].uuid);
+        }
+    }, [backuplist]);
 
     // Dispatch screen change action on component mount
     useEffect(() => {
@@ -83,6 +90,10 @@ export function RestoreCloudScreen({ navigation }: RestoreCloudScreenProps) {
             toast.show({
                 placement: 'top',
                 duration: theme.toast_delay_duration,
+                onCloseComplete: () => {
+                    navigation.navigate('NoteMain');
+                    changeScreen(ScreenType.NOTE_MAIN);
+                },
                 render: ({ id }) => {
                     const toastId = 'success-toast-' + id;
                     return (
@@ -152,10 +163,10 @@ export function RestoreCloudScreen({ navigation }: RestoreCloudScreenProps) {
                             renderItem={(rec: any) => (
                                 <Box borderBottomWidth="$1" borderColor={theme.minor_text_color} pl="$4" pr="$5" py="$2">
                                     <HStack space="md" justifyContent="space-evenly" alignItems="center" w="100%">
-                                        <RadioGroup value={selected} onChange={(nextValue) => setSelected(nextValue)}>
+                                        <RadioGroup value={selected} onChange={setSelected}>
                                             <Radio value={rec.item.uuid} size="md" alignItems="center" isInvalid={false} isDisabled={false}>
                                                 <RadioIndicator mr="$2">
-                                                    <RadioIcon as={CircleCheck} />
+                                                    <RadioIcon as={selected === rec.item.uuid ? CircleCheck : Circle} />
                                                 </RadioIndicator>
                                                 <RadioLabel>
                                                     <VStack>
