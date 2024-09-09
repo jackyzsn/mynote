@@ -4,7 +4,7 @@ import { Dimensions, Alert } from 'react-native';
 import { Center, Button, Text, Box, useToast, Toast, VStack, ToastTitle, ToastDescription } from '@gluestack-ui/themed';
 import theme from '../resources/theme.json';
 import { useTranslation } from 'react-i18next';
-import { syncToCloud } from '../utils/dbhelper';
+import { syncToMongo } from '../utils/dbhelper';
 import DeviceInfo from 'react-native-device-info';
 import { MynoteContext } from '../context/mynoteContext';
 import { MynoteContextType, ScreenType } from '../@types/mynote.d';
@@ -117,7 +117,7 @@ export function NoteMainScreen({ navigation }: NoteMainScreenProps): JSX.Element
                                 const buildId = await DeviceInfo.getBuildId();
                                 const userAgent = await DeviceInfo.getUserAgent();
                                 const deviceId = `${buildId}(${uniqueId})`;
-                                syncToCloud(deviceId, userAgent, syncCallback);
+                                syncToMongo(deviceId, userAgent, syncCallback);
                             } catch (error) {
                                 console.error(error);
                                 Alert.alert(t('error_occurred'), t('sync_failed'));

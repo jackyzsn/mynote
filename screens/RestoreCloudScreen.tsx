@@ -17,7 +17,7 @@ import theme from '../resources/theme.json';
 import { useTranslation } from 'react-i18next';
 import { MynoteContext } from '../context/mynoteContext';
 import { MynoteContextType, ScreenType, BackupType } from '../@types/mynote.d';
-import { retrieveBackups, restoreToDB } from '../utils/dbhelper';
+import { retrieveBackupsMongo, restoreToDBMongo } from '../utils/dbhelper';
 import { CircleX, CircleCheck, ArchiveRestore, Circle } from 'lucide-react-native';
 
 const deviceWidth = Dimensions.get('window').width;
@@ -63,7 +63,7 @@ export function RestoreCloudScreen({ navigation }: RestoreCloudScreenProps) {
     // Refresh backup list every time the screen gains focus
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            retrieveBackups(setBackuplist, showError);
+            retrieveBackupsMongo(setBackuplist, showError);
 
         });
 
@@ -143,7 +143,7 @@ export function RestoreCloudScreen({ navigation }: RestoreCloudScreenProps) {
                     text: t('ok'),
                     onPress: () => {
                         if (key) {
-                            restoreToDB(key, restoreCallback);
+                            restoreToDBMongo(key, restoreCallback);
                         }
                     },
                 },
