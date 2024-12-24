@@ -390,6 +390,8 @@ export function NoteDetailScreen({ route, navigation }: NoteDetailScreenProps): 
         setToLocate(true);
     };
 
+    const notetagFix = notetag.length > 20 ? notetag.substring(0, 12) + "..."  + notetag.substring(notetag.length - 5, notetag.length ) : notetag;
+
     return (
         <Box flex={1} bg="white" width="100%" alignSelf="center">
             <HStack w="98%" bg="transparent" p="$3" alignItems="center" justifyContent="space-between" >
@@ -408,7 +410,7 @@ export function NoteDetailScreen({ route, navigation }: NoteDetailScreenProps): 
                     <Icon mb="$1" ml="$2" as={ArrowLeft} color={theme.major_text_color} size="lg" />
                 </Pressable>
                 <Heading size="md" color={theme.major_text_color}>
-                    {notetag}
+                    {notetagFix}
                 </Heading>
                 <HStack bg="transparent" justifyContent="center" alignItems="center" w="35%">
                     <Button w="10%"
